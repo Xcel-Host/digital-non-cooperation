@@ -137,7 +137,7 @@ export default function HeroSection() {
                   </div>
                   <span className="text-xs font-black px-1.5 py-0.5 rounded"
                     style={{background:'#1a0505',color:'#ff6060',border:'0.5px solid #3a1010',fontSize:9}}>
-                    VG
+                    Modi
                   </span>
                 </div>
                 {/* A2 - Adani */}
