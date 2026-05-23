@@ -93,7 +93,7 @@ export default function HomeBottom() {
 
       {/* STEP 4 */}
       <div className="mb-8">
-        <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">Step 4: How You Stop Modi Silently</h2>
+        <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">Step 4: How You Stop Vishwaguru Silently</h2>
         <p className="text-xs text-muted mb-4">You don't need to protest. Just make better choices.</p>
 
         <div className="flex flex-col gap-2 mb-4">
