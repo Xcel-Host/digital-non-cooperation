@@ -27,7 +27,7 @@ export default function HeroSection() {
 
             <h1 className="text-4xl md:text-5xl font-black leading-none tracking-tighter mb-3">
               How can you stop{' '}
-              <span className="text-red">Modi</span> silently?
+              <span className="text-red">Vishwaguru</span> silently?
             </h1>
 
             <p className="text-base font-bold text-offwhite mb-2 leading-snug">
