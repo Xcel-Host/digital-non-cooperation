@@ -161,10 +161,11 @@ export const reliance = {
         { name: 'Campa Orange', detail: 'Orange drink · Reliance Consumer Products' },
         { name: 'Campa Jeera', detail: 'Jeera flavour · Reliance Consumer Products' },
         { name: 'Sosyo', detail: 'Gujarat-based soft drink · Reliance holds 50%' },
+        { name: 'Vantara Creamery', detail: 'Premium artisanal ice cream · Anant Ambani · Reliance Foundation · ₹750/scoop · Mumbai launch 2026' },
       ],
       alternatives: [{
-        avoid: 'Campa Cola / Campa range / Sosyo',
-        avoidReason: 'Campa acquired by Reliance 2022. Aggressively priced to dominate the soft drinks market.',
+        avoid: 'Campa Cola / Campa range / Sosyo / Vantara Creamery',
+        avoidReason: 'Campa acquired by Reliance 2022. Aggressively priced to dominate the soft drinks market. Vantara Creamery launched 2026 at ₹750/scoop — premium positioning under Reliance Foundation.',
         picks: [
           { name: 'Bovonto', tag: 'Indian brand', note: 'Chennai-based cult favourite. Grape-flavoured soda. Fully independent. Popular across South India.' },
           { name: 'Lahori Zeera', tag: 'Indian brand', note: 'North India favourite jeera soda. Independent brand growing fast.' },
@@ -173,6 +174,9 @@ export const reliance = {
           { name: 'Appy Fizz', tag: 'Indian brand', note: 'Parle Agro — Indian-owned, fully independent of Reliance/Adani' },
           { name: 'Local nimbu paani / shikanji', tag: 'Local', note: 'Roadside lemon water — zero corporate. Supports street vendors.' },
           { name: 'Frooti / Appy (Parle Agro)', tag: 'Indian brand', note: 'Parle Agro — independent Indian beverage company' },
+          { name: 'Amul Ice Cream', tag: 'Cooperative', note: '3.6M farmer-owners. Wide range, fraction of the ₹750 Vantara price. Available everywhere.' },
+          { name: 'Mother Dairy Ice Cream', tag: 'Cooperative', note: 'Government-backed cooperative. Quality ice cream at accessible prices.' },
+          { name: 'Local kulfi / mithai shops', tag: 'Local', note: 'Your neighbourhood kulfi wala. Money stays local, often better taste, no premium brand markup.' },
         ],
       }],
     },

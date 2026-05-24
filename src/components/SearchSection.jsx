@@ -162,26 +162,6 @@ export default function SearchSection({ theme }) {
           </button>
         ))}
       </div>
-
-      {/* Stats strip */}
-      <div className="flex flex-wrap gap-4 justify-between p-4 rounded-xl"
-        style={{ background: bg, border: `0.5px solid ${border}` }}>
-        {[
-          { icon: '🏷️', num: stats.brands, label: 'Brands Tracked', color: 'text-amber' },
-          { icon: '🏛️', num: stats.empires, label: 'Big Empires', color: 'text-offwhite' },
-          { icon: '📊', num: stats.sectors, label: 'Sectors Covered', color: 'text-offwhite' },
-          { icon: '✅', num: stats.alternatives, label: 'Alternatives Listed', color: 'text-amber' },
-          { icon: '👥', num: stats.participating, label: 'People Participating', color: 'text-red' },
-        ].map(s => (
-          <div key={s.label} className="flex items-center gap-2">
-            <span className="text-base">{s.icon}</span>
-            <div>
-              <div className={`text-base font-black tracking-tight ${s.color}`}>{s.num}</div>
-              <div className="text-xs text-muted leading-none mt-0.5">{s.label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
     </section>
   )
 }
