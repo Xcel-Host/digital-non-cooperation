@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Explore from './pages/Explore'
@@ -9,23 +10,35 @@ import Philosophy from './pages/Philosophy'
 import WealthPage from './pages/WealthPage'
 import WhatElsePage from './pages/WhatElsePage'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
+import AboutPage from './pages/AboutPage'
 
 export default function App() {
+  const [theme, setTheme] = useState('dark')
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    document.documentElement.style.setProperty('--app-bg', next === 'light' ? '#f4f4f0' : '#0B0B0F')
+    document.body.style.background = next === 'light' ? '#f4f4f0' : '#0B0B0F'
+    document.body.style.color = next === 'light' ? '#111' : '#F3F4F6'
+  }
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/explore/:group" element={<Explore />} />
-        <Route path="/sector/:group/:sectorId" element={<SectorDetail />} />
-        <Route path="/alternatives" element={<Alternatives />} />
-        <Route path="/participate" element={<Participate />} />
-        <Route path="/philosophy" element={<Philosophy />} />
-        <Route path="/wealth" element={<WealthPage />} />
-        <Route path="/what-else" element={<WhatElsePage />} />
+        <Route path="/" element={<Home theme={theme} />} />
+        <Route path="/explore/:group" element={<Explore theme={theme} />} />
+        <Route path="/sector/:group/:sectorId" element={<SectorDetail theme={theme} />} />
+        <Route path="/alternatives" element={<Alternatives theme={theme} />} />
+        <Route path="/participate" element={<Participate theme={theme} />} />
+        <Route path="/philosophy" element={<Philosophy theme={theme} />} />
+        <Route path="/wealth" element={<WealthPage theme={theme} />} />
+        <Route path="/what-else" element={<WhatElsePage theme={theme} />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
-        <Route path="*" element={<Home />} />
+        <Route path="/about" element={<AboutPage theme={theme} />} />
+        <Route path="*" element={<Home theme={theme} />} />
       </Routes>
     </BrowserRouter>
   )

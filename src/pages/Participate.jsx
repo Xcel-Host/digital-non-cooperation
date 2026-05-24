@@ -106,6 +106,20 @@ export default function Participate() {
           </div>
         </div>
       </div>
+
+      {/* Want to do more? */}
+      <div className="max-w-2xl mx-auto px-4 pb-4">
+        <a href="/what-else"
+          className="flex items-center justify-between p-5 rounded-xl"
+          style={{ background: '#0d0900', border: '0.5px solid #2a1800' }}>
+          <div>
+            <p style={{ fontSize: 10, fontWeight: 700, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>16 Practical Steps</p>
+            <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6' }}>Want to do more?</p>
+            <p style={{ fontSize: 11, color: '#7a6a40', marginTop: 4 }}>Non-violent, practical acts beyond just knowing.</p>
+          </div>
+          <span style={{ fontSize: 18, color: '#F59E0B' }}>→</span>
+        </a>
+      </div>
       <Footer />
     </main>
   )

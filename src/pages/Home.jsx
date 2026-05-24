@@ -1,17 +1,17 @@
 import HeroSection from '../components/HeroSection'
 import SearchSection from '../components/SearchSection'
-import HomeSteps from '../components/HomeSteps'
-import HomeBottom from '../components/HomeBottom'
+import HomeEmpires from '../components/HomeEmpires'
+import HomeParticipate from '../components/HomeParticipate'
 import Footer from '../components/Footer'
 
-export default function Home() {
+export default function Home({ theme }) {
   return (
     <main>
-      <HeroSection />
-      <SearchSection />
-      <HomeSteps />
-      <HomeBottom />
-      <Footer />
+      <HeroSection theme={theme} />
+      <SearchSection theme={theme} />
+      <HomeEmpires theme={theme} />
+      <HomeParticipate theme={theme} />
+      <Footer theme={theme} />
     </main>
   )
 }

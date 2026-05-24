@@ -96,6 +96,21 @@ export default function Explore() {
           </p>
         </div>
       </div>
+      {/* Wealth card */}
+      <div className="max-w-6xl mx-auto px-4 pb-8">
+        <a href="/wealth" className="flex items-center justify-between gap-4 p-4 rounded-xl block"
+          style={{ background: isAdani ? '#0f0f00' : '#150505', border: isAdani ? '0.5px solid #252200' : '0.5px solid #2e0f0f' }}>
+          <div>
+            <p style={{ fontSize: 10, fontWeight: 700, color: isAdani ? '#F59E0B' : '#D84B4B', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>Data · Verified</p>
+            <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6' }}>See their wealth growth →</p>
+            <p style={{ fontSize: 11, color: '#666', marginTop: 4 }}>{isAdani ? 'Adani: +1,535% since 2014' : 'Ambani: +542% since 2014'}. Average Indian wage: +40%.</p>
+          </div>
+          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+            <div style={{ fontSize: 24, fontWeight: 900, color: isAdani ? '#F59E0B' : '#D84B4B' }}>{isAdani ? '1,535%' : '542%'}</div>
+            <div style={{ fontSize: 11, color: '#555' }}>wealth growth</div>
+          </div>
+        </a>
+      </div>
       <Footer />
     </main>
   )
