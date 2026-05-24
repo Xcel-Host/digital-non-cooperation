@@ -20,23 +20,23 @@ export default function Navbar({ theme, toggleTheme }) {
     { to: '/about', label: 'About' },
   ]
 
+  const shareOptions = [
+    { label: '📱 WhatsApp', url: 'https://wa.me/?text=Know%20who%20owns%20your%20daily%20life%3A%20https%3A%2F%2Fdigitalnoncooperation.in' },
+    { label: '✈️ Telegram', url: 'https://t.me/share/url?url=https%3A%2F%2Fdigitalnoncooperation.in&text=Digital%20Non-Cooperation' },
+    { label: '🐦 X (Twitter)', url: 'https://twitter.com/intent/tweet?url=https%3A%2F%2Fdigitalnoncooperation.in&text=Know%20who%20owns%20your%20daily%20life.%20%23DigitalNonCooperation' },
+    { label: '📸 Instagram', url: 'https://instagram.com' },
+  ]
+
   const copyLink = () => {
     navigator.clipboard.writeText('https://digitalnoncooperation.in').catch(() => {})
     setShareOpen(false)
   }
 
-  const shareOptions = [
-    { label: '📱 WhatsApp', url: 'https://wa.me/?text=Check%20this%20out%3A%20https%3A%2F%2Fdigitalnoncooperation.in' },
-    { label: '📸 Instagram', url: 'https://instagram.com' },
-    { label: '✈️ Telegram', url: 'https://t.me/share/url?url=https%3A%2F%2Fdigitalnoncooperation.in' },
-    { label: '🐦 X (Twitter)', url: 'https://twitter.com/intent/tweet?url=https%3A%2F%2Fdigitalnoncooperation.in&text=Know%20who%20owns%20your%20daily%20life.%20%23DigitalNonCooperation' },
-  ]
-
   return (
     <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: bg, borderBottom: `0.5px solid ${border}`, backdropFilter: 'blur(12px)' }}>
       <div className="max-w-6xl mx-auto px-4" style={{ height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-        {/* Logo — no red box, no subtext */}
+        {/* Logo — just emoji + text, no box, always clickable */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
           <span style={{ fontSize: 22 }}>✊</span>
           <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '-0.3px', color: textColor }}>Digital Non-Cooperation</span>
@@ -54,20 +54,22 @@ export default function Navbar({ theme, toggleTheme }) {
         {/* Right actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, position: 'relative' }}>
 
-          {/* Share button — working */}
+          {/* Share button — with visible icon */}
           <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => setShareOpen(s => !s)}
+            <button onClick={() => setShareOpen(s => !s)}
               aria-label="Share this platform"
-              style={{ width: 34, height: 34, borderRadius: 8, border: `0.5px solid ${border}`, background: isDark ? '#1a1a1f' : '#e8e8e3', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: muted }}>
-              <i className="ti ti-share-2" aria-hidden="true" style={{ fontSize: 16 }} />
+              title="Share"
+              style={{ width: 34, height: 34, borderRadius: 8, border: `0.5px solid ${border}`, background: isDark ? '#1a1a1f' : '#e8e8e3', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#aaa' : '#555' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
             </button>
 
-            {/* Share dropdown */}
             {shareOpen && (
               <>
                 <div onClick={() => setShareOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
-                <div style={{ position: 'absolute', top: 40, right: 0, background: isDark ? '#1a1a1f' : '#fff', border: `0.5px solid ${border}`, borderRadius: 12, padding: 12, width: 200, zIndex: 99, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
+                <div style={{ position: 'absolute', top: 40, right: 0, background: isDark ? '#1a1a1f' : '#fff', border: `0.5px solid ${border}`, borderRadius: 12, padding: 12, width: 210, zIndex: 99, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
                   <p style={{ fontSize: 11, fontWeight: 700, color: textColor, marginBottom: 10 }}>Share this platform</p>
                   {shareOptions.map(s => (
                     <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer"
@@ -85,7 +87,7 @@ export default function Navbar({ theme, toggleTheme }) {
             )}
           </div>
 
-          {/* Bulb theme toggle */}
+          {/* Theme toggle */}
           <button onClick={toggleTheme} aria-label="Toggle theme"
             style={{ width: 34, height: 34, borderRadius: 8, border: `0.5px solid ${border}`, background: isDark ? '#1a1a1f' : '#e8e8e3', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
             {isDark ? '💡' : '🌙'}
@@ -98,14 +100,13 @@ export default function Navbar({ theme, toggleTheme }) {
           </Link>
 
           {/* Mobile hamburger */}
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu" style={{ padding: 4, color: muted, background: 'none', border: 'none', cursor: 'pointer' }}>
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
+            style={{ padding: 4, color: muted, background: 'none', border: 'none', cursor: 'pointer' }}>
             <i className="ti ti-menu-2" aria-hidden="true" style={{ fontSize: 20 }} />
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <div style={{ background: isDark ? '#111' : '#eeeeea', borderTop: `0.5px solid ${border}`, padding: '10px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           {links.map(l => (

@@ -13,115 +13,66 @@ export default function Explore({ theme }) {
   const border = isDark ? '#222' : '#ddd'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const muted = isDark ? '#666' : '#888'
+  const accentColor = isAdani ? '#F59E0B' : '#D84B4B'
 
   return (
-    <main>
-      <div className="max-w-6xl mx-auto px-4 py-8" style={{ background: bg, minHeight: '100vh' }}>
+    <main style={{ background: bg, minHeight: '100vh' }}>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+
         {/* Back */}
-        <Link to="/" className="inline-flex items-center gap-2 text-xs text-muted hover:text-offwhite mb-6 transition-colors">
+        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, color: muted, textDecoration: 'none', marginBottom: 24 }}>
           ← Back to Home
         </Link>
 
         {/* Header */}
-        <div className="mb-8">
-          <div
-            className="inline-block text-xs font-black px-3 py-1 rounded mb-3"
-            style={isAdani
-              ? { background: '#F59E0B', color: '#000' }
-              : { background: '#D84B4B', color: '#fff' }
-            }
-          >
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ display: 'inline-block', fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 5, marginBottom: 12, background: isAdani ? '#F59E0B' : '#D84B4B', color: isAdani ? '#000' : '#fff' }}>
             {data.badge}
           </div>
-          <h1 className="text-3xl font-black tracking-tight mb-2" style={{ color: textColor }}>{data.name}</h1>
-          <p className="text-sm mb-1" style={{ color: muted }}>{data.person}</p>
-          <p className="text-xs leading-relaxed max-w-xl" style={{ color: muted }}>{data.description}</p>
+          <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-1px', color: textColor, marginBottom: 6 }}>{data.name}</h1>
+          <p style={{ fontSize: 12, color: muted, marginBottom: 4 }}>{data.person}</p>
+          <p style={{ fontSize: 12, color: muted, lineHeight: 1.6, maxWidth: 600 }}>{data.description}</p>
         </div>
 
-        {/* Toggle between empires */}
-        <div className="flex gap-3 mb-8 flex-wrap">
-          <Link
-            to="/explore/reliance"
-            className="px-4 py-2 rounded-lg text-xs font-bold transition-all"
-            style={!isAdani
-              ? { background: '#D84B4B', color: '#fff' }
-              : { background: isDark ? '#1a0505' : '#fff5f5', color: '#D84B4B', border: '0.5px solid #2e0f0f' }
-            }
-          >
+        {/* Toggle + wealth pill */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
+          <Link to="/explore/reliance"
+            style={{ padding: '8px 16px', borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: 'none', background: !isAdani ? '#D84B4B' : isDark ? '#1a0505' : '#fff5f5', color: !isAdani ? '#fff' : '#D84B4B', border: `0.5px solid ${!isAdani ? '#D84B4B' : '#2e0f0f'}` }}>
             A1 — Ambani Empire
           </Link>
-          <Link
-            to="/explore/adani"
-            className="px-4 py-2 rounded-lg text-xs font-bold transition-all"
-            style={isAdani
-              ? { background: '#F59E0B', color: '#000' }
-              : { background: isDark ? '#0f0f00' : '#fffde6', color: '#F59E0B', border: '0.5px solid #252200' }
-            }
-          >
+          <Link to="/explore/adani"
+            style={{ padding: '8px 16px', borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: 'none', background: isAdani ? '#F59E0B' : isDark ? '#0f0f00' : '#fffde6', color: isAdani ? '#000' : '#F59E0B', border: `0.5px solid ${isAdani ? '#F59E0B' : '#252200'}` }}>
             A2 — Adani Empire
           </Link>
-          <Link
-            to="/wealth"
-            className="px-4 py-2 rounded-lg text-xs font-bold transition-all"
-            style={{ background: isDark ? '#111' : '#fff', color: muted, border: `0.5px solid ${border}` }}
-          >
+          <Link to="/wealth"
+            style={{ padding: '8px 16px', borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: 'none', background: cardBg, color: muted, border: `0.5px solid ${border}` }}>
             📈 Their Wealth Growth
           </Link>
         </div>
 
-        {/* Sector grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {/* Sector grid — cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {data.sectors.map(sector => (
-            <Link
-              key={sector.id}
-              to={`/sector/${group}/${sector.id}`}
-              className="relative rounded-xl p-4 transition-all group"
-              style={{ background: cardBg, border: `0.5px solid ${border}` }}
-            >
-              <div className="text-2xl mb-3">{sector.icon}</div>
-              <div className="text-sm font-bold mb-1" style={{ color: textColor }}>{sector.name}</div>
-              <div className="text-xs" style={{ color: muted }}>{sector.count}</div>
-              <span
-                className="absolute right-3 bottom-3 text-muted transition-colors"
-                style={{ fontSize: 13 }}
-              >
-                →
-              </span>
+            <Link key={sector.id} to={`/sector/${group}/${sector.id}`}
+              style={{ display: 'block', textDecoration: 'none', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 14, padding: 18, position: 'relative', transition: 'transform 0.15s, border-color 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.borderColor = accentColor }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = border }}>
+              <div style={{ fontSize: 24, marginBottom: 10 }}>{sector.icon}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: textColor, marginBottom: 4 }}>{sector.name}</div>
+              <div style={{ fontSize: 11, color: muted }}>{sector.count}</div>
+              <div style={{ position: 'absolute', right: 14, bottom: 14, fontSize: 14, color: isDark ? '#2a2a2a' : '#ddd' }}>→</div>
             </Link>
           ))}
         </div>
 
-        {/* Empire description box */}
-        <div
-          className="mt-8 p-5 rounded-xl"
-          style={isAdani ? { background: isDark ? '#0f0f00' : '#fffde6', border: '0.5px solid #252200' } : { background: isDark ? '#150505' : '#fff5f5', border: '0.5px solid #2e0f0f' }}
-        >
-          <p className="text-xs font-bold uppercase tracking-widest mb-2"
-            style={{ color: isAdani ? '#F59E0B' : '#D84B4B' }}>
-            Concentration gives control
-          </p>
-          <p className="text-sm text-offwhite/70 leading-relaxed">{data.tagline}</p>
-          <p className="text-xs text-muted mt-2 leading-relaxed">
-            Tap any sector above to see the brands, understand the scale, and find practical alternatives.
-          </p>
+        {/* Empire description */}
+        <div style={{ marginTop: 28, padding: 20, borderRadius: 14, background: isAdani ? (isDark ? '#0f0f00' : '#fffde6') : (isDark ? '#150505' : '#fff5f5'), border: `0.5px solid ${isAdani ? '#252200' : '#2e0f0f'}` }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: accentColor, marginBottom: 8 }}>Concentration gives control</p>
+          <p style={{ fontSize: 13, color: isDark ? 'rgba(243,244,246,0.7)' : '#555', lineHeight: 1.7 }}>{data.tagline}</p>
+          <p style={{ fontSize: 11, color: muted, marginTop: 8 }}>Tap any sector above to see brands and find practical alternatives.</p>
         </div>
       </div>
-      {/* Wealth card */}
-      <div className="max-w-6xl mx-auto px-4 pb-8">
-        <a href="/wealth" className="flex items-center justify-between gap-4 p-4 rounded-xl block"
-          style={{ background: isAdani ? '#0f0f00' : '#150505', border: isAdani ? '0.5px solid #252200' : '0.5px solid #2e0f0f' }}>
-          <div>
-            <p style={{ fontSize: 10, fontWeight: 700, color: isAdani ? '#F59E0B' : '#D84B4B', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>Data · Verified</p>
-            <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6' }}>See their wealth growth →</p>
-            <p style={{ fontSize: 11, color: '#666', marginTop: 4 }}>{isAdani ? 'Adani: +1,535% since 2014' : 'Ambani: +542% since 2014'}. Average Indian wage: +40%.</p>
-          </div>
-          <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <div style={{ fontSize: 24, fontWeight: 900, color: isAdani ? '#F59E0B' : '#D84B4B' }}>{isAdani ? '1,535%' : '542%'}</div>
-            <div style={{ fontSize: 11, color: '#555' }}>wealth growth</div>
-          </div>
-        </a>
-      </div>
-      <Footer />
+      <Footer theme={theme} />
     </main>
   )
 }

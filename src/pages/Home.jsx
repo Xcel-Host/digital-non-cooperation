@@ -16,13 +16,12 @@ export default function Home({ theme }) {
     <main>
       <HeroSection theme={theme} empiresOpen={empiresOpen} setEmpiresOpen={setEmpiresOpen} />
 
-      {/* Hide search and join when empires expanded */}
       {!empiresOpen && (
         <>
           <SearchSection theme={theme} />
 
-          {/* Join the movement */}
-          <section className="max-w-6xl mx-auto px-4 py-6">
+          {/* Join the movement — reduced padding */}
+          <section className="max-w-6xl mx-auto px-4 pb-6" style={{ marginTop: -8 }}>
             <div style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 16, padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
                 <h2 style={{ fontSize: 18, fontWeight: 800, color: textColor, marginBottom: 4 }}>Join the movement</h2>
