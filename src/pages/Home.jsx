@@ -3,7 +3,7 @@ import HeroSection from '../components/HeroSection'
 import SearchSection from '../components/SearchSection'
 import Footer from '../components/Footer'
 
-export default function Home({ theme }) {
+export default function Home({ theme, empiresOpen, setEmpiresOpen }) {
   const isDark = theme !== 'light'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const muted = isDark ? '#666' : '#888'
@@ -18,7 +18,6 @@ export default function Home({ theme }) {
         <>
           <SearchSection theme={theme} />
 
-          {/* Join the movement — reduced padding */}
           <section className="max-w-6xl mx-auto px-4 pb-6" style={{ marginTop: -8 }}>
             <div style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 16, padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
