@@ -8,87 +8,85 @@ export default function Footer({ theme }) {
   const textColor = isDark ? '#F3F4F6' : '#111'
   const muted = isDark ? '#888' : '#666'
 
-  const copyLink = () => {
-    navigator.clipboard.writeText('https://digitalnoncooperation.in').catch(() => {})
-  }
-
   return (
-    <footer style={{ borderTop: `0.5px solid ${border}`, background: bg }}>
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <footer style={{ background: bg, borderTop: `0.5px solid ${border}` }}>
+      <div className="max-w-6xl mx-auto px-4 py-12">
 
-        {/* Share & Spread */}
-        <div style={{ marginBottom: 28, paddingBottom: 28, borderBottom: `0.5px solid ${border}` }}>
-          <p style={{ fontSize: 14, fontWeight: 800, color: textColor, marginBottom: 4 }}>Share & Spread</p>
-          <p style={{ fontSize: 12, color: muted, marginBottom: 14 }}>Awareness is resistance. Share. Educate. Inspire.</p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-            {['📱 WhatsApp', '📸 Instagram', '✈️ Telegram', '🐦 X (Twitter)'].map(s => (
-              <button key={s}
-                style={{ fontSize: 12, padding: '7px 14px', borderRadius: 8, background: isDark ? '#1a1a1f' : '#fff', border: `0.5px solid ${border}`, color: muted, cursor: 'pointer' }}>
-                {s}
-              </button>
+        {/* 5-column grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 2fr', gap: 32, marginBottom: 40 }} className="footer-grid">
+
+          {/* Col 1 — Brand */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 7, background: '#D84B4B', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>✊</div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: textColor }}>Digital Non-Cooperation</div>
+                <div style={{ fontSize: 9, color: muted }}>India First. People First.</div>
+              </div>
+            </div>
+            <p style={{ fontSize: 12, color: muted, lineHeight: 1.7, marginBottom: 16 }}>Non-violence. Non-cooperation. Non-surrender.</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {['WhatsApp', 'Instagram', 'X', 'Telegram'].map(s => (
+                <button key={s} style={{ width: 32, height: 32, borderRadius: 8, background: isDark ? '#1a1a1f' : '#fff', border: `0.5px solid ${border}`, cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', color: muted }}>
+                  {s === 'WhatsApp' ? '📱' : s === 'Instagram' ? '📸' : s === 'X' ? '🐦' : '✈️'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 2 — Quick Links */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 700, color: textColor, marginBottom: 14, letterSpacing: '0.5px' }}>Quick Links</p>
+            {[{ label: 'About', to: '/about' }, { label: 'Alternatives', to: '/alternatives' }, { label: 'Philosophy', to: '/philosophy' }, { label: 'Participate', to: '/participate' }].map(l => (
+              <Link key={l.label} to={l.to} style={{ display: 'block', fontSize: 12, color: muted, textDecoration: 'none', marginBottom: 8, transition: 'color 0.15s' }}>{l.label}</Link>
             ))}
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <div style={{ flex: 1, padding: '9px 12px', borderRadius: 8, background: isDark ? '#111' : '#fff', border: `0.5px solid ${border}`, fontSize: 12, color: muted, fontFamily: 'monospace' }}>
-              digitalnoncooperation.in
-            </div>
-            <button onClick={copyLink}
-              style={{ background: '#D84B4B', color: '#fff', border: 'none', borderRadius: 8, padding: '9px 16px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-              Copy
-            </button>
+
+          {/* Col 3 — Resources */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 700, color: textColor, marginBottom: 14, letterSpacing: '0.5px' }}>Resources</p>
+            {[{ label: 'Privacy', to: '/privacy' }, { label: 'Terms', to: '/terms' }, { label: 'Wealth Data', to: '/wealth' }, { label: 'What Else?', to: '/what-else' }].map(l => (
+              <Link key={l.label} to={l.to} style={{ display: 'block', fontSize: 12, color: muted, textDecoration: 'none', marginBottom: 8 }}>{l.label}</Link>
+            ))}
           </div>
-          <div style={{ marginTop: 14, padding: 16, borderRadius: 12, background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}` }}>
-            <p style={{ fontSize: 15, fontWeight: 800, color: textColor, marginBottom: 4 }}>Small acts of non-cooperation can bring big change.</p>
-            <p style={{ fontSize: 12, color: '#F59E0B' }}>Be the change. Build the future.</p>
+
+          {/* Col 4 — Connect */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 700, color: textColor, marginBottom: 14, letterSpacing: '0.5px' }}>Connect</p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {['🐦', '📸', '▶️', '✈️'].map((icon, i) => (
+                <button key={i} style={{ width: 36, height: 36, borderRadius: 8, background: isDark ? '#1a1a1f' : '#fff', border: `0.5px solid ${border}`, cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 5 — Newsletter */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 700, color: textColor, marginBottom: 6, letterSpacing: '0.5px' }}>Newsletter</p>
+            <p style={{ fontSize: 12, color: muted, marginBottom: 12, lineHeight: 1.5 }}>Get updates & new alternatives</p>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <input type="email" placeholder="Enter your email"
+                style={{ flex: 1, padding: '9px 12px', borderRadius: 8, background: isDark ? '#111' : '#fff', border: `0.5px solid ${border}`, color: textColor, fontSize: 12, outline: 'none', fontFamily: 'inherit' }} />
+              <button style={{ width: 36, height: 36, borderRadius: 8, background: '#D84B4B', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 14 }}>→</button>
+            </div>
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', marginBottom: 28, paddingBottom: 28, borderBottom: `0.5px solid ${border}` }}>
-          {[
-            { icon: '🏷️', num: stats.brands, label: 'Brands Tracked' },
-            { icon: '🏛️', num: stats.empires, label: 'Big Empires' },
-            { icon: '📊', num: stats.sectors, label: 'Sectors Covered' },
-            { icon: '✅', num: stats.alternatives, label: 'Alternatives Listed' },
-            { icon: '👥', num: stats.participating, label: 'People Taking Action' },
-          ].map(s => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 16, marginBottom: 4 }}>{s.icon}</div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: textColor }}>{s.num}</div>
-              <div style={{ fontSize: 10, color: muted, marginTop: 2 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 800, color: textColor, marginBottom: 3 }}>Digital Non-Cooperation</p>
-              <p style={{ fontSize: 11, color: muted }}>Non-violence. Non-cooperation. Non-surrender.</p>
-            </div>
-            <p style={{ fontSize: 12, fontWeight: 700, color: '#D84B4B' }}>India First. People First.</p>
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-            {[
-              { label: 'About', to: '/about' },
-              { label: 'Alternatives', to: '/alternatives' },
-              { label: 'Philosophy', to: '/philosophy' },
-              { label: 'Participate', to: '/participate' },
-              { label: 'Privacy', to: '/privacy' },
-              { label: 'Terms', to: '/terms' },
-            ].map(l => (
-              <Link key={l.label} to={l.to}
-                style={{ fontSize: 11, color: muted, textDecoration: 'none', transition: 'color 0.15s' }}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
-          <p style={{ fontSize: 10, color: isDark ? '#444' : '#aaa' }}>
-            © 2025–2026 Digital Non-Cooperation. Not propaganda. Not rage. Just clarity.
-          </p>
+        {/* Bottom bar */}
+        <div style={{ borderTop: `0.5px solid ${border}`, paddingTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+          <p style={{ fontSize: 11, color: isDark ? '#444' : '#aaa' }}>© 2025–2026 Digital Non-Cooperation. Not propaganda. Not rage. Just clarity.</p>
+          <p style={{ fontSize: 11, color: muted }}>Built for India. By Indians. ❤️</p>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .footer-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .footer-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </footer>
   )
 }
