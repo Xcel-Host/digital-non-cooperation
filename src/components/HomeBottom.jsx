@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+
 const quickAlts = [
   { avoid: 'Jio', dot: 'r', try: 'Airtel / BSNL' },
   { avoid: 'JioHotstar', dot: 'r', try: 'SonyLIV / Stremio' },
@@ -93,7 +94,7 @@ export default function HomeBottom() {
 
       {/* STEP 4 */}
       <div className="mb-8">
-        <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">Step 4: How You Stop Vishwaguru Silently</h2>
+        <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">Step 4: How You Stop Modi Silently</h2>
         <p className="text-xs text-muted mb-4">You don't need to protest. Just make better choices.</p>
 
         <div className="flex flex-col gap-2 mb-4">
@@ -175,6 +176,76 @@ export default function HomeBottom() {
         </div>
       </div>
 
+      {/* WEALTH DATA TEASER */}
+      <div className="mb-8">
+        <Link to="/wealth"
+          className="block p-5 rounded-xl transition-all hover:border-red"
+          style={{ background: '#0d0000', border: '0.5px solid #2e0f0f' }}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold text-red uppercase tracking-widest mb-2">Data · Verified</p>
+              <h3 className="text-lg font-black text-offwhite mb-1">Their Wealth. Your Life.</h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Ambani +542% · Adani +1,535% since 2014.<br/>
+                Average Indian wage: +40% in the same period.
+              </p>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <div className="text-2xl font-black text-red">542%</div>
+              <div className="text-xs text-muted">Ambani growth</div>
+              <div className="text-xl font-black text-amber mt-1">1,535%</div>
+              <div className="text-xs text-muted">Adani growth</div>
+            </div>
+          </div>
+          <div className="mt-3 text-xs font-bold text-red">View wealth data & graphs →</div>
+        </Link>
+      </div>
+
+      {/* WHAT ELSE CAN YOU DO */}
+      <div className="mb-8">
+        <Link to="/what-else"
+          className="block p-5 rounded-xl transition-all hover:border-amber"
+          style={{ background: '#0d0900', border: '0.5px solid #2a1800' }}>
+          <p className="text-xs font-bold text-amber uppercase tracking-widest mb-2">16 Practical Steps</p>
+          <h3 className="text-lg font-black text-offwhite mb-1">What else can you do?</h3>
+          <p className="text-xs text-muted leading-relaxed mb-3">
+            Non-violent, practical acts of consumer non-cooperation — beyond just knowing.
+          </p>
+          <div className="text-xs font-bold text-amber">Read the 16 steps →</div>
+        </Link>
+      </div>
+
+      {/* MORE EMPIRES COMING */}
+      <div className="mb-8">
+        <div className="p-5 rounded-xl" style={{ background: '#111', border: '0.5px solid #1e1e1e' }}>
+          <p className="text-xs font-bold text-muted uppercase tracking-widest mb-3">Coming Soon</p>
+          <h3 className="text-base font-black text-offwhite mb-2">More Empires Being Mapped</h3>
+          <p className="text-xs text-muted leading-relaxed mb-4">
+            A1 and A2 are the biggest — but concentration of power in India goes deeper.
+            We are currently researching and verifying:
+          </p>
+          <div className="flex flex-col gap-2">
+            {[
+              { name: 'Tata Group', note: 'A3 — Retail, Airlines, Tech, Defence, Media' },
+              { name: 'Aditya Birla Group', note: 'A4 — Cement, Telecom (Vi), Fashion, Finance' },
+              { name: 'Bajaj / Mahindra', note: 'Finance, Auto, Defence' },
+              { name: 'Times Group / TV Today', note: 'Media concentration mapping' },
+            ].map(e => (
+              <div key={e.name} className="flex items-center gap-3 py-2"
+                style={{ borderBottom: '0.5px solid #1a1a1a' }}>
+                <div className="w-2 h-2 rounded-full bg-muted flex-shrink-0" style={{ background: '#333' }} />
+                <div>
+                  <span className="text-sm font-bold text-offwhite/50">{e.name}</span>
+                  <span className="text-xs text-muted ml-2">{e.note}</span>
+                </div>
+                <span className="ml-auto text-xs text-muted">Soon</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
+

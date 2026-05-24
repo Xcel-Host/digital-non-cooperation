@@ -1,28 +1,84 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { stats, trendingSearches } from '../data'
+import { reliance } from '../data/reliance'
+import { adani } from '../data/adani'
+
+// Build a flat searchable index from all brands
+function buildSearchIndex() {
+  const index = []
+  reliance.sectors.forEach(sector => {
+    sector.brands.forEach(brand => {
+      index.push({
+        name: brand.name,
+        detail: brand.detail,
+        group: 'reliance',
+        groupName: 'Ambani Empire',
+        sector: sector.name,
+        sectorId: sector.id,
+        badge: 'A1',
+        color: '#D84B4B',
+      })
+    })
+  })
+  adani.sectors.forEach(sector => {
+    sector.brands.forEach(brand => {
+      index.push({
+        name: brand.name,
+        detail: brand.detail,
+        group: 'adani',
+        groupName: 'Adani Empire',
+        sector: sector.name,
+        sectorId: sector.id,
+        badge: 'A2',
+        color: '#F59E0B',
+      })
+    })
+  })
+  return index
+}
+
+const searchIndex = buildSearchIndex()
 
 export default function SearchSection() {
   const [query, setQuery] = useState('')
+  const [results, setResults] = useState([])
+  const [showResults, setShowResults] = useState(false)
   const navigate = useNavigate()
 
-  const handleSearch = e => {
+  const handleSearch = (q) => {
+    setQuery(q)
+    if (!q.trim()) { setResults([]); setShowResults(false); return }
+    const lower = q.toLowerCase()
+    const found = searchIndex.filter(item =>
+      item.name.toLowerCase().includes(lower) ||
+      item.sector.toLowerCase().includes(lower) ||
+      item.detail.toLowerCase().includes(lower)
+    ).slice(0, 6)
+    setResults(found)
+    setShowResults(true)
+  }
+
+  const handleSelect = (item) => {
+    setShowResults(false)
+    setQuery(item.name)
+    navigate(`/sector/${item.group}/${item.sectorId}`)
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault()
-    if (!query.trim()) return
-    const q = query.toLowerCase()
-    if (['jio','jiofiber','jiomart','ajio','campa','fortune','netmeds','network18','reliance','jiosaavn','jiohotstar'].some(k => q.includes(k))) {
-      navigate('/explore/reliance')
-    } else if (['adani','ndtv','ambuja','acc','fortune oil','mundra','adani power','adani green'].some(k => q.includes(k))) {
-      navigate('/explore/adani')
+    if (results.length > 0) {
+      handleSelect(results[0])
     } else {
       navigate('/alternatives')
     }
+    setShowResults(false)
   }
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-6">
       {/* Search bar */}
-      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+      <form onSubmit={handleSubmit} className="relative flex gap-2 mb-4">
         <div
           className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl"
           style={{ background: '#111', border: '0.5px solid #2a2a2a' }}
@@ -31,39 +87,79 @@ export default function SearchSection() {
           <input
             type="text"
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={e => handleSearch(e.target.value)}
+            onFocus={() => query && setShowResults(true)}
             placeholder="Search brands, companies, apps, media..."
             className="bg-transparent flex-1 text-sm text-offwhite outline-none placeholder-muted"
+            autoComplete="off"
           />
+          {query && (
+            <button type="button" onClick={() => { setQuery(''); setResults([]); setShowResults(false) }}
+              className="text-muted hover:text-offwhite text-xs">✕</button>
+          )}
         </div>
-        <button
-          type="submit"
-          className="bg-red text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-red/90 transition-colors"
-        >
+        <button type="submit"
+          className="bg-red text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-red/90 transition-colors">
           →
         </button>
+
+        {/* Dropdown results */}
+        {showResults && results.length > 0 && (
+          <div
+            className="absolute top-full left-0 right-12 mt-1 rounded-xl overflow-hidden z-50"
+            style={{ background: '#1a1a1f', border: '0.5px solid #2a2a2a' }}
+          >
+            {results.map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors"
+                style={{ borderBottom: i < results.length - 1 ? '0.5px solid #222' : 'none' }}
+                onClick={() => handleSelect(item)}
+              >
+                <span
+                  className="text-xs font-black px-1.5 py-0.5 rounded flex-shrink-0"
+                  style={item.badge === 'A1'
+                    ? { background: '#D84B4B', color: '#fff' }
+                    : { background: '#F59E0B', color: '#000' }
+                  }
+                >
+                  {item.badge}
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-offwhite">{item.name}</p>
+                  <p className="text-xs text-muted">{item.sector} · {item.groupName}</p>
+                </div>
+                <span className="ml-auto text-xs text-muted">→</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {showResults && query && results.length === 0 && (
+          <div
+            className="absolute top-full left-0 right-12 mt-1 rounded-xl px-4 py-3 z-50"
+            style={{ background: '#1a1a1f', border: '0.5px solid #2a2a2a' }}
+          >
+            <p className="text-xs text-muted">No exact match — <span className="text-amber cursor-pointer" onClick={() => navigate('/alternatives')}>browse all alternatives →</span></p>
+          </div>
+        )}
       </form>
 
       {/* Trending */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
         <span className="text-xs font-semibold text-muted">Trending:</span>
         {trendingSearches.map(t => (
-          <button
-            key={t}
-            onClick={() => setQuery(t)}
+          <button key={t} onClick={() => handleSearch(t)}
             className="text-xs px-3 py-1 rounded-full transition-colors text-muted hover:text-offwhite"
-            style={{ background: '#161616', border: '0.5px solid #1e1e1e' }}
-          >
+            style={{ background: '#161616', border: '0.5px solid #1e1e1e' }}>
             {t}
           </button>
         ))}
       </div>
 
       {/* Stats strip */}
-      <div
-        className="flex flex-wrap gap-4 justify-between p-4 rounded-xl"
-        style={{ background: '#111', border: '0.5px solid #1e1e1e' }}
-      >
+      <div className="flex flex-wrap gap-4 justify-between p-4 rounded-xl"
+        style={{ background: '#111', border: '0.5px solid #1e1e1e' }}>
         {[
           { icon: '🏷️', num: stats.brands, label: 'Brands Tracked', color: 'text-amber' },
           { icon: '🏛️', num: stats.empires, label: 'Big Empires', color: 'text-offwhite' },

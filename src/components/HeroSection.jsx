@@ -27,7 +27,7 @@ export default function HeroSection() {
 
             <h1 className="text-4xl md:text-5xl font-black leading-none tracking-tighter mb-3">
               How can you stop{' '}
-              <span className="text-red">Vishwaguru</span> silently?
+              <span className="text-red">Modi</span> silently?
             </h1>
 
             <p className="text-base font-bold text-offwhite mb-2 leading-snug">
@@ -117,37 +117,55 @@ export default function HeroSection() {
               </svg>
 
               {/* Silhouettes: A1 | MODI (center, tallest) | A2 */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end gap-3 z-10">
-                {/* A1 - Ambani */}
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex items-end gap-2 z-10">
+                {/* A1 */}
                 <div className="flex flex-col items-center gap-1">
-                  <div className="w-16 h-16 rounded-full overflow-hidden"
-                    style={{border:'1.5px solid #D84B4B',background:'#1a0505'}}>
-                    <img src="/a1.png" alt="A1" className="w-full h-full object-cover object-top"/>
-                  </div>
-                  <span className="text-xs font-black px-1.5 py-0.5 rounded"
-                    style={{background:'#131000',color:'#F59E0B',border:'0.5px solid #2a2000',fontSize:9}}>
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ background: '#1a1000', border: '0.5px solid #3a2800' }}
+                  />
+                  <div
+                    className="w-6 h-10 rounded-t"
+                    style={{ background: '#1a1000', border: '0.5px solid #3a2800' }}
+                  />
+                  <span
+                    className="text-xs font-black px-1.5 py-0.5 rounded"
+                    style={{ background: '#131000', color: '#F59E0B', border: '0.5px solid #2a2000', fontSize: 9 }}
+                  >
                     A1
                   </span>
                 </div>
-                {/* VG - center, biggest */}
-                <div className="flex flex-col items-center gap-1 mb-2">
-                  <div className="w-20 h-20 rounded-full overflow-hidden"
-                    style={{border:'2px solid #D84B4B',background:'#1a0505'}}>
-                    <img src="/vg.png" alt="VG" className="w-full h-full object-cover object-top"/>
-                  </div>
-                  <span className="text-xs font-black px-1.5 py-0.5 rounded"
-                    style={{background:'#1a0505',color:'#ff6060',border:'0.5px solid #3a1010',fontSize:9}}>
+                {/* MODI — center, tallest */}
+                <div className="flex flex-col items-center gap-1 mb-1">
+                  <div
+                    className="w-6 h-6 rounded-full"
+                    style={{ background: '#1a0505', border: '0.5px solid #3a1010' }}
+                  />
+                  <div
+                    className="w-8 h-14 rounded-t"
+                    style={{ background: '#1a0505', border: '0.5px solid #3a1010' }}
+                  />
+                  <span
+                    className="text-xs font-black px-1.5 py-0.5 rounded"
+                    style={{ background: '#1a0505', color: '#ff6060', border: '0.5px solid #3a1010', fontSize: 9 }}
+                  >
                     Modi
                   </span>
                 </div>
-                {/* A2 - Adani */}
+                {/* A2 */}
                 <div className="flex flex-col items-center gap-1">
-                  <div className="w-16 h-16 rounded-full overflow-hidden"
-                    style={{border:'1.5px solid #F59E0B',background:'#131000'}}>
-                    <img src="/a2.png" alt="A2" className="w-full h-full object-cover object-top"/>
-                  </div>
-                  <span className="text-xs font-black px-1.5 py-0.5 rounded"
-                    style={{background:'#131000',color:'#F59E0B',border:'0.5px solid #2a2000',fontSize:9}}>
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ background: '#1a1000', border: '0.5px solid #3a2800' }}
+                  />
+                  <div
+                    className="w-6 h-10 rounded-t"
+                    style={{ background: '#1a1000', border: '0.5px solid #3a2800' }}
+                  />
+                  <span
+                    className="text-xs font-black px-1.5 py-0.5 rounded"
+                    style={{ background: '#131000', color: '#F59E0B', border: '0.5px solid #2a2000', fontSize: 9 }}
+                  >
                     A2
                   </span>
                 </div>
