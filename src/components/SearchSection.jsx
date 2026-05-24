@@ -40,7 +40,13 @@ function buildSearchIndex() {
 
 const searchIndex = buildSearchIndex()
 
-export default function SearchSection() {
+export default function SearchSection({ theme }) {
+  const isDark = theme !== 'light'
+  const bg = isDark ? '#111' : '#fff'
+  const bg3 = isDark ? '#161616' : '#f4f4f0'
+  const border = isDark ? '#2a2a2a' : '#ddd'
+  const textColor = isDark ? '#F3F4F6' : '#111'
+  const muted = isDark ? '#555' : '#999'
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [showResults, setShowResults] = useState(false)
@@ -81,7 +87,7 @@ export default function SearchSection() {
       <form onSubmit={handleSubmit} className="relative flex gap-2 mb-4">
         <div
           className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl"
-          style={{ background: '#111', border: '0.5px solid #2a2a2a' }}
+          style={{ background: bg, border: `0.5px solid ${border}` }}
         >
           <span className="text-muted text-base">🔍</span>
           <input
@@ -90,7 +96,7 @@ export default function SearchSection() {
             onChange={e => handleSearch(e.target.value)}
             onFocus={() => query && setShowResults(true)}
             placeholder="Search brands, companies, apps, media..."
-            className="bg-transparent flex-1 text-sm text-offwhite outline-none placeholder-muted"
+            className="bg-transparent flex-1 text-sm outline-none"
             autoComplete="off"
           />
           {query && (
@@ -107,7 +113,7 @@ export default function SearchSection() {
         {showResults && results.length > 0 && (
           <div
             className="absolute top-full left-0 right-12 mt-1 rounded-xl overflow-hidden z-50"
-            style={{ background: '#1a1a1f', border: '0.5px solid #2a2a2a' }}
+            style={{ background: bg, border: `0.5px solid ${border}` }}
           >
             {results.map((item, i) => (
               <div
@@ -138,7 +144,7 @@ export default function SearchSection() {
         {showResults && query && results.length === 0 && (
           <div
             className="absolute top-full left-0 right-12 mt-1 rounded-xl px-4 py-3 z-50"
-            style={{ background: '#1a1a1f', border: '0.5px solid #2a2a2a' }}
+            style={{ background: bg, border: `0.5px solid ${border}` }}
           >
             <p className="text-xs text-muted">No exact match — <span className="text-amber cursor-pointer" onClick={() => navigate('/alternatives')}>browse all alternatives →</span></p>
           </div>
@@ -151,7 +157,7 @@ export default function SearchSection() {
         {trendingSearches.map(t => (
           <button key={t} onClick={() => handleSearch(t)}
             className="text-xs px-3 py-1 rounded-full transition-colors text-muted hover:text-offwhite"
-            style={{ background: '#161616', border: '0.5px solid #1e1e1e' }}>
+            style={{ background: bg3, border: `0.5px solid ${border}` }}>
             {t}
           </button>
         ))}
@@ -159,7 +165,7 @@ export default function SearchSection() {
 
       {/* Stats strip */}
       <div className="flex flex-wrap gap-4 justify-between p-4 rounded-xl"
-        style={{ background: '#111', border: '0.5px solid #1e1e1e' }}>
+        style={{ background: bg, border: `0.5px solid ${border}` }}>
         {[
           { icon: '🏷️', num: stats.brands, label: 'Brands Tracked', color: 'text-amber' },
           { icon: '🏛️', num: stats.empires, label: 'Big Empires', color: 'text-offwhite' },

@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom'
 import { stats } from '../data'
 
-export default function Footer() {
+export default function Footer({ theme }) {
+  const isDark = (theme || 'dark') !== 'light'
+  const bg = isDark ? '#0B0B0F' : '#f4f4f0'
+  const border = isDark ? '#1a1a1a' : '#ddd'
+  const textColor = isDark ? '#F3F4F6' : '#111'
+  const muted = isDark ? '#2a2a2a' : '#888'
   return (
-    <footer style={{ borderTop: '0.5px solid #1a1a1a' }}>
+    <footer style={{ borderTop: `0.5px solid ${border}`, background: bg }}>
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Stats row */}
         <div className="flex flex-wrap gap-6 justify-between mb-8">
@@ -62,8 +67,6 @@ export default function Footer() {
           <div className="flex flex-wrap gap-4">
             {[
               { label: 'About', to: '/philosophy' },
-              { label: 'Wealth Data', to: '/wealth' },
-              { label: 'What Else Can You Do?', to: '/what-else' },
               { label: 'Alternatives', to: '/alternatives' },
               { label: 'Privacy', to: '/privacy' },
               { label: 'Terms', to: '/terms' },

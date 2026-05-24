@@ -4,6 +4,12 @@ import { useState } from 'react'
 export default function Navbar({ theme, toggleTheme }) {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const isDark = theme !== 'light'
+
+  const bg = isDark ? 'rgba(11,11,15,0.97)' : 'rgba(244,244,240,0.97)'
+  const borderColor = isDark ? '#222' : '#ddd'
+  const textColor = isDark ? '#F3F4F6' : '#111'
+  const mutedColor = isDark ? '#666' : '#999'
 
   const links = [
     { to: '/', label: 'Home' },
@@ -15,49 +21,69 @@ export default function Navbar({ theme, toggleTheme }) {
   ]
 
   return (
-    <nav className="sticky top-0 z-50 border-b backdrop-blur-md"
-      style={{ background: theme === 'light' ? 'rgba(244,244,240,0.97)' : 'rgba(11,11,15,0.97)', borderColor: theme === 'light' ? '#ddd' : '#222' }}>
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between" style={{ height: 52 }}>
-        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-xl">✊</span>
-          <span className="text-sm font-extrabold tracking-tight" style={{ color: theme === 'light' ? '#111' : '#F3F4F6' }}>
+    <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: bg, borderBottom: `0.5px solid ${borderColor}`, backdropFilter: 'blur(12px)' }}>
+      <div className="max-w-6xl mx-auto px-4" style={{ height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+        {/* Logo */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 7, textDecoration: 'none', flexShrink: 0 }}>
+          <span style={{ fontSize: 18 }}>✊</span>
+          <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '-0.3px', color: textColor }}>
             Digital Non-Cooperation
           </span>
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex" style={{ alignItems: 'center', gap: 2 }}>
           {links.map(l => (
             <Link key={l.to} to={l.to}
-              className="px-3 py-1.5 rounded text-xs font-medium transition-colors"
               style={{
-                color: location.pathname === l.to ? '#F3F4F6' : '#666',
+                padding: '6px 10px',
+                borderRadius: 6,
+                fontSize: 11,
+                fontWeight: 500,
+                textDecoration: 'none',
+                color: location.pathname === l.to ? '#D84B4B' : mutedColor,
                 borderBottom: location.pathname === l.to ? '1.5px solid #D84B4B' : 'none',
+                transition: 'color 0.15s',
               }}>
               {l.label}
             </Link>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Theme toggle */}
-          <button onClick={toggleTheme}
-            className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-            style={{ background: theme === 'light' ? '#e0e0db' : '#1a1a1f', border: `0.5px solid ${theme === 'light' ? '#ddd' : '#222'}`, color: '#666' }}
-            aria-label="Toggle theme">
-            <i className={`ti ${theme === 'light' ? 'ti-moon' : 'ti-sun'}`} aria-hidden="true" style={{ fontSize: 14 }} />
+        {/* Right side */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Theme toggle — bulb icon, always visible */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle light/dark theme"
+            style={{
+              width: 32, height: 32,
+              borderRadius: 8,
+              border: `0.5px solid ${borderColor}`,
+              background: isDark ? '#1a1a1f' : '#e8e8e3',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 16,
+              color: isDark ? '#F59E0B' : '#555',
+              transition: 'all 0.15s',
+            }}>
+            {isDark ? '💡' : '🌙'}
           </button>
 
           {/* CTA */}
           <Link to="/participate"
-            className="hidden md:flex items-center gap-1 text-white text-xs font-bold px-3 py-1.5 rounded-md"
-            style={{ background: '#D84B4B' }}>
+            className="hidden md:flex"
+            style={{ alignItems: 'center', gap: 5, background: '#D84B4B', color: '#fff', fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 7, textDecoration: 'none' }}>
             Take Action ✊
           </Link>
 
           {/* Mobile hamburger */}
-          <button className="md:hidden p-1" onClick={() => setMenuOpen(!menuOpen)}
-            style={{ color: '#666' }} aria-label="Toggle menu">
+          <button
+            className="md:hidden"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            style={{ padding: 4, color: mutedColor, background: 'none', border: 'none', cursor: 'pointer' }}>
             <i className="ti ti-menu-2" aria-hidden="true" style={{ fontSize: 20 }} />
           </button>
         </div>
@@ -65,18 +91,20 @@ export default function Navbar({ theme, toggleTheme }) {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t px-4 py-3 flex flex-col gap-1"
-          style={{ background: theme === 'light' ? '#eeeeea' : '#111', borderColor: theme === 'light' ? '#ddd' : '#222' }}>
+        <div style={{ background: isDark ? '#111' : '#eeeeea', borderTop: `0.5px solid ${borderColor}`, padding: '10px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           {links.map(l => (
-            <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)}
-              className="px-3 py-2 rounded text-sm font-medium transition-colors"
-              style={{ color: location.pathname === l.to ? '#D84B4B' : '#666', background: location.pathname === l.to ? 'rgba(216,75,75,0.08)' : 'transparent' }}>
+            <Link key={l.to} to={l.to}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                padding: '8px 12px', borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: 'none',
+                color: location.pathname === l.to ? '#D84B4B' : mutedColor,
+                background: location.pathname === l.to ? 'rgba(216,75,75,0.08)' : 'transparent',
+              }}>
               {l.label}
             </Link>
           ))}
           <Link to="/participate" onClick={() => setMenuOpen(false)}
-            className="mt-2 text-white text-sm font-bold px-3 py-2 rounded-md text-center"
-            style={{ background: '#D84B4B' }}>
+            style={{ marginTop: 8, background: '#D84B4B', color: '#fff', fontSize: 13, fontWeight: 700, padding: '10px 12px', borderRadius: 8, textDecoration: 'none', textAlign: 'center' }}>
             Take Action ✊
           </Link>
         </div>
