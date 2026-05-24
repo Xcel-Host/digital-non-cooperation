@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const philosophyPillars = [
@@ -19,6 +19,12 @@ const disconnectSteps = [
 const comingEmpires = ['Tata Group (A3)', 'Aditya Birla (A4)', 'Times Group · Media', 'Bajaj · Mahindra']
 
 function CenteredModal({ open, onClose, children }) {
+  React.useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') onClose() }
+    if (open) window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [open, onClose])
+
   if (!open) return null
   return (
     <div onClick={e => e.target === e.currentTarget && onClose()}
@@ -52,11 +58,11 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
       {/* Large brand watermark */}
       {isA1 ? (
         <div style={{
-          position: 'absolute', right: -8, top: '50%', transform: 'translateY(-50%)',
-          fontSize: 140, fontWeight: 900, color: '#D84B4B', opacity: 0.08,
-          lineHeight: 1, userSelect: 'none', fontFamily: 'Georgia, serif',
-          letterSpacing: '-5px',
-        }}>R</div>
+          position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+          opacity: 0.1, userSelect: 'none',
+          fontSize: 28, fontWeight: 900, letterSpacing: '-1px',
+          color: '#D84B4B',
+        }}>Reliance</div>
       ) : (
         <div style={{
           position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',

@@ -1,11 +1,9 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
 import SearchSection from '../components/SearchSection'
 import Footer from '../components/Footer'
 
 export default function Home({ theme }) {
-  const [empiresOpen, setEmpiresOpen] = useState(false)
   const isDark = theme !== 'light'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const muted = isDark ? '#666' : '#888'

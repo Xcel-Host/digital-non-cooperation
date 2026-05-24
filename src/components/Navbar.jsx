@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
-export default function Navbar({ theme, toggleTheme }) {
+export default function Navbar({ theme, toggleTheme, closeEmpires }) {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
@@ -37,7 +37,7 @@ export default function Navbar({ theme, toggleTheme }) {
       <div className="max-w-6xl mx-auto px-4" style={{ height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* Logo — just emoji + text, no box, always clickable */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
+        <Link to="/" onClick={closeEmpires} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
           <span style={{ fontSize: 22 }}>✊</span>
           <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '-0.3px', color: textColor }}>Digital Non-Cooperation</span>
         </Link>
@@ -45,7 +45,7 @@ export default function Navbar({ theme, toggleTheme }) {
         {/* Desktop links */}
         <div className="hidden md:flex" style={{ alignItems: 'center', gap: 0 }}>
           {links.map(l => (
-            <Link key={l.to} to={l.to} style={{ padding: '6px 12px', fontSize: 12, fontWeight: 500, textDecoration: 'none', color: location.pathname === l.to ? '#D84B4B' : muted, borderBottom: location.pathname === l.to ? '2px solid #D84B4B' : '2px solid transparent', transition: 'color 0.15s' }}>
+            <Link key={l.to} to={l.to} onClick={l.to === '/' ? closeEmpires : undefined} style={{ padding: '6px 12px', fontSize: 12, fontWeight: 500, textDecoration: 'none', color: location.pathname === l.to ? '#D84B4B' : muted, borderBottom: location.pathname === l.to ? '2px solid #D84B4B' : '2px solid transparent', transition: 'color 0.15s' }}>
               {l.label}
             </Link>
           ))}

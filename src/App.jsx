@@ -14,20 +14,22 @@ import AboutPage from './pages/AboutPage'
 
 export default function App() {
   const [theme, setTheme] = useState('dark')
+  const [empiresOpen, setEmpiresOpen] = useState(false)
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark'
     setTheme(next)
-    document.documentElement.style.setProperty('--app-bg', next === 'light' ? '#f4f4f0' : '#0B0B0F')
     document.body.style.background = next === 'light' ? '#f4f4f0' : '#0B0B0F'
     document.body.style.color = next === 'light' ? '#111' : '#F3F4F6'
   }
 
+  const closeEmpires = () => setEmpiresOpen(false)
+
   return (
     <BrowserRouter>
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Navbar theme={theme} toggleTheme={toggleTheme} closeEmpires={closeEmpires} />
       <Routes>
-        <Route path="/" element={<Home theme={theme} />} />
+        <Route path="/" element={<Home theme={theme} empiresOpen={empiresOpen} setEmpiresOpen={setEmpiresOpen} />} />
         <Route path="/explore/:group" element={<Explore theme={theme} />} />
         <Route path="/sector/:group/:sectorId" element={<SectorDetail theme={theme} />} />
         <Route path="/alternatives" element={<Alternatives theme={theme} />} />
@@ -38,7 +40,7 @@ export default function App() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/about" element={<AboutPage theme={theme} />} />
-        <Route path="*" element={<Home theme={theme} />} />
+        <Route path="*" element={<Home theme={theme} empiresOpen={empiresOpen} setEmpiresOpen={setEmpiresOpen} />} />
       </Routes>
     </BrowserRouter>
   )
