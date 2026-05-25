@@ -550,7 +550,30 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
       </CenteredModal>
 
       <style>{`
-        @media (max-width: 768px) { .hero-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 768px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+        }
+
+        /* Prevent horizontal overflow on mobile */
+        @media (max-width: 480px) {
+          body { overflow-x: hidden; }
+
+          /* Section padding */
+          .hero-section-inner { padding-left: 16px !important; padding-right: 16px !important; }
+
+          /* Heading font size */
+          h1 { font-size: clamp(28px, 8vw, 40px) !important; letter-spacing: -1px !important; }
+
+          /* Stats pills — allow wrapping on very small screens */
+          .stats-pills { flex-wrap: wrap !important; gap: 8px !important; }
+
+          /* Bottom stats strip — wrap to grid */
+          .stats-strip { flex-direction: column !important; gap: 16px !important; }
+          .stats-strip-numbers { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 12px !important; }
+
+          /* Join the Movement text sizing */
+          .join-movement-text { font-size: clamp(32px, 9vw, 48px) !important; }
+        }
       `}</style>
     </>
   )
