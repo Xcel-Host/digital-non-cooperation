@@ -79,76 +79,64 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleFlowDiagram() {
-  const itemHeight = 72
+  const itemHeight = 80
   const circleR = 24
-  const leftLineX = 36
-  const rightLineX = 76
-  const circleX = 56
-  const textX = 96
+  const leftLineX = 40
+  const rightLineX = 84
+  const circleX = 62
+  const textX = 104
+  const svgWidth = 480
   const totalHeight = rippleSteps.length * itemHeight
 
   return (
     <div style={{ marginTop: 28 }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
 
-      <svg viewBox={`0 0 420 ${totalHeight + 40}`} width="100%" style={{ overflow: 'visible' }}>
-        <defs>
-          <filter id="circleGlow">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
+      <svg viewBox={`0 0 ${svgWidth} ${totalHeight + 50}`} width="100%" style={{ display: 'block' }}>
 
-        {/* Entry arrow top right */}
-        <text x={rightLineX} y={14} textAnchor="middle" fill="#F59E0B" fontSize="14" fontWeight="900">→</text>
+        {/* Entry arrow top right of right line */}
+        <text x={rightLineX} y={16} textAnchor="middle" fill="#F59E0B" fontSize="13" fontWeight="900">→</text>
 
         {/* LEFT continuous dashed vertical line */}
-        <line
-          x1={leftLineX} y1={20}
-          x2={leftLineX} y2={totalHeight + 20}
-          stroke="#555" strokeWidth="1.5"
-          strokeDasharray="5,4"
-        />
+        <line x1={leftLineX} y1={24} x2={leftLineX} y2={totalHeight + 24} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
 
         {/* RIGHT continuous dashed vertical line */}
-        <line
-          x1={rightLineX} y1={20}
-          x2={rightLineX} y2={totalHeight + 20}
-          stroke="#555" strokeWidth="1.5"
-          strokeDasharray="5,4"
-        />
+        <line x1={rightLineX} y1={24} x2={rightLineX} y2={totalHeight + 24} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
 
-        {/* Exit arrow bottom right */}
-        <text x={rightLineX} y={totalHeight + 36} textAnchor="middle" fill="#F59E0B" fontSize="14" fontWeight="900">←</text>
+        {/* Exit arrow bottom right of right line */}
+        <text x={rightLineX} y={totalHeight + 42} textAnchor="middle" fill="#F59E0B" fontSize="13" fontWeight="900">←</text>
 
         {rippleSteps.map((step, i) => {
-          const cy = 20 + i * itemHeight + itemHeight / 2
+          const cy = 24 + i * itemHeight + itemHeight / 2
+          const desc = step.desc
+          const mid = desc.lastIndexOf(' ', 38)
+          const line1 = mid > 0 && desc.length > 38 ? desc.slice(0, mid) : desc
+          const line2 = mid > 0 && desc.length > 38 ? desc.slice(mid + 1) : ''
+
           return (
             <g key={i}>
-              {/* Down arrow between items on left line */}
+              {/* Down arrow on left line between items */}
               {i > 0 && (
-                <text x={leftLineX} y={cy - itemHeight / 2 + 8} textAnchor="middle" fill="#555" fontSize="9">▼</text>
+                <text x={leftLineX} y={cy - itemHeight / 2 + 10} textAnchor="middle" fill="#666" fontSize="8">▼</text>
               )}
 
               {/* Circle glow */}
-              <circle cx={circleX} cy={cy} r={circleR + 4} fill={step.color} opacity="0.12" filter="url(#circleGlow)" />
+              <circle cx={circleX} cy={cy} r={circleR + 6} fill={step.color} opacity="0.10" />
 
-              {/* Circle */}
+              {/* Circle background */}
               <circle cx={circleX} cy={cy} r={circleR} fill="#0d0d12" stroke={step.color} strokeWidth="2" />
 
-              {/* Icon */}
-              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="18">{step.icon}</text>
+              {/* Emoji icon */}
+              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="20">{step.icon}</text>
 
               {/* Title */}
-              <text x={textX} y={cy - 7} fill={step.color} fontSize="12" fontWeight="700">{step.title}</text>
+              <text x={textX} y={cy - 8} fill={step.color} fontSize="12.5" fontWeight="700">{step.title}</text>
 
-              {/* Description — wrap long text */}
-              <text x={textX} y={cy + 9} fill="#666" fontSize="10">
-                {step.desc.length > 42
-                  ? <><tspan x={textX} dy="0">{step.desc.slice(0, 42)}</tspan><tspan x={textX} dy="12">{step.desc.slice(42)}</tspan></>
-                  : step.desc
-                }
-              </text>
+              {/* Description line 1 */}
+              <text x={textX} y={cy + 8} fill="#777" fontSize="10.5">{line1}</text>
+
+              {/* Description line 2 if exists */}
+              {line2 && <text x={textX} y={cy + 21} fill="#777" fontSize="10.5">{line2}</text>}
             </g>
           )
         })}
