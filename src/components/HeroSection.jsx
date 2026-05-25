@@ -469,7 +469,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>When a few corporate ecosystems control your internet, media, shopping, entertainment, and everyday consumption — awareness becomes resistance.</p>
         <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>Most people already feel something is wrong. The internet feels controlled. Everything is getting more expensive. Local businesses disappear. The same narratives repeat everywhere.</p>
         <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6', lineHeight: 1.6, marginBottom: 10 }}>But frustration without direction is just noise.</p>
-        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 24 }}>People stay trapped because they don't see alternatives. This platform exists to make those alternatives visible.</p>
+        <p style={{ fontSize: 13, color: '#F59E0B', fontWeight: 800, lineHeight: 1.8, marginBottom: 24 }}>People stay trapped because they don't see alternatives. This platform exists to make those alternatives visible.</p>
 
         {/* 02 */}
         <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 12 }}>02 — What it is NOT</p>
