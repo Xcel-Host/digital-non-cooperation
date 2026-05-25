@@ -79,63 +79,89 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleFlowDiagram() {
-  const itemHeight = 80
-  const circleR = 22
-  const leftLineX = 24
-  const rightLineX = 60
-  const circleX = 42
-  const textX = 76
-  const svgWidth = 340
-  const totalHeight = rippleSteps.length * itemHeight
-
   return (
     <div style={{ marginTop: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>
+        The Ripple Effect — what your choice triggers
+      </p>
 
-      <svg viewBox={`0 0 ${svgWidth} ${totalHeight + 50}`} width="100%" style={{ display: 'block' }}>
+      {/* Entry arrow */}
+      <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: 30, marginBottom: 4 }}>
+        <span style={{ color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>→</span>
+      </div>
 
-        {/* Entry arrow top right */}
-        <text x={rightLineX} y={16} textAnchor="middle" fill="#F59E0B" fontSize="12">→</text>
+      <div style={{ position: 'relative' }}>
+        {/* LEFT vertical dashed line — fixed position */}
+        <div style={{
+          position: 'absolute',
+          left: 11,
+          top: 0,
+          bottom: 0,
+          width: 0,
+          borderLeft: '2px dashed #444',
+        }} />
 
-        {/* LEFT dashed line */}
-        <line x1={leftLineX} y1={22} x2={leftLineX} y2={totalHeight + 22} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
+        {/* RIGHT vertical dashed line — fixed position */}
+        <div style={{
+          position: 'absolute',
+          left: 51,
+          top: 0,
+          bottom: 0,
+          width: 0,
+          borderLeft: '2px dashed #444',
+        }} />
 
-        {/* RIGHT dashed line */}
-        <line x1={rightLineX} y1={22} x2={rightLineX} y2={totalHeight + 22} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
+        {rippleSteps.map((step, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, paddingTop: 10, paddingBottom: 10, position: 'relative' }}>
 
-        {/* Exit arrow bottom right */}
-        <text x={rightLineX} y={totalHeight + 40} textAnchor="middle" fill="#F59E0B" fontSize="12">←</text>
-
-        {rippleSteps.map((step, i) => {
-          const cy = 22 + i * itemHeight + itemHeight / 2
-          const words = step.desc.split(' ')
-          const lines = []
-          let current = ''
-          words.forEach(w => {
-            const test = current ? current + ' ' + w : w
-            if (test.length > 32) { lines.push(current); current = w }
-            else current = test
-          })
-          if (current) lines.push(current)
-
-          return (
-            <g key={i}>
+            {/* Left spacer to position circle between the two lines */}
+            <div style={{ width: 62, flexShrink: 0, display: 'flex', justifyContent: 'center', position: 'relative' }}>
+              {/* Down arrow on left line */}
               {i > 0 && (
-                <text x={leftLineX} y={cy - itemHeight / 2 + 10} textAnchor="middle" fill="#555" fontSize="8">▼</text>
+                <div style={{
+                  position: 'absolute',
+                  top: -14,
+                  left: 8,
+                  color: '#555',
+                  fontSize: 8,
+                  lineHeight: 1,
+                }}>▼</div>
               )}
-              <circle cx={circleX} cy={cy} r={circleR + 5} fill={step.color} opacity="0.10" />
-              <circle cx={circleX} cy={cy} r={circleR} fill="#0d0d12" stroke={step.color} strokeWidth="2" />
-              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="18">{step.icon}</text>
-              <text x={textX} y={cy - (lines.length > 1 ? 14 : 8)} fill={step.color} fontSize="11.5" fontWeight="700">{step.title}</text>
-              {lines.map((line, li) => (
-                <text key={li} x={textX} y={cy + (li * 13) + (lines.length > 1 ? 2 : 6)} fill="#777" fontSize="10">{line}</text>
-              ))}
-            </g>
-          )
-        })}
-      </svg>
+              {/* Circle centered between the two lines */}
+              <div style={{
+                width: 46,
+                height: 46,
+                borderRadius: '50%',
+                border: `2px solid ${step.color}`,
+                background: '#0d0d12',
+                boxShadow: `0 0 12px ${step.color}55`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                position: 'relative',
+                zIndex: 2,
+              }}>
+                {step.icon}
+              </div>
+            </div>
 
-      <div style={{ marginTop: 8, textAlign: 'center' }}>
+            {/* Text */}
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
+              <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Exit arrow */}
+      <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: 48, marginTop: 4 }}>
+        <span style={{ color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>←</span>
+      </div>
+
+      {/* Footer */}
+      <div style={{ marginTop: 16, textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
         <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
       </div>
