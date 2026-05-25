@@ -79,53 +79,99 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleFlowDiagram() {
+  const CIRCLE_SIZE = 48
+  const ROW_GAP = 8
+
   return (
     <div style={{ marginTop: 28 }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
 
-      <div style={{ position: 'relative', padding: '16px 16px 16px 16px' }}>
-        {/* Full rounded-rect dashed border wrapping BOTH sides */}
-        <div style={{
-          position: 'absolute',
-          top: 0, bottom: 0, left: 0, right: 0,
-          border: '1.5px dashed #444',
-          borderRadius: 28,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
+      <div style={{ position: 'relative' }}>
+        {rippleSteps.map((step, i) => {
+          const isFirst = i === 0
+          const isLast = i === rippleSteps.length - 1
 
-        {/* Entry arrow top right */}
-        <div style={{ position: 'absolute', top: -14, right: 24, color: '#F59E0B', fontSize: 18, lineHeight: 1 }}>↓</div>
-        {/* Exit arrow bottom right */}
-        <div style={{ position: 'absolute', bottom: -14, right: 24, color: '#F59E0B', fontSize: 18, lineHeight: 1 }}>↓</div>
+          return (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
 
-        {rippleSteps.map((step, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '8px 8px', position: 'relative', zIndex: 1 }}>
-            <div style={{
-              width: 48,
-              height: 48,
-              borderRadius: '50%',
-              border: `2px solid ${step.color}`,
-              background: '#0d0d12',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 22,
-              flexShrink: 0,
-              boxShadow: `0 0 14px ${step.color}66`,
-            }}>
-              {step.icon}
+              {/* LEFT dashed line + connector */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 12, flexShrink: 0 }}>
+                {/* line above circle */}
+                <div style={{
+                  width: 1.5,
+                  height: isFirst ? 0 : 20,
+                  borderLeft: '1.5px dashed #444',
+                }} />
+                {/* small down arrow between items on left line */}
+                {!isFirst && (
+                  <div style={{ fontSize: 8, color: '#555', lineHeight: 1, marginTop: -4, marginBottom: -4 }}>▼</div>
+                )}
+                {/* spacer for circle height */}
+                <div style={{ height: CIRCLE_SIZE }} />
+                {/* line below circle */}
+                <div style={{
+                  width: 1.5,
+                  height: isLast ? 0 : 20,
+                  borderLeft: '1.5px dashed #444',
+                }} />
+              </div>
+
+              {/* Circle */}
+              <div style={{
+                width: CIRCLE_SIZE,
+                height: CIRCLE_SIZE,
+                borderRadius: '50%',
+                border: `2px solid ${step.color}`,
+                background: '#0d0d12',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 22,
+                flexShrink: 0,
+                boxShadow: `0 0 14px ${step.color}66`,
+                zIndex: 1,
+                marginTop: isFirst ? 0 : ROW_GAP,
+                marginBottom: isLast ? 0 : ROW_GAP,
+              }}>
+                {step.icon}
+              </div>
+
+              {/* RIGHT dashed line */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 12, flexShrink: 0 }}>
+                {/* entry arrow at very top right */}
+                {isFirst && (
+                  <div style={{ fontSize: 12, color: '#F59E0B', marginBottom: 2 }}>→</div>
+                )}
+                <div style={{
+                  width: 1.5,
+                  height: isFirst ? CIRCLE_SIZE - 14 : 20,
+                  borderLeft: '1.5px dashed #444',
+                }} />
+                <div style={{ height: CIRCLE_SIZE - (isFirst ? CIRCLE_SIZE - 14 : 0) }} />
+                <div style={{
+                  width: 1.5,
+                  height: isLast ? 0 : 20,
+                  borderLeft: '1.5px dashed #444',
+                }} />
+                {/* exit arrow at very bottom right */}
+                {isLast && (
+                  <div style={{ fontSize: 12, color: '#F59E0B', marginTop: 2 }}>←</div>
+                )}
+              </div>
+
+              {/* Text */}
+              <div style={{ paddingTop: 2, paddingBottom: 2 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
+                <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
+              </div>
+
             </div>
-            <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
-              <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
-      {/* Footer — amber */}
-      <div style={{ marginTop: 16, textAlign: 'center' }}>
+      {/* Footer */}
+      <div style={{ marginTop: 20, textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
         <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
       </div>
