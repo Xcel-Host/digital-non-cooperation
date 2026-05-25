@@ -7,7 +7,7 @@ export const GROUPS = {
 }
 
 export const stats = {
-  brands: '81+',
+  brands: '95+',
   empires: '2',
   sectors: '15',
   alternatives: '75+',

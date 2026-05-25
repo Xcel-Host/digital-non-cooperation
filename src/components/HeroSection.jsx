@@ -437,7 +437,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               </div>
               <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
                 {[
-                  { num: '81+', label: 'Brands Tracked', color: '#e8950a' },
+                  { num: '95+', label: 'Brands Tracked', color: '#e8950a' },
                   { num: '2', label: 'Big Empires', color: textColor },
                   { num: '15', label: 'Sectors Covered', color: textColor },
                   { num: '75+', label: 'Alternatives Listed', color: '#e8950a' },
