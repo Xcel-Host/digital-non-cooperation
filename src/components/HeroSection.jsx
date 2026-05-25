@@ -68,8 +68,12 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 
 // Cinematic flow animation — consumer spending flowing into concentrated power
 
+
 function FlowAnimation({ isDark }) {
   const canvasRef = React.useRef(null)
+  const mouseRef = React.useRef({ x: -999, y: -999 })
+  const hoverNodeRef = React.useRef(null)
+  const hoverIntensityRef = React.useRef(0)
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -83,67 +87,60 @@ function FlowAnimation({ isDark }) {
     }
     resize()
 
-    // Origin nodes — pushed to far bottom-left edge
+    // Track mouse over parent section
+    const section = canvas.closest('section')
+    function onMove(e) {
+      const rect = canvas.getBoundingClientRect()
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
+    }
+    function onLeave() { mouseRef.current = { x: -999, y: -999 }; hoverNodeRef.current = null }
+    canvas.addEventListener('mousemove', onMove)
+    canvas.addEventListener('mouseleave', onLeave)
+
+    // Origins — far bottom-left, spread wide
     const origins = [
-      { icon: '🛒', x: 0.02, y: 0.88 },
-      { icon: '📶', x: 0.10, y: 0.98 },
-      { icon: '⛽', x: 0.20, y: 0.92 },
-      { icon: '📱', x: 0.28, y: 0.98 },
-      { icon: '🛍️', x: 0.04, y: 0.72 },
-      { icon: '💊', x: 0.16, y: 0.78 },
+      { icon: '🛒', label: 'Groceries', x: 0.01, y: 0.86 },
+      { icon: '📶', label: null,        x: 0.10, y: 0.96 },
+      { icon: '⛽', label: 'Fuel',      x: 0.19, y: 0.90 },
+      { icon: '📱', label: null,        x: 0.28, y: 0.96 },
+      { icon: '🛍️', label: null,        x: 0.03, y: 0.72 },
+      { icon: '💊', label: 'Apps',      x: 0.15, y: 0.76 },
     ]
 
-    // Collector node — mid area
-    const collector = { x: 0.55, y: 0.45 }
+    // Collector — mid area
+    const collector = { x: 0.52, y: 0.42, label: 'Capital Concentration' }
 
-    // Pyramid base target — flows go INTO base of pyramid (right side)
-    const pyramidBase = { x: 0.92, y: 0.88 }
-    const pyramidApex = { x: 0.92, y: 0.06 }
-
-    // Stream particles: each origin -> collector -> pyramid base -> up to apex
-    const streamParts = origins.map((o, i) =>
-      Array.from({ length: 5 }, (_, j) => ({
-        progress: ((j / 5) + i * 0.09) % 1,
-        speed: 0.0022 + Math.random() * 0.001,
-        origIdx: i,
-        phase: Math.random() * Math.PI * 2,
-        segment: 0, // 0=orig->collector, 1=collector->base, 2=base->apex
-      }))
-    ).flat()
-
-    const apexParts = Array.from({ length: 12 }, (_, i) => ({
-      progress: i / 12,
-      speed: 0.003 + Math.random() * 0.001,
-    }))
-
-    const returnParts = Array.from({ length: 3 }, (_, i) => ({
-      progress: i / 3,
-      speed: 0.0007,
-    }))
+    // Pyramid base & apex — right side
+    const pbX = () => canvas.width * 0.94
+    const pbY = () => canvas.height * 0.92
+    const paX = () => canvas.width * 0.94
+    const paY = () => canvas.height * 0.04
 
     function quad(t, ax, ay, bx, by, cx, cy) {
       const mt = 1 - t
       return { x: mt*mt*ax + 2*mt*t*bx + t*t*cx, y: mt*mt*ay + 2*mt*t*by + t*t*cy }
     }
 
-    function glowDot(x, y, r, alpha, R, G, B, withGlow) {
-      if (withGlow) {
-        const g = ctx.createRadialGradient(x, y, 0, x, y, r * 4)
-        g.addColorStop(0, `rgba(${R},${G},${B},${alpha * 0.7})`)
-        g.addColorStop(1, `rgba(${R},${G},${B},0)`)
-        ctx.beginPath(); ctx.arc(x, y, r * 4, 0, Math.PI*2)
-        ctx.fillStyle = g; ctx.fill()
-      }
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2)
-      ctx.fillStyle = `rgba(${R},${G},${B},${alpha})`; ctx.fill()
-    }
+    // Particles
+    const streamParts = origins.map((o, i) =>
+      Array.from({ length: 6 }, (_, j) => ({
+        progress: ((j/6) + i*0.09) % 1,
+        speed: 0.002 + Math.random() * 0.001,
+        origIdx: i,
+      }))
+    ).flat()
 
-    function drawLine(ax, ay, bx, by, cx, cy, alpha, width, R, G, B, blur) {
-      ctx.save()
-      if (blur) ctx.filter = `blur(${blur}px)`
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.quadraticCurveTo(bx, by, cx, cy)
-      ctx.strokeStyle = `rgba(${R},${G},${B},${alpha})`
-      ctx.lineWidth = width; ctx.stroke(); ctx.restore()
+    const apexParts = Array.from({ length: 14 }, (_, i) => ({
+      progress: i/14,
+      speed: 0.0028 + Math.random() * 0.001,
+    }))
+
+    const returnParts = Array.from({ length: 3 }, (_, i) => ({
+      progress: i/3, speed: 0.0006,
+    }))
+
+    function dist(ax, ay, bx, by) {
+      return Math.sqrt((ax-bx)**2 + (ay-by)**2)
     }
 
     function draw() {
@@ -153,65 +150,128 @@ function FlowAnimation({ isDark }) {
 
       const px = x => x * W
       const py = y => y * H
-
       const colX = px(collector.x), colY = py(collector.y)
-      const pbX = px(pyramidBase.x), pbY = py(pyramidBase.y)
-      const paX = px(pyramidApex.x), paY = py(pyramidApex.y)
+      const _pbX = pbX(), _pbY = pbY()
+      const _paX = paX(), _paY = paY()
+      const cbMidX = px(0.73), cbMidY = py(0.67)
+      const mx = mouseRef.current.x, my = mouseRef.current.y
 
-      // === DRAW PATHS: origin -> collector ===
+      // Detect hover node
+      let hoveredOrigin = -1
+      let hoverCollector = false
+      origins.forEach((o, i) => {
+        if (dist(mx, my, px(o.x), py(o.y)) < 28) hoveredOrigin = i
+      })
+      if (dist(mx, my, colX, colY) < 36) hoverCollector = true
+
+      // Smooth hover intensity
+      const targetIntensity = (hoveredOrigin >= 0 || hoverCollector) ? 1 : 0
+      hoverIntensityRef.current += (targetIntensity - hoverIntensityRef.current) * 0.08
+      const hi = hoverIntensityRef.current
+
+      // === PATHS: origins → collector ===
       origins.forEach((o, i) => {
         const ox = px(o.x), oy = py(o.y)
-        const midX = px(o.x + (collector.x - o.x) * 0.5) + (i%2===0 ? 15 : -15)
-        const midY = py(o.y + (collector.y - o.y) * 0.5) - 10
-        // Blur glow
-        drawLine(ox, oy, midX, midY, colX, colY, 0.12, 3, 200, 90, 50, 2.5)
+        const midX = px(o.x + (collector.x - o.x) * 0.5) + (i%2===0 ? 18 : -18)
+        const midY = py(o.y + (collector.y - o.y) * 0.5) - 12
+        const isHovered = hoveredOrigin === i
+        const lineAlpha = isHovered ? 0.55 : 0.18 + hi * 0.08
+
+        // Blurred glow behind
+        ctx.save(); ctx.filter = 'blur(3px)'
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(midX, midY, colX, colY)
+        ctx.strokeStyle = `rgba(210,90,50,${lineAlpha * 0.5})`
+        ctx.lineWidth = 3; ctx.stroke(); ctx.restore()
+
         // Sharp line
-        drawLine(ox, oy, midX, midY, colX, colY, 0.32, 1.2, 230, 110, 60, 0)
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(midX, midY, colX, colY)
+        ctx.strokeStyle = `rgba(235,115,65,${lineAlpha})`
+        ctx.lineWidth = 1; ctx.stroke()
       })
 
-      // === DRAW PATH: collector -> pyramid base ===
-      const cbMidX = px(0.74), cbMidY = py(0.66)
-      drawLine(colX, colY, cbMidX, cbMidY, pbX, pbY, 0.18, 4, 210, 85, 50, 2)
-      drawLine(colX, colY, cbMidX, cbMidY, pbX, pbY, 0.45, 2, 240, 115, 60, 0)
+      // === PATH: collector → pyramid base ===
+      const mainAlpha = 0.35 + hi * 0.15 + hoverCollector * 0.2
+      ctx.save(); ctx.filter = 'blur(2.5px)'
+      ctx.beginPath(); ctx.moveTo(colX, colY); ctx.quadraticCurveTo(cbMidX, cbMidY, _pbX, _pbY)
+      ctx.strokeStyle = `rgba(215,85,50,${mainAlpha * 0.6})`; ctx.lineWidth = 5; ctx.stroke(); ctx.restore()
+      ctx.beginPath(); ctx.moveTo(colX, colY); ctx.quadraticCurveTo(cbMidX, cbMidY, _pbX, _pbY)
+      ctx.strokeStyle = `rgba(245,120,65,${mainAlpha})`; ctx.lineWidth = 2; ctx.stroke()
 
-      // === DRAW PATH: pyramid base -> apex (inside pyramid) ===
-      drawLine(pbX, pbY, px(0.92), py(0.47), paX, paY, 0.22, 2.5, 230, 100, 55, 1.5)
-      drawLine(pbX, pbY, px(0.92), py(0.47), paX, paY, 0.5, 1.2, 250, 130, 60, 0)
+      // === PATH: base → apex (travels up through pyramid) ===
+      ctx.save(); ctx.filter = 'blur(1.5px)'
+      ctx.beginPath(); ctx.moveTo(_pbX, _pbY); ctx.quadraticCurveTo(px(0.94), py(0.48), _paX, _paY)
+      ctx.strokeStyle = `rgba(235,110,60,${mainAlpha * 0.7})`; ctx.lineWidth = 3; ctx.stroke(); ctx.restore()
+      ctx.beginPath(); ctx.moveTo(_pbX, _pbY); ctx.quadraticCurveTo(px(0.94), py(0.48), _paX, _paY)
+      ctx.strokeStyle = `rgba(255,140,70,${mainAlpha + 0.1})`; ctx.lineWidth = 1.2; ctx.stroke()
 
-      // === RETURN PATH ===
-      drawLine(paX, paY, px(0.7), py(0.6), px(0.05), py(0.95), 0.07, 0.8, 100, 120, 220, 0)
+      // === RETURN PATH (faint blue) ===
+      ctx.beginPath(); ctx.moveTo(_paX, _paY)
+      ctx.quadraticCurveTo(px(0.65), py(0.55), px(0.02), py(0.97))
+      ctx.strokeStyle = 'rgba(100,120,220,0.05)'; ctx.lineWidth = 0.8; ctx.stroke()
 
       // === ORIGIN NODES ===
       origins.forEach((o, i) => {
         const ox = px(o.x), oy = py(o.y)
-        const pulse = 0.5 + 0.5 * Math.sin(t * 1.6 + i * 1.2)
-        // Outer glow
-        glowDot(ox, oy, 10 + pulse * 4, 0.1 + pulse * 0.08, 220, 100, 60, true)
+        const pulse = 0.5 + 0.5 * Math.sin(t * 1.5 + i * 1.1)
+        const isHov = hoveredOrigin === i
+        const glowR = isHov ? 22 + pulse * 6 : 10 + pulse * 3
+        const glowAlpha = isHov ? 0.22 + pulse * 0.1 : 0.08 + pulse * 0.05
+
+        // Glow
+        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, glowR)
+        g.addColorStop(0, `rgba(225,105,60,${glowAlpha * 1.5})`)
+        g.addColorStop(1, `rgba(225,105,60,0)`)
+        ctx.beginPath(); ctx.arc(ox, oy, glowR, 0, Math.PI*2)
+        ctx.fillStyle = g; ctx.fill()
+
         // Core dot
-        glowDot(ox, oy, 5 + pulse, 0.85, 240, 120, 70, false)
-        // Icon — large, bright
-        ctx.font = `${15 + pulse * 2}px sans-serif`
-        ctx.fillStyle = `rgba(255,255,255,${0.75 + pulse * 0.2})`
+        ctx.beginPath(); ctx.arc(ox, oy, isHov ? 6 + pulse : 4 + pulse * 0.5, 0, Math.PI*2)
+        ctx.fillStyle = `rgba(245,130,70,${isHov ? 0.95 : 0.75})`; ctx.fill()
+
+        // Icon
+        const iconSize = isHov ? 16 + pulse * 2 : 14
+        ctx.font = `${iconSize}px sans-serif`
         ctx.textAlign = 'center'
-        ctx.fillText(o.icon, ox, oy - 10)
+        ctx.globalAlpha = isHov ? 0.95 : 0.65 + pulse * 0.15
+        ctx.fillText(o.icon, ox, oy - 9)
+        ctx.globalAlpha = 1
+
+        // Label — only on hover, soft fade
+        if (o.label && isHov) {
+          ctx.font = '9px Inter, sans-serif'
+          ctx.fillStyle = `rgba(230,160,90,${hi * 0.9})`
+          ctx.fillText(o.label, ox, oy + 18)
+        }
         ctx.textAlign = 'left'
       })
 
-      // === COLLECTOR NODE — large, dramatic ===
+      // === COLLECTOR NODE ===
       const colPulse = 0.5 + 0.5 * Math.sin(t * 2.2)
-      glowDot(colX, colY, 28 + colPulse * 8, 0.1 + colPulse * 0.07, 210, 80, 50, true)
-      glowDot(colX, colY, 12 + colPulse * 3, 0.25 + colPulse * 0.15, 220, 90, 55, false)
-      glowDot(colX, colY, 7, 0.9, 240, 115, 65, false)
-      // Rings
-      for (let r = 1; r <= 3; r++) {
-        ctx.beginPath()
-        ctx.arc(colX, colY, 10 + r * 8 + colPulse * 4, 0, Math.PI * 2)
-        ctx.strokeStyle = `rgba(220,95,55,${0.08 - r * 0.02})`
-        ctx.lineWidth = 0.8; ctx.stroke()
+      const colHov = hoverCollector
+      const colR = colHov ? 32 + colPulse * 10 : 22 + colPulse * 6
+
+      // Outer glow rings
+      for (let r = 3; r >= 1; r--) {
+        const ringG = ctx.createRadialGradient(colX, colY, 0, colX, colY, colR * r * 0.7)
+        ringG.addColorStop(0, `rgba(215,85,50,${(colHov ? 0.14 : 0.06) / r})`)
+        ringG.addColorStop(1, `rgba(215,85,50,0)`)
+        ctx.beginPath(); ctx.arc(colX, colY, colR * r * 0.7, 0, Math.PI*2)
+        ctx.fillStyle = ringG; ctx.fill()
       }
-      // Label — positioned clearly below
+      // Pulsing rings
+      for (let r = 1; r <= 3; r++) {
+        ctx.beginPath(); ctx.arc(colX, colY, 10 + r * 9 + colPulse * 4, 0, Math.PI*2)
+        ctx.strokeStyle = `rgba(225,100,55,${colHov ? 0.18 : 0.07})`
+        ctx.lineWidth = 0.7; ctx.stroke()
+      }
+      // Core
+      ctx.beginPath(); ctx.arc(colX, colY, 8 + colPulse * 2, 0, Math.PI*2)
+      ctx.fillStyle = `rgba(240,120,65,${colHov ? 0.95 : 0.75})`; ctx.fill()
+
+      // Label — always visible but faint, brightens on hover
+      const labelAlpha = 0.35 + hi * 0.5 + (colHov ? 0.3 : 0)
       ctx.font = 'bold 9px Inter, sans-serif'
-      ctx.fillStyle = `rgba(220, 140, 80, 0.8)`
+      ctx.fillStyle = `rgba(230,150,85,${labelAlpha})`
       ctx.textAlign = 'center'
       ctx.fillText('CAPITAL', colX, colY + 22)
       ctx.fillText('CONCENTRATION', colX, colY + 33)
@@ -219,65 +279,94 @@ function FlowAnimation({ isDark }) {
 
       // === PYRAMID BASE NODE ===
       const pbPulse = 0.5 + 0.5 * Math.sin(t * 2.8)
-      glowDot(pbX, pbY, 16 + pbPulse * 5, 0.1 + pbPulse * 0.1, 210, 75, 45, true)
-      glowDot(pbX, pbY, 7 + pbPulse * 2, 0.7, 235, 110, 55, false)
+      const pbG = ctx.createRadialGradient(_pbX, _pbY, 0, _pbX, _pbY, 20 + pbPulse * 6)
+      pbG.addColorStop(0, `rgba(215,85,50,${0.18 + pbPulse * 0.1})`)
+      pbG.addColorStop(1, 'rgba(215,85,50,0)')
+      ctx.beginPath(); ctx.arc(_pbX, _pbY, 20 + pbPulse * 6, 0, Math.PI*2)
+      ctx.fillStyle = pbG; ctx.fill()
+      ctx.beginPath(); ctx.arc(_pbX, _pbY, 6 + pbPulse * 2, 0, Math.PI*2)
+      ctx.fillStyle = `rgba(245,125,65,0.8)`; ctx.fill()
 
       // === APEX GLOW ===
-      const apPulse = 0.5 + 0.5 * Math.sin(t * 3)
-      glowDot(paX, paY, 22 + apPulse * 8, 0.12 + apPulse * 0.1, 215, 75, 45, true)
-      glowDot(paX, paY, 6 + apPulse * 2, 0.85, 245, 125, 55, false)
+      const apPulse = 0.5 + 0.5 * Math.sin(t * 3.2)
+      const apG = ctx.createRadialGradient(_paX, _paY, 0, _paX, _paY, 24 + apPulse * 8)
+      apG.addColorStop(0, `rgba(215,80,45,${0.2 + apPulse * 0.12})`)
+      apG.addColorStop(1, 'rgba(215,80,45,0)')
+      ctx.beginPath(); ctx.arc(_paX, _paY, 24 + apPulse * 8, 0, Math.PI*2)
+      ctx.fillStyle = apG; ctx.fill()
+      ctx.beginPath(); ctx.arc(_paX, _paY, 5 + apPulse * 2, 0, Math.PI*2)
+      ctx.fillStyle = `rgba(255,140,70,0.9)`; ctx.fill()
 
-      // === STREAM PARTICLES: origins -> collector ===
+      // === STREAM PARTICLES ===
+      const speedBoost = 1 + hi * 0.6
       streamParts.forEach(p => {
-        p.progress += p.speed
+        p.progress += p.speed * speedBoost
         if (p.progress > 1) p.progress = 0
         const o = origins[p.origIdx]
         const ox = px(o.x), oy = py(o.y)
-        const midX = px(o.x + (collector.x - o.x) * 0.5) + (p.origIdx % 2 === 0 ? 15 : -15)
-        const midY = py(o.y + (collector.y - o.y) * 0.5) - 10
+        const midX = px(o.x + (collector.x - o.x) * 0.5) + (p.origIdx%2===0 ? 18 : -18)
+        const midY = py(o.y + (collector.y - o.y) * 0.5) - 12
         const pos = quad(p.progress, ox, oy, midX, midY, colX, colY)
-        const alpha = 0.5 + p.progress * 0.45
-        const r = 1.8 + p.progress * 1.6
-        glowDot(pos.x, pos.y, r, alpha, 230, 105, 60, p.progress > 0.75)
+        const r = 1.8 + p.progress * 1.8
+        const alpha = 0.45 + p.progress * 0.45
+        const glow = p.progress > 0.78
+        if (glow) {
+          const g = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 3.5)
+          g.addColorStop(0, `rgba(235,115,65,${alpha * 0.6})`)
+          g.addColorStop(1, 'rgba(235,115,65,0)')
+          ctx.beginPath(); ctx.arc(pos.x, pos.y, r * 3.5, 0, Math.PI*2)
+          ctx.fillStyle = g; ctx.fill()
+        }
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2)
+        ctx.fillStyle = `rgba(240,120,65,${alpha})`; ctx.fill()
       })
 
-      // === PARTICLES: collector -> pyramid base -> apex ===
+      // === APEX PARTICLES ===
       apexParts.forEach(p => {
-        p.progress += p.speed
+        p.progress += p.speed * speedBoost
         if (p.progress > 1) p.progress = 0
         let pos
         if (p.progress < 0.5) {
-          // collector to base
-          const tp = p.progress * 2
-          pos = quad(tp, colX, colY, cbMidX, cbMidY, pbX, pbY)
+          pos = quad(p.progress * 2, colX, colY, cbMidX, cbMidY, _pbX, _pbY)
         } else {
-          // base to apex
-          const tp = (p.progress - 0.5) * 2
-          pos = quad(tp, pbX, pbY, px(0.92), py(0.47), paX, paY)
+          pos = quad((p.progress - 0.5) * 2, _pbX, _pbY, px(0.94), py(0.48), _paX, _paY)
         }
-        const alpha = 0.55 + p.progress * 0.4
-        const r = 2.2 + p.progress * 2
-        glowDot(pos.x, pos.y, r, alpha, 240, 120, 60, p.progress > 0.8)
+        const r = 2.2 + p.progress * 2.2
+        const alpha = 0.5 + p.progress * 0.45
+        if (p.progress > 0.82) {
+          const g = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 4)
+          g.addColorStop(0, `rgba(250,135,65,${alpha * 0.7})`)
+          g.addColorStop(1, 'rgba(250,135,65,0)')
+          ctx.beginPath(); ctx.arc(pos.x, pos.y, r * 4, 0, Math.PI*2)
+          ctx.fillStyle = g; ctx.fill()
+        }
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2)
+        ctx.fillStyle = `rgba(250,135,65,${alpha})`; ctx.fill()
       })
 
       // === RETURN PARTICLES ===
       returnParts.forEach(p => {
         p.progress += p.speed
         if (p.progress > 1) p.progress = 0
-        const pos = quad(p.progress, paX, paY, px(0.7), py(0.6), px(0.05), py(0.95))
-        glowDot(pos.x, pos.y, 1.5, 0.18 + p.progress * 0.1, 100, 120, 210, false)
+        const pos = quad(p.progress, _paX, _paY, px(0.65), py(0.55), px(0.02), py(0.97))
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, 1.4, 0, Math.PI*2)
+        ctx.fillStyle = `rgba(100,120,215,${0.18 + p.progress * 0.1})`; ctx.fill()
       })
 
       animId = requestAnimationFrame(draw)
     }
 
     draw()
-    return () => cancelAnimationFrame(animId)
+    return () => {
+      cancelAnimationFrame(animId)
+      canvas.removeEventListener('mousemove', onMove)
+      canvas.removeEventListener('mouseleave', onLeave)
+    }
   }, [])
 
   return (
     <canvas ref={canvasRef} aria-hidden="true"
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'all', cursor: 'default' }} />
   )
 }
 
@@ -329,7 +418,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
           <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
 
             {/* LEFT */}
-            <div>
+            <div style={{ position: 'relative' }}>
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
 
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
@@ -395,10 +484,21 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 ))}
               </div>
 
-              {/* FLOW ANIMATION — cinematic background */}
+              {/* FLOW ANIMATION — bleeds into hero atmosphere */}
               {!empiresOpen && (
-                <div style={{ position: 'relative', height: 240, marginBottom: 0, marginTop: 16, overflow: 'hidden' }}>
-                  <FlowAnimation isDark={isDark} />
+                <div style={{
+                  position: 'absolute',
+                  left: '-24px',
+                  right: '-20px',
+                  bottom: '-20px',
+                  top: '55%',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                  overflow: 'visible',
+                }}>
+                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                    <FlowAnimation isDark={isDark} />
+                  </div>
                 </div>
               )}
 
