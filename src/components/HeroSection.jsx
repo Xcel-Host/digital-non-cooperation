@@ -370,7 +370,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     fontStyle: 'italic',
                     color: '#D84B4B',
                     lineHeight: 1.0,
-                    textShadow: '0 2px 12px rgba(216,75,75,0.3)',
+                    textShadow: '0 2px 24px rgba(216,75,75,0.6)',
                     margin: 0,
                     marginBottom: 24,
                   }}>
