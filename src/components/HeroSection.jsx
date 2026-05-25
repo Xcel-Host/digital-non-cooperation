@@ -16,12 +16,18 @@ const disconnectSteps = [
   { num: '5', bg: '#2a1a3a', color: '#8a5a9a', title: 'Build a Movement', desc: 'Share. Millions of small acts of non-cooperation create big change.' },
 ]
 
-const rippleNodes = [
-  { id: 0, label: 'You choose\nalternatives', color: '#F59E0B', angle: 270 },
-  { id: 1, label: 'Empires\nlose share', color: '#D84B4B', angle: 342 },
-  { id: 2, label: 'Local jobs\ngrow', color: '#4a9a4a', angle: 54 },
-  { id: 3, label: 'Less funding\nto power', color: '#4a6a9a', angle: 126 },
-  { id: 4, label: 'Fairer\nelections', color: '#8a5a9a', angle: 198 },
+const rippleSteps = [
+  { icon: '🛒', color: '#F59E0B',  title: 'Choose alternatives',                desc: 'One switch. One kirana. One search before you buy.' },
+  { icon: '📉', color: '#D84B4B',  title: 'Monopolies weaken',                  desc: 'They lose money, market share and control.' },
+  { icon: '🏪', color: '#e06030',  title: 'Local businesses survive',            desc: 'Local shops, services and brands get breathing space.' },
+  { icon: '👥', color: '#a060d0',  title: 'Others copy you',                    desc: 'Your choice inspires others in your circle.' },
+  { icon: '📢', color: '#4090d0',  title: 'Non-cooperation spreads',             desc: 'Millions of small acts build a movement.' },
+  { icon: '📺', color: '#3aa0a0',  title: 'Less control over media & narratives',desc: 'Their grip on stories and public mindshare weakens.' },
+  { icon: '💰', color: '#50a050',  title: 'Less funding to political parties',   desc: 'Ruling parties like BJP get less corporate funding.' },
+  { icon: '👑', color: '#c0a030',  title: 'Personality cults weaken',           desc: '"Vishwaguru" image loses power and influence.' },
+  { icon: '⚖️', color: '#60b060',  title: 'Power becomes accountable',          desc: 'Leaders think twice. Policies become people-focused.' },
+  { icon: '🔄', color: '#4080c0',  title: 'Money returns locally',              desc: 'Wealth stays in communities, not in distant corporations.' },
+  { icon: '✊', color: '#c04040',  title: 'Citizens gain leverage',             desc: 'People gain real power. Democracy gets stronger.' },
 ]
 
 const comingEmpires = ['Tata Group (A3)', 'Aditya Birla (A4)', 'Times Group · Media', 'Bajaj · Mahindra']
@@ -72,44 +78,55 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
   )
 }
 
-function RippleLoopDiagram() {
-  const cx = 200, cy = 200, r = 120, nodeR = 38
-  const nodes = rippleNodes.map(n => {
-    const rad = (n.angle * Math.PI) / 180
-    return { ...n, x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) }
-  })
+function RippleFlowDiagram() {
   return (
     <div style={{ marginTop: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — a virtuous loop</p>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg viewBox="0 0 400 400" width="100%" style={{ maxWidth: 340 }}>
-          <defs>
-            <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-          </defs>
-          {nodes.map((node, i) => {
-            const next = nodes[(i + 1) % nodes.length]
-            return <path key={`arc-${i}`} d={`M ${node.x} ${node.y} A ${r} ${r} 0 0 1 ${next.x} ${next.y}`} fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.35" />
-          })}
-          <circle cx={cx} cy={cy} r={46} fill="#0d0900" stroke="#2a1800" strokeWidth="0.5" />
-          <text x={cx} y={cy - 8} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">YOUR</text>
-          <text x={cx} y={cy + 6} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">CHOICE</text>
-          <text x={cx} y={cy + 20} textAnchor="middle" fill="#555" fontSize="8">ripples outward</text>
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F59E0B" strokeWidth="0.5" opacity="0.1" />
-          {nodes.map((node) => (
-            <g key={`node-${node.id}`} filter="url(#glow)">
-              <circle cx={node.x} cy={node.y} r={nodeR} fill="#0d0d12" stroke={node.color} strokeWidth="1" opacity="0.9" />
-              {node.label.split('\n').map((line, li) => (
-                <text key={li} x={node.x} y={node.y + (li - (node.label.split('\n').length - 1) / 2) * 12}
-                  textAnchor="middle" dominantBaseline="middle" fill={node.color} fontSize="8.5" fontWeight="700">{line}</text>
-              ))}
-            </g>
-          ))}
-        </svg>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
+
+      <div style={{ position: 'relative', paddingLeft: 20 }}>
+        {/* Vertical dashed line connecting all circles */}
+        <div style={{
+          position: 'absolute',
+          left: 36,
+          top: 20,
+          bottom: 20,
+          width: '1.5px',
+          background: 'repeating-linear-gradient(to bottom, #333 0px, #333 6px, transparent 6px, transparent 12px)',
+          zIndex: 0,
+        }} />
+
+        {rippleSteps.map((step, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: i < rippleSteps.length - 1 ? 20 : 0, position: 'relative', zIndex: 1 }}>
+            {/* Circle icon */}
+            <div style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              border: `2px solid ${step.color}`,
+              background: '#0d0d12',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 16,
+              flexShrink: 0,
+              boxShadow: `0 0 10px ${step.color}44`,
+            }}>
+              {step.icon}
+            </div>
+            {/* Text */}
+            <div style={{ paddingTop: 4 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
+              <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      <p style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>
-        Every conscious purchase breaks the loop of exploitation.<br />
-        <span style={{ color: '#F59E0B', fontWeight: 700 }}>Less exploitation → loops back to you.</span>
-      </p>
+
+      {/* Footer */}
+      <div style={{ marginTop: 20, padding: '12px 14px', borderRadius: 10, background: '#0d0000', border: '0.5px solid #2a0808', textAlign: 'center' }}>
+        <p style={{ fontSize: 12, color: '#D84B4B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
+        <p style={{ fontSize: 11, color: '#666' }}>Less exploitation. More freedom. Real democracy.</p>
+      </div>
     </div>
   )
 }
@@ -122,7 +139,7 @@ function PowerPyramid({ isDark }) {
     { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, height: '100%', boxSizing: 'border-box' }}>
+    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? 'rgba(17,17,17,0.55)' : 'rgba(255,255,255,0.7)', border: `0.5px solid ${isDark ? 'rgba(60,20,20,0.5)' : '#ddd'}`, backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)', height: '100%', boxSizing: 'border-box' }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
       <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }}>
         {layers.map((l, i) => (
@@ -467,7 +484,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             </div>
           ))}
         </div>
-        <RippleLoopDiagram />
+        <RippleFlowDiagram />
       </CenteredModal>
 
       <style>{`
