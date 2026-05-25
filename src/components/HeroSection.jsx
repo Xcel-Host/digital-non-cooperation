@@ -80,12 +80,12 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 
 function RippleFlowDiagram() {
   const itemHeight = 80
-  const circleR = 24
-  const leftLineX = 40
-  const rightLineX = 84
-  const circleX = 62
-  const textX = 104
-  const svgWidth = 480
+  const circleR = 22
+  const leftLineX = 24
+  const rightLineX = 60
+  const circleX = 42
+  const textX = 76
+  const svgWidth = 340
   const totalHeight = rippleSteps.length * itemHeight
 
   return (
@@ -94,55 +94,47 @@ function RippleFlowDiagram() {
 
       <svg viewBox={`0 0 ${svgWidth} ${totalHeight + 50}`} width="100%" style={{ display: 'block' }}>
 
-        {/* Entry arrow top right of right line */}
-        <text x={rightLineX} y={16} textAnchor="middle" fill="#F59E0B" fontSize="13" fontWeight="900">→</text>
+        {/* Entry arrow top right */}
+        <text x={rightLineX} y={16} textAnchor="middle" fill="#F59E0B" fontSize="12">→</text>
 
-        {/* LEFT continuous dashed vertical line */}
-        <line x1={leftLineX} y1={24} x2={leftLineX} y2={totalHeight + 24} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
+        {/* LEFT dashed line */}
+        <line x1={leftLineX} y1={22} x2={leftLineX} y2={totalHeight + 22} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
 
-        {/* RIGHT continuous dashed vertical line */}
-        <line x1={rightLineX} y1={24} x2={rightLineX} y2={totalHeight + 24} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
+        {/* RIGHT dashed line */}
+        <line x1={rightLineX} y1={22} x2={rightLineX} y2={totalHeight + 22} stroke="#555" strokeWidth="1.5" strokeDasharray="5,4" />
 
-        {/* Exit arrow bottom right of right line */}
-        <text x={rightLineX} y={totalHeight + 42} textAnchor="middle" fill="#F59E0B" fontSize="13" fontWeight="900">←</text>
+        {/* Exit arrow bottom right */}
+        <text x={rightLineX} y={totalHeight + 40} textAnchor="middle" fill="#F59E0B" fontSize="12">←</text>
 
         {rippleSteps.map((step, i) => {
-          const cy = 24 + i * itemHeight + itemHeight / 2
-          const desc = step.desc
-          const mid = desc.lastIndexOf(' ', 38)
-          const line1 = mid > 0 && desc.length > 38 ? desc.slice(0, mid) : desc
-          const line2 = mid > 0 && desc.length > 38 ? desc.slice(mid + 1) : ''
+          const cy = 22 + i * itemHeight + itemHeight / 2
+          const words = step.desc.split(' ')
+          const lines = []
+          let current = ''
+          words.forEach(w => {
+            const test = current ? current + ' ' + w : w
+            if (test.length > 32) { lines.push(current); current = w }
+            else current = test
+          })
+          if (current) lines.push(current)
 
           return (
             <g key={i}>
-              {/* Down arrow on left line between items */}
               {i > 0 && (
-                <text x={leftLineX} y={cy - itemHeight / 2 + 10} textAnchor="middle" fill="#666" fontSize="8">▼</text>
+                <text x={leftLineX} y={cy - itemHeight / 2 + 10} textAnchor="middle" fill="#555" fontSize="8">▼</text>
               )}
-
-              {/* Circle glow */}
-              <circle cx={circleX} cy={cy} r={circleR + 6} fill={step.color} opacity="0.10" />
-
-              {/* Circle background */}
+              <circle cx={circleX} cy={cy} r={circleR + 5} fill={step.color} opacity="0.10" />
               <circle cx={circleX} cy={cy} r={circleR} fill="#0d0d12" stroke={step.color} strokeWidth="2" />
-
-              {/* Emoji icon */}
-              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="20">{step.icon}</text>
-
-              {/* Title */}
-              <text x={textX} y={cy - 8} fill={step.color} fontSize="12.5" fontWeight="700">{step.title}</text>
-
-              {/* Description line 1 */}
-              <text x={textX} y={cy + 8} fill="#777" fontSize="10.5">{line1}</text>
-
-              {/* Description line 2 if exists */}
-              {line2 && <text x={textX} y={cy + 21} fill="#777" fontSize="10.5">{line2}</text>}
+              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="18">{step.icon}</text>
+              <text x={textX} y={cy - (lines.length > 1 ? 14 : 8)} fill={step.color} fontSize="11.5" fontWeight="700">{step.title}</text>
+              {lines.map((line, li) => (
+                <text key={li} x={textX} y={cy + (li * 13) + (lines.length > 1 ? 2 : 6)} fill="#777" fontSize="10">{line}</text>
+              ))}
             </g>
           )
         })}
       </svg>
 
-      {/* Footer */}
       <div style={{ marginTop: 8, textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
         <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
