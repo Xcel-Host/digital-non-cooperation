@@ -79,99 +79,83 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleFlowDiagram() {
-  const CIRCLE_SIZE = 48
-  const ROW_GAP = 8
+  const itemHeight = 72
+  const circleR = 24
+  const leftLineX = 36
+  const rightLineX = 76
+  const circleX = 56
+  const textX = 96
+  const totalHeight = rippleSteps.length * itemHeight
 
   return (
     <div style={{ marginTop: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
 
-      <div style={{ position: 'relative' }}>
+      <svg viewBox={`0 0 420 ${totalHeight + 40}`} width="100%" style={{ overflow: 'visible' }}>
+        <defs>
+          <filter id="circleGlow">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
+        {/* Entry arrow top right */}
+        <text x={rightLineX} y={14} textAnchor="middle" fill="#F59E0B" fontSize="14" fontWeight="900">→</text>
+
+        {/* LEFT continuous dashed vertical line */}
+        <line
+          x1={leftLineX} y1={20}
+          x2={leftLineX} y2={totalHeight + 20}
+          stroke="#555" strokeWidth="1.5"
+          strokeDasharray="5,4"
+        />
+
+        {/* RIGHT continuous dashed vertical line */}
+        <line
+          x1={rightLineX} y1={20}
+          x2={rightLineX} y2={totalHeight + 20}
+          stroke="#555" strokeWidth="1.5"
+          strokeDasharray="5,4"
+        />
+
+        {/* Exit arrow bottom right */}
+        <text x={rightLineX} y={totalHeight + 36} textAnchor="middle" fill="#F59E0B" fontSize="14" fontWeight="900">←</text>
+
         {rippleSteps.map((step, i) => {
-          const isFirst = i === 0
-          const isLast = i === rippleSteps.length - 1
-
+          const cy = 20 + i * itemHeight + itemHeight / 2
           return (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <g key={i}>
+              {/* Down arrow between items on left line */}
+              {i > 0 && (
+                <text x={leftLineX} y={cy - itemHeight / 2 + 8} textAnchor="middle" fill="#555" fontSize="9">▼</text>
+              )}
 
-              {/* LEFT dashed line + connector */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 12, flexShrink: 0 }}>
-                {/* line above circle */}
-                <div style={{
-                  width: 1.5,
-                  height: isFirst ? 0 : 20,
-                  borderLeft: '1.5px dashed #444',
-                }} />
-                {/* small down arrow between items on left line */}
-                {!isFirst && (
-                  <div style={{ fontSize: 8, color: '#555', lineHeight: 1, marginTop: -4, marginBottom: -4 }}>▼</div>
-                )}
-                {/* spacer for circle height */}
-                <div style={{ height: CIRCLE_SIZE }} />
-                {/* line below circle */}
-                <div style={{
-                  width: 1.5,
-                  height: isLast ? 0 : 20,
-                  borderLeft: '1.5px dashed #444',
-                }} />
-              </div>
+              {/* Circle glow */}
+              <circle cx={circleX} cy={cy} r={circleR + 4} fill={step.color} opacity="0.12" filter="url(#circleGlow)" />
 
               {/* Circle */}
-              <div style={{
-                width: CIRCLE_SIZE,
-                height: CIRCLE_SIZE,
-                borderRadius: '50%',
-                border: `2px solid ${step.color}`,
-                background: '#0d0d12',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 22,
-                flexShrink: 0,
-                boxShadow: `0 0 14px ${step.color}66`,
-                zIndex: 1,
-                marginTop: isFirst ? 0 : ROW_GAP,
-                marginBottom: isLast ? 0 : ROW_GAP,
-              }}>
-                {step.icon}
-              </div>
+              <circle cx={circleX} cy={cy} r={circleR} fill="#0d0d12" stroke={step.color} strokeWidth="2" />
 
-              {/* RIGHT dashed line */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 12, flexShrink: 0 }}>
-                {/* entry arrow at very top right */}
-                {isFirst && (
-                  <div style={{ fontSize: 12, color: '#F59E0B', marginBottom: 2 }}>→</div>
-                )}
-                <div style={{
-                  width: 1.5,
-                  height: isFirst ? CIRCLE_SIZE - 14 : 20,
-                  borderLeft: '1.5px dashed #444',
-                }} />
-                <div style={{ height: CIRCLE_SIZE - (isFirst ? CIRCLE_SIZE - 14 : 0) }} />
-                <div style={{
-                  width: 1.5,
-                  height: isLast ? 0 : 20,
-                  borderLeft: '1.5px dashed #444',
-                }} />
-                {/* exit arrow at very bottom right */}
-                {isLast && (
-                  <div style={{ fontSize: 12, color: '#F59E0B', marginTop: 2 }}>←</div>
-                )}
-              </div>
+              {/* Icon */}
+              <text x={circleX} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize="18">{step.icon}</text>
 
-              {/* Text */}
-              <div style={{ paddingTop: 2, paddingBottom: 2 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
-                <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
-              </div>
+              {/* Title */}
+              <text x={textX} y={cy - 7} fill={step.color} fontSize="12" fontWeight="700">{step.title}</text>
 
-            </div>
+              {/* Description — wrap long text */}
+              <text x={textX} y={cy + 9} fill="#666" fontSize="10">
+                {step.desc.length > 42
+                  ? <><tspan x={textX} dy="0">{step.desc.slice(0, 42)}</tspan><tspan x={textX} dy="12">{step.desc.slice(42)}</tspan></>
+                  : step.desc
+                }
+              </text>
+            </g>
           )
         })}
-      </div>
+      </svg>
 
       {/* Footer */}
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <div style={{ marginTop: 8, textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
         <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
       </div>
