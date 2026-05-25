@@ -73,53 +73,30 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleLoopDiagram() {
-  const cx = 200, cy = 200, r = 120
-  const nodeR = 38
-
+  const cx = 200, cy = 200, r = 120, nodeR = 38
   const nodes = rippleNodes.map(n => {
     const rad = (n.angle * Math.PI) / 180
     return { ...n, x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) }
   })
-
-  function arcPath(from, to) {
-    return `M ${from.x} ${from.y} A ${r} ${r} 0 0 1 ${to.x} ${to.y}`
-  }
-
-  function arrowTip(from, to, offset = 14) {
-    const dx = to.x - from.x, dy = to.y - from.y
-    const len = Math.sqrt(dx * dx + dy * dy)
-    return { x: to.x - (dx / len) * offset, y: to.y - (dy / len) * offset }
-  }
-
   return (
     <div style={{ marginTop: 28 }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — a virtuous loop</p>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg viewBox="0 0 400 400" width="100%" style={{ maxWidth: 340 }} aria-label="Ripple loop diagram">
+        <svg viewBox="0 0 400 400" width="100%" style={{ maxWidth: 340 }}>
           <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-              <path d="M1,1 L7,4 L1,7 Z" fill="#F59E0B" opacity="0.7" />
-            </marker>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-            </filter>
+            <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
           </defs>
           {nodes.map((node, i) => {
             const next = nodes[(i + 1) % nodes.length]
-            return (
-              <g key={`arc-${i}`}>
-                <path d={arcPath(node, next)} fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.35" />
-              </g>
-            )
+            return <path key={`arc-${i}`} d={`M ${node.x} ${node.y} A ${r} ${r} 0 0 1 ${next.x} ${next.y}`} fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.35" />
           })}
           <circle cx={cx} cy={cy} r={46} fill="#0d0900" stroke="#2a1800" strokeWidth="0.5" />
           <text x={cx} y={cy - 8} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">YOUR</text>
           <text x={cx} y={cy + 6} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">CHOICE</text>
           <text x={cx} y={cy + 20} textAnchor="middle" fill="#555" fontSize="8">ripples outward</text>
           <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F59E0B" strokeWidth="0.5" opacity="0.1" />
-          {nodes.map((node, i) => (
-            <g key={`node-${i}`} filter="url(#glow)">
+          {nodes.map((node) => (
+            <g key={`node-${node.id}`} filter="url(#glow)">
               <circle cx={node.x} cy={node.y} r={nodeR} fill="#0d0d12" stroke={node.color} strokeWidth="1" opacity="0.9" />
               {node.label.split('\n').map((line, li) => (
                 <text key={li} x={node.x} y={node.y + (li - (node.label.split('\n').length - 1) / 2) * 12}
@@ -137,24 +114,17 @@ function RippleLoopDiagram() {
   )
 }
 
-function PowerPyramid({ isDark, textColor }) {
+function PowerPyramid({ isDark }) {
   const layers = [
-    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? 'rgba(58,10,10,0.72)' : '#fee2e2', textFill: '#e05050', subFill: isDark ? '#b06060' : '#b91c1c', pts: '140,10 188,46 92,46' },
-    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? 'rgba(46,8,8,0.72)' : '#fecaca', textFill: isDark ? '#e87070' : '#b91c1c', subFill: isDark ? '#8a5858' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
-    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? 'rgba(34,6,6,0.72)' : '#fca5a5', textFill: isDark ? '#cc6868' : '#7f1d1d', subFill: isDark ? '#7a4848' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
-    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? 'rgba(24,4,4,0.72)' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
+    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? '#3a0a0a' : '#fee2e2', textFill: '#e05050', subFill: isDark ? '#b06060' : '#b91c1c', pts: '140,10 188,46 92,46' },
+    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? '#2e0808' : '#fecaca', textFill: isDark ? '#e87070' : '#b91c1c', subFill: isDark ? '#8a5858' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
+    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? '#220606' : '#fca5a5', textFill: isDark ? '#cc6868' : '#7f1d1d', subFill: isDark ? '#7a4848' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
+    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{
-      borderRadius: 14,
-      padding: '18px 20px 14px',
-      background: isDark ? 'rgba(10,10,10,0.72)' : 'rgba(255,255,255,0.85)',
-      border: `0.5px solid ${isDark ? 'rgba(60,20,20,0.6)' : '#ddd'}`,
-      backdropFilter: 'blur(8px)',
-      WebkitBackdropFilter: 'blur(8px)',
-    }}>
+    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
-      <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }} role="img" aria-label="Power pyramid">
+      <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }}>
         {layers.map((l, i) => (
           <g key={l.label}>
             <polygon points={l.pts} fill={l.fill} stroke={isDark ? '#6a2020' : '#D84B4B'} strokeWidth="1" />
@@ -163,7 +133,7 @@ function PowerPyramid({ isDark, textColor }) {
           </g>
         ))}
       </svg>
-      <div style={{ marginTop: 10, padding: '8px 10px', borderRadius: 8, background: isDark ? 'rgba(13,8,0,0.8)' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
+      <div style={{ marginTop: 10, padding: '8px 10px', borderRadius: 8, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
         <p style={{ fontSize: 13, fontWeight: 800, color: '#F59E0B', lineHeight: 1.5 }}>But change starts small.<br />You + Your choices = Real change</p>
       </div>
     </div>
@@ -176,8 +146,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
   const isDark = theme !== 'light'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const mutedColor = isDark ? '#888' : '#666'
-  const cardBg = isDark ? 'rgba(26,26,31,0.75)' : '#fff'
-  const borderCol = isDark ? 'rgba(40,40,40,0.8)' : '#ddd'
+  const cardBg = isDark ? '#1a1a1f' : '#fff'
+  const borderCol = isDark ? '#222' : '#ddd'
 
   const empires = [
     { badge: 'A1', name: 'Ambani Empire', person: 'Mukesh Ambani', sectors: 'Telecom · Retail · Media · Digital Energy · Fashion · More', group: 'reliance' },
@@ -186,225 +156,243 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
   return (
     <>
-      {/* SECTION — hero-bg.png spans full width behind everything */}
-      <section style={{ position: 'relative', borderBottom: `0.5px solid ${isDark ? '#222' : '#ddd'}`, paddingTop: 48, overflow: 'hidden' }}>
+      <section style={{ background: isDark ? '#0B0B0F' : '#f8f8f4', borderBottom: `0.5px solid ${borderCol}`, paddingTop: 48 }}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
 
-        {/* Full-width background image */}
-        {!empiresOpen && (
-          <>
-            <img
-              src="/hero-bg.png"
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center bottom',
-                zIndex: 0,
-              }}
-            />
-            {/* Top fade — keeps heading text readable over dark part of image */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to bottom, rgba(11,11,15,0.72) 0%, rgba(11,11,15,0.38) 40%, rgba(11,11,15,0.55) 75%, rgba(11,11,15,0.88) 100%)',
-              zIndex: 1,
-            }} />
-          </>
-        )}
+            {/* ── LEFT COLUMN ── */}
+            <div>
+              {/* TOP HALF — plain dark bg, heading + buttons */}
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
 
-        {/* Page background when empiresOpen (no bg image) */}
-        {empiresOpen && (
-          <div style={{ position: 'absolute', inset: 0, background: isDark ? '#0B0B0F' : '#f8f8f4', zIndex: 0 }} />
-        )}
+              <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
+                How do you{' '}
+                <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
+                being exploited?
+              </h1>
 
-        {/* All content above bg */}
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div className="max-w-6xl mx-auto px-4">
-            <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
+              <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through alternatives. Through non-cooperation.</p>
+              <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 28 }}>
+                Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
+                <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
+              </p>
 
-              {/* ── LEFT COLUMN ── */}
-              <div style={{ position: 'relative' }}>
-                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
-
-                <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: '#F3F4F6' }}>
-                  How do you{' '}
-                  <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
-                  being exploited?
-                </h1>
-
-                <p style={{ fontSize: 15, fontWeight: 700, color: '#F3F4F6', marginBottom: 6 }}>Through your choices. Through alternatives. Through non-cooperation.</p>
-                <p style={{ fontSize: 13, color: 'rgba(243,244,246,0.65)', lineHeight: 1.65, marginBottom: 28 }}>
-                  Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
-                  <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
-                </p>
-
-                {/* BUTTONS */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                    <button onClick={() => setPhilOpen(true)}
-                      style={{ padding: '11px 12px', background: 'rgba(13,9,0,0.75)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(42,24,0,0.9)', color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                      <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
-                      Digital Satyagraha Philosophy
-                    </button>
-                    <button onClick={() => setStepsOpen(true)}
-                      style={{ padding: '11px 12px', background: 'rgba(26,26,31,0.75)', backdropFilter: 'blur(6px)', border: `0.5px solid ${borderCol}`, color: '#F3F4F6', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                      <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
-                      How It Works
-                    </button>
-                  </div>
-                  <button onClick={() => setEmpiresOpen(e => !e)}
-                    style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.3)' }}>
-                    {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
+              {/* BUTTONS */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  <button onClick={() => setPhilOpen(true)}
+                    style={{ padding: '11px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
+                    Digital Satyagraha Philosophy
+                  </button>
+                  <button onClick={() => setStepsOpen(true)}
+                    style={{ padding: '11px 12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
+                    How It Works
                   </button>
                 </div>
+                <button onClick={() => setEmpiresOpen(e => !e)}
+                  style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.22)' }}>
+                  {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
+                </button>
+              </div>
 
-                {/* STATS PILLS */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 28, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: 'rgba(13,9,0,0.72)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(42,24,0,0.8)', borderRadius: 18, flexShrink: 0 }}>
-                    <span style={{ fontSize: 14 }}>✊</span>
+              {/* STATS PILLS */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 0, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, borderRadius: 18, flexShrink: 0 }}>
+                  <span style={{ fontSize: 14 }}>✊</span>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: '#F59E0B', lineHeight: 1, whiteSpace: 'nowrap' }}>Movement Growing</div>
+                    <div style={{ fontSize: 9, color: mutedColor, whiteSpace: 'nowrap' }}>Join thousands taking action</div>
+                  </div>
+                </div>
+                <div style={{ width: '0.5px', height: 32, background: borderCol, flexShrink: 0 }} />
+                {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
+                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: cardBg, border: `0.5px solid ${borderCol}`, borderRadius: 18, flexShrink: 0 }}>
+                    <span style={{ fontSize: 12 }}>{icon}</span>
                     <div>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: '#F59E0B', lineHeight: 1, whiteSpace: 'nowrap' }}>Movement Growing</div>
-                      <div style={{ fontSize: 9, color: 'rgba(243,244,246,0.5)', whiteSpace: 'nowrap' }}>Join thousands taking action</div>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: textColor, lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
+                      <div style={{ fontSize: 9, color: mutedColor, whiteSpace: 'nowrap' }}>{sub}</div>
                     </div>
                   </div>
-                  <div style={{ width: '0.5px', height: 32, background: 'rgba(255,255,255,0.12)', flexShrink: 0 }} />
-                  {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
-                    <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: 'rgba(26,26,31,0.72)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(40,40,40,0.8)', borderRadius: 18, flexShrink: 0 }}>
-                      <span style={{ fontSize: 12 }}>{icon}</span>
-                      <div>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: '#F3F4F6', lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
-                        <div style={{ fontSize: 9, color: 'rgba(243,244,246,0.5)', whiteSpace: 'nowrap' }}>{sub}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                ))}
+              </div>
 
-                {/* EXPANDED EMPIRES */}
-                {empiresOpen && (
-                  <div style={{ marginBottom: 32 }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-                      {empires.map(e => (
-                        <EmpireCard key={e.badge} {...e} isDark={isDark}
-                          onClick={() => window.location.href = `/explore/${e.group}`} />
+              {/* EXPANDED EMPIRES */}
+              {empiresOpen && (
+                <div style={{ marginBottom: 32, marginTop: 24 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+                    {empires.map(e => (
+                      <EmpireCard key={e.badge} {...e} isDark={isDark}
+                        onClick={() => window.location.href = `/explore/${e.group}`} />
+                    ))}
+                  </div>
+                  <div style={{ background: isDark ? '#111' : '#fff', border: `0.5px solid ${borderCol}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
+                    <span style={{ fontSize: 18, flexShrink: 0 }}>💡</span>
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 3 }}>Their power. Your choices.</p>
+                      <p style={{ fontSize: 11, color: mutedColor, lineHeight: 1.5 }}>Concentration gives control — over prices, news, and choices. This affects your daily life.</p>
+                    </div>
+                  </div>
+                  <div style={{ background: isDark ? '#0d0d0d' : '#f8f8f4', border: `0.5px solid ${borderCol}`, borderRadius: 12, padding: '12px 16px' }}>
+                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>Coming soon</p>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 10 }}>More Empires Being Mapped</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {comingEmpires.map(e => (
+                        <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#666', border: `0.5px solid ${borderCol}` }}>{e}</span>
                       ))}
                     </div>
-                    <div style={{ background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
-                      <span style={{ fontSize: 18, flexShrink: 0 }}>💡</span>
-                      <div>
-                        <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 3 }}>Their power. Your choices.</p>
-                        <p style={{ fontSize: 11, color: mutedColor, lineHeight: 1.5 }}>Concentration gives control — over prices, news, and choices. This affects your daily life.</p>
-                      </div>
-                    </div>
-                    <div style={{ background: isDark ? '#0d0d0d' : '#f8f8f4', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, borderRadius: 12, padding: '12px 16px' }}>
-                      <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>Coming soon</p>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 10 }}>More Empires Being Mapped</p>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                        {comingEmpires.map(e => (
-                          <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#666', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>{e}</span>
-                        ))}
-                      </div>
-                    </div>
                   </div>
-                )}
+                </div>
+              )}
 
-                {/* JOIN THE MOVEMENT — flows after stats pills, on top of bg image */}
-                {!empiresOpen && (
+              {/* BOTTOM HALF — hero-bg.png block with Join the Movement overlay */}
+              {!empiresOpen && (
+                <div style={{
+                  position: 'relative',
+                  marginTop: 20,
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                  minHeight: 280,
+                  marginBottom: 32,
+                }}>
+                  {/* bg image */}
+                  <img
+                    src="/hero-bg.png"
+                    alt=""
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center center',
+                    }}
+                  />
+                  {/* dark overlay so text is readable */}
                   <div style={{
-                    background: 'rgba(0,0,0,0.55)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    border: '0.5px solid rgba(216,75,75,0.25)',
-                    borderRadius: 16,
-                    padding: '24px 22px 20px',
-                    marginBottom: 36,
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.4) 100%)',
+                  }} />
+
+                  {/* Join the Movement — centered on image */}
+                  <div style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    height: '100%',
+                    minHeight: 280,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    padding: '32px 24px',
+                    gap: 4,
                   }}>
-                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(245,158,11,0.9)', marginBottom: 10 }}>Join the Movement</p>
                     <p style={{
-                      fontFamily: 'Georgia, serif',
-                      fontSize: 'clamp(28px,4vw,42px)',
-                      fontWeight: 900,
+                      fontFamily: 'Georgia, "Times New Roman", serif',
+                      fontSize: 'clamp(36px, 5vw, 52px)',
+                      fontWeight: 700,
                       fontStyle: 'italic',
                       color: '#F3F4F6',
-                      lineHeight: 1.1,
+                      lineHeight: 1.05,
                       letterSpacing: '-0.5px',
-                      marginBottom: 6,
+                      textShadow: '0 2px 16px rgba(0,0,0,0.8)',
+                      margin: 0,
                     }}>
-                      Join the<br />
-                      <span style={{ color: '#D84B4B' }}>Movement</span>
+                      Join the
                     </p>
-                    <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.5)', marginBottom: 16 }}>Silent. Non-violent. Consistent.</p>
+                    <p style={{
+                      fontFamily: 'Georgia, "Times New Roman", serif',
+                      fontSize: 'clamp(42px, 6vw, 62px)',
+                      fontWeight: 900,
+                      fontStyle: 'italic',
+                      color: '#D84B4B',
+                      lineHeight: 1.0,
+                      letterSpacing: '-1px',
+                      textShadow: '0 2px 20px rgba(216,75,75,0.5)',
+                      margin: 0,
+                      marginBottom: 20,
+                    }}>
+                      Movement
+                    </p>
                     <Link to="/participate"
                       style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 8,
-                        background: '#D84B4B',
-                        color: '#fff', fontSize: 13, fontWeight: 800,
-                        padding: '13px 24px', borderRadius: 10, textDecoration: 'none',
-                        boxShadow: '0 4px 20px rgba(216,75,75,0.4)',
-                        border: '0.5px solid rgba(255,100,100,0.3)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        background: 'transparent',
+                        color: '#F3F4F6',
+                        fontSize: 14,
+                        fontWeight: 700,
+                        padding: '12px 28px',
+                        borderRadius: 10,
+                        textDecoration: 'none',
+                        border: '1.5px solid rgba(243,244,246,0.6)',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
+                        letterSpacing: '0.2px',
                       }}>
                       I'll Take Action ✊
                     </Link>
                   </div>
-                )}
-              </div>
-
-              {/* ── RIGHT COLUMN ── */}
-              {!empiresOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {/* Caricatures */}
-                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
-                    {[
-                      { src: '/a1.png', label: 'A1', labelBg: 'rgba(26,26,26,0.8)', labelColor: '#888', size: 108, border: '1.5px solid #333' },
-                      { src: '/vg.png', label: 'Modi', labelBg: 'rgba(26,5,5,0.85)', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
-                      { src: '/a2.png', label: 'A2', labelBg: 'rgba(26,26,26,0.8)', labelColor: '#888', size: 108, border: '1.5px solid #333' },
-                    ].map(c => (
-                      <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
-                        <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.3)' : '0 4px 16px rgba(0,0,0,0.5)' }}>
-                          <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
-                        </div>
-                        <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Pyramid — semi-transparent so bg shows through */}
-                  <PowerPyramid isDark={isDark} textColor={textColor} />
                 </div>
               )}
-
             </div>
-          </div>
 
-          {/* BOTTOM STATS STRIP */}
-          {!empiresOpen && (
-            <div style={{ borderTop: `0.5px solid rgba(255,255,255,0.08)`, marginTop: 0, padding: '22px 0', background: 'rgba(11,11,15,0.85)', backdropFilter: 'blur(8px)' }}>
-              <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-                <div>
-                  <p style={{ fontSize: 20, fontWeight: 900, color: '#F3F4F6', lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
-                  <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
-                </div>
-                <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
+            {/* ── RIGHT COLUMN — plain dark bg, caricatures + pyramid ── */}
+            {!empiresOpen && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Caricatures */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
                   {[
-                    { num: '81+', label: 'Brands Tracked', color: '#e8950a' },
-                    { num: '2', label: 'Big Empires', color: '#F3F4F6' },
-                    { num: '15', label: 'Sectors Covered', color: '#F3F4F6' },
-                    { num: '75+', label: 'Alternatives Listed', color: '#e8950a' },
-                    { num: '✊', label: 'Movement Growing', color: '#c44040' },
-                  ].map(s => (
-                    <div key={s.label} style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(243,244,246,0.5)', marginTop: 4 }}>{s.label}</div>
+                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
+                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                  ].map(c => (
+                    <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
+                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
+                        <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                      </div>
+                      <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
                     </div>
                   ))}
                 </div>
+
+                {/* Pyramid — solid dark, same as original */}
+                <PowerPyramid isDark={isDark} />
+              </div>
+            )}
+
+          </div>
+        </div>
+
+        {/* BOTTOM STATS STRIP */}
+        {!empiresOpen && (
+          <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '22px 0' }}>
+            <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
+                <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
+              </div>
+              <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
+                {[
+                  { num: '81+', label: 'Brands Tracked', color: '#e8950a' },
+                  { num: '2', label: 'Big Empires', color: textColor },
+                  { num: '15', label: 'Sectors Covered', color: textColor },
+                  { num: '75+', label: 'Alternatives Listed', color: '#e8950a' },
+                  { num: '✊', label: 'Movement Growing', color: '#c44040' },
+                ].map(s => (
+                  <div key={s.label} style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
+                    <div style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
 
       {/* PHILOSOPHY MODAL */}
@@ -452,11 +440,6 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>05 — Economic Non-Cooperation</p>
         <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 8 }}>Concentration of corporate power is not fixed. It grows with every subscription renewed, every app kept, every purchase unreflected on.</p>
         <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 20 }}><strong style={{ color: '#F3F4F6' }}>Economic Non-Cooperation</strong> means redirecting small amounts of everyday spending toward alternatives — cooperatives, local businesses, open-source tools, government services. Not all at once. One step at a time.</p>
-        <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-          {['Withdraw','Reduce','Replace','Transform'].map((s,i,arr) => (
-            <span key={s} style={{ fontSize: 11, color: '#555' }}>{s}{i < arr.length-1 ? ' →' : ''}</span>
-          ))}
-        </div>
         <div style={{ padding: '14px 16px', borderLeft: '2px solid #F59E0B', borderRadius: '0 10px 10px 0', background: '#080600', marginBottom: 12 }}>
           <p style={{ fontSize: 13, color: '#8a7a50', lineHeight: 1.8, fontStyle: 'italic' }}>"Be the change without shouting.<br />This is how India wins back its future.<br /><strong style={{ color: '#F59E0B' }}>One choice at a time."</strong></p>
         </div>
