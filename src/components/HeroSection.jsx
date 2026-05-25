@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const philosophyPillars = [
   { color: '#D84B4B', title: 'Non-violence', desc: "We don't hate. We resist through awareness. No violence, only clarity. This is not anger — it is information. Directed, purposeful, peaceful." },
@@ -24,7 +24,6 @@ function CenteredModal({ open, onClose, children }) {
     if (open) window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
   }, [open, onClose])
-
   if (!open) return null
   return (
     <div onClick={e => e.target === e.currentTarget && onClose()}
@@ -44,58 +43,50 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
     <div onClick={onClick}
       onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-3px)'}
       onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-      style={{
-        position: 'relative', borderRadius: 20, padding: '28px 24px',
-        cursor: 'pointer', overflow: 'hidden', minHeight: 200,
-        background: isA1
-          ? 'linear-gradient(145deg, #1f0505 0%, #0a0000 60%, #120000 100%)'
-          : 'linear-gradient(145deg, #0e0e00 0%, #050500 60%, #080800 100%)',
+      style={{ position: 'relative', borderRadius: 20, padding: '28px 24px', cursor: 'pointer', overflow: 'hidden', minHeight: 200,
+        background: isA1 ? 'linear-gradient(145deg, #1f0505 0%, #0a0000 60%, #120000 100%)' : 'linear-gradient(145deg, #0e0e00 0%, #050500 60%, #080800 100%)',
         border: `1px solid ${isA1 ? '#3a1010' : '#2a2400'}`,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        transition: 'transform 0.2s ease',
         boxShadow: isA1 ? '0 4px 24px rgba(216,75,75,0.1)' : '0 4px 24px rgba(245,158,11,0.08)',
       }}>
-
-      {/* Large brand watermark */}
       {isA1 ? (
-        <div style={{
-          position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-          opacity: 0.1, userSelect: 'none',
-          fontSize: 28, fontWeight: 900, letterSpacing: '-1px',
-          color: '#D84B4B',
-        }}>Reliance</div>
+        <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', opacity: 0.1, userSelect: 'none', fontSize: 28, fontWeight: 900, letterSpacing: '-1px', color: '#D84B4B' }}>Reliance</div>
       ) : (
-        <div style={{
-          position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
-          opacity: 0.12, userSelect: 'none',
-          fontSize: 32, fontWeight: 900, letterSpacing: '-1px',
-          background: 'linear-gradient(135deg, #8b6fd4, #6a4faa)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        }}>adani</div>
+        <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', opacity: 0.12, userSelect: 'none', fontSize: 32, fontWeight: 900, letterSpacing: '-1px', background: 'linear-gradient(135deg, #8b6fd4, #6a4faa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>adani</div>
       )}
-
-      {/* Badge */}
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-        width: 36, height: 36, borderRadius: 8, marginBottom: 16,
-        background: isA1 ? '#D84B4B' : '#F59E0B',
-        color: isA1 ? '#fff' : '#000',
-        fontSize: 12, fontWeight: 900,
-      }}>{badge}</div>
-
-      {/* Name */}
+      <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 8, marginBottom: 16, background: isA1 ? '#D84B4B' : '#F59E0B', color: isA1 ? '#fff' : '#000', fontSize: 12, fontWeight: 900 }}>{badge}</div>
       <div style={{ fontSize: 28, fontWeight: 900, color: '#F3F4F6', letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 8 }}>{name}</div>
-
-      {/* Person */}
       <div style={{ fontSize: 12, color: '#555', marginBottom: 14, fontWeight: 500 }}>{person}</div>
-
-      {/* Sectors */}
       <div style={{ fontSize: 11, color: '#3a3a3a', lineHeight: 1.8 }}>{sectors}</div>
-
-      {/* Arrow */}
       <div style={{ position: 'absolute', right: 20, bottom: 20, fontSize: 20, color: accentColor, opacity: 0.6 }}>→</div>
-
-      {/* Bottom accent line */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${accentColor}, transparent)`, opacity: 0.4 }} />
+    </div>
+  )
+}
+
+// Pyramid component
+function PowerPyramid({ isDark, textColor }) {
+  const layers = [
+    { label: 'FEW OWN', sub: 'Most companies', fill: isDark ? '#2a0808' : '#fee2e2', textFill: '#D84B4B', subFill: isDark ? '#a05050' : '#b91c1c', pts: '140,10 188,46 92,46' },
+    { label: 'FEW CONTROL', sub: 'Media & narrative', fill: isDark ? '#1f0808' : '#fecaca', textFill: isDark ? '#e07070' : '#b91c1c', subFill: isDark ? '#7a5050' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
+    { label: 'FEW DECIDE', sub: 'Policies & resources', fill: isDark ? '#160505' : '#fca5a5', textFill: isDark ? '#c06060' : '#7f1d1d', subFill: isDark ? '#6a4040' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
+    { label: 'WE PAY', sub: 'Higher prices, fewer choices', fill: isDark ? '#0d0303' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ccc' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
+  ]
+  return (
+    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
+      <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
+      <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }} role="img" aria-label="Power pyramid: Few own at top, We pay at bottom">
+        {layers.map((l, i) => (
+          <g key={l.label}>
+            <polygon points={l.pts} fill={l.fill} stroke={isDark ? '#2a0808' : '#D84B4B'} strokeWidth="0.5" />
+            <text x="140" y={28 + i * 40} textAnchor="middle" fill={l.textFill} fontSize="9" fontWeight="800">{l.label}</text>
+            <text x="140" y={40 + i * 40} textAnchor="middle" fill={l.subFill} fontSize="7">{l.sub}</text>
+          </g>
+        ))}
+      </svg>
+      <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 8, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B', lineHeight: 1.55 }}>But change starts small.<br />You + Your choices = Real change</p>
+      </div>
     </div>
   )
 }
@@ -122,62 +113,66 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
             {/* LEFT */}
             <div>
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#c44040', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
+
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
-                How do you <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '0 6px', borderRadius: 4 }}>RESIST</span> <span style={{ color: '#D84B4B' }}>Modi</span> silently?
+                How do you{' '}
+                <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
+                <span style={{ color: '#D84B4B' }}>Modi</span> silently?
               </h1>
+
               <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through non-cooperation.</p>
-              <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 24 }}>
+              <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 28 }}>
                 Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
-                <span style={{ color: '#D84B4B', fontWeight: 600 }}>This is Digital Satyagraha.</span>
+                <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
               </p>
 
               {/* BUTTONS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   <button onClick={() => setPhilOpen(true)}
-                    style={{ padding: '12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                    <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 14 }} />
+                    style={{ padding: '11px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
                     Digital Satyagraha Philosophy
                   </button>
                   <button onClick={() => setStepsOpen(true)}
-                    style={{ padding: '12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                    <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 14 }} />
+                    style={{ padding: '11px 12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
                     How It Works
                   </button>
                 </div>
+                {/* Explore Empires — subtle gradient, less height, soft shadow */}
                 <button onClick={() => setEmpiresOpen(e => !e)}
-                  style={{ width: '100%', padding: '11px 20px', background: 'linear-gradient(135deg, #c94444 0%, #D84B4B 50%, #c94444 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', boxShadow: '0 4px 16px rgba(216,75,75,0.25)' }}>
+                  style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.22)' }}>
                   {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
                 </button>
               </div>
 
-              {/* STATS ROW — 3 pills all in one row, no wrapping */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 32, paddingTop: 20, flexWrap: 'nowrap', overflow: 'hidden' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+              {/* STATS ROW — all 3 pills in one line, larger numbers */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 32, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
                   <div style={{ display: 'flex' }}>
                     {[0,1,2].map(i => (
-                      <div key={i} style={{ width: 26, height: 26, borderRadius: '50%', background: isDark ? '#2a2a2a' : '#ddd', border: `2px solid ${isDark ? '#0B0B0F' : '#f4f4f0'}`, marginLeft: i > 0 ? -8 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                        <svg viewBox="0 0 26 26" style={{ width: '100%', height: '100%' }}>
-                          <circle cx="13" cy="9" r="4" fill={isDark ? '#444' : '#aaa'} />
-                          <ellipse cx="13" cy="20" rx="7" ry="5" fill={isDark ? '#444' : '#aaa'} />
+                      <div key={i} style={{ width: 30, height: 30, borderRadius: '50%', background: isDark ? '#2a2a2a' : '#ddd', border: `2px solid ${isDark ? '#0B0B0F' : '#f4f4f0'}`, marginLeft: i > 0 ? -9 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                        <svg viewBox="0 0 30 30" style={{ width: '100%', height: '100%' }}>
+                          <circle cx="15" cy="11" r="5" fill={isDark ? '#555' : '#aaa'} />
+                          <ellipse cx="15" cy="23" rx="8" ry="6" fill={isDark ? '#555' : '#aaa'} />
                         </svg>
                       </div>
                     ))}
                   </div>
                   <div style={{ flexShrink: 0 }}>
-                    <div style={{ fontSize: 20, fontWeight: 900, color: '#F59E0B', lineHeight: 1 }}>24,382+</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: '#e8950a', lineHeight: 1 }}>24,382+</div>
                     <div style={{ fontSize: 9, color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 2 }}>People Taking Action</div>
                   </div>
                 </div>
-                <div style={{ width: '0.5px', height: 28, background: borderCol, flexShrink: 0 }} />
-                {/* All 3 pills — forced same row */}
+                <div style={{ width: '0.5px', height: 32, background: borderCol, flexShrink: 0 }} />
                 {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
-                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', background: cardBg, border: `0.5px solid ${borderCol}`, borderRadius: 16, flexShrink: 0 }}>
-                    <span style={{ fontSize: 11 }}>{icon}</span>
+                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: cardBg, border: `0.5px solid ${borderCol}`, borderRadius: 18, flexShrink: 0 }}>
+                    <span style={{ fontSize: 12 }}>{icon}</span>
                     <div>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: textColor, lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
-                      <div style={{ fontSize: 8, color: mutedColor, whiteSpace: 'nowrap' }}>{sub}</div>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: textColor, lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
+                      <div style={{ fontSize: 9, color: mutedColor, whiteSpace: 'nowrap' }}>{sub}</div>
                     </div>
                   </div>
                 ))}
@@ -212,65 +207,51 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               )}
             </div>
 
-            {/* RIGHT — hidden when empires open */}
+            {/* RIGHT */}
             {!empiresOpen && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 20, padding: '20px 0 0' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Caricatures — enlarged */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
                   {[
-                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 104, border: '1.5px solid #2a2a2a' },
-                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 136, border: '2.5px solid #D84B4B', mb: 12 },
-                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 104, border: '1.5px solid #2a2a2a' },
+                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
+                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
                   ].map(c => (
-                    <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: c.mb || 0 }}>
-                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111' }}>
+                    <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
+                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
                         <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
                       </div>
                       <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ borderRadius: 14, padding: 20, background: isDark ? '#111' : '#fff', border: `0.5px solid ${borderCol}` }}>
-                  <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 14 }}>Today, power looks like this</p>
-                  {[
-                    { bold: 'Few own', light: 'Most companies' },
-                    { bold: 'Few control', light: 'Media & narrative' },
-                    { bold: 'Few decide', light: 'Policies & resources' },
-                    { bold: 'We pay', light: 'Higher prices, fewer choices' },
-                  ].map(p => (
-                    <div key={p.bold} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                      <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#D84B4B', flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, fontWeight: 700, color: textColor }}>{p.bold} </span>
-                      <span style={{ fontSize: 13, color: mutedColor }}>{p.light}</span>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: 14, padding: 12, borderRadius: 10, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}` }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: '#F59E0B', lineHeight: 1.55 }}>But change starts small.<br />You + Your choices = Real change</p>
-                  </div>
-                </div>
+
+                {/* PYRAMID */}
+                <PowerPyramid isDark={isDark} textColor={textColor} />
               </div>
             )}
           </div>
         </div>
 
-        {/* BOTTOM STRIP — hidden when empires open */}
+        {/* BOTTOM STRIP */}
         {!empiresOpen && (
-          <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '20px 0' }}>
+          <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '22px 0' }}>
             <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
               <div>
                 <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
-                <p style={{ fontSize: 13, color: '#F59E0B', fontWeight: 600 }}>Be the change. Build the future.</p>
+                <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
               </div>
-              <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
                 {[
-                  { num: '812+', label: 'Brands Tracked', color: '#d4920a' },
+                  { num: '812+', label: 'Brands Tracked', color: '#e8950a' },
                   { num: '2', label: 'Big Empires', color: textColor },
                   { num: '36+', label: 'Sectors Covered', color: textColor },
-                  { num: '1,245+', label: 'Alternatives Listed', color: '#d4920a' },
+                  { num: '1,245+', label: 'Alternatives Listed', color: '#e8950a' },
                   { num: '24,382+', label: 'People Taking Action', color: '#c44040' },
                 ].map(s => (
                   <div key={s.label} style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: 20, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
-                    <div style={{ fontSize: 10, color: mutedColor, marginTop: 3 }}>{s.label}</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
+                    <div style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -338,7 +319,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         </div>
       </CenteredModal>
 
-      {/* STEPS MODAL */}
+      {/* HOW IT WORKS MODAL */}
       <CenteredModal open={stepsOpen} onClose={() => setStepsOpen(false)}>
         <h2 style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', color: '#F3F4F6', marginBottom: 4 }}>How It Works</h2>
         <p style={{ fontSize: 12, color: '#666', marginBottom: 20 }}>Know → Explore → Choose → Act → Spread</p>
