@@ -124,7 +124,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             <div>
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#D84B4B', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
-                How do you <span style={{ color: '#F59E0B', fontStyle: 'normal' }}>RESIST</span> <span style={{ color: '#D84B4B' }}>Modi</span> silently?
+                How do you <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '0 6px', borderRadius: 4 }}>RESIST</span> <span style={{ color: '#D84B4B' }}>Modi</span> silently?
               </h1>
               <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through non-cooperation.</p>
               <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 24 }}>
