@@ -108,7 +108,7 @@ function FlowAnimation({ isDark }) {
     ]
 
     // Collector — mid area
-    const collector = { x: 0.42, y: 0.72, label: 'Capital Concentration' }
+    const collector = { x: 0.46, y: 0.58, label: 'Capital Concentration' }
 
     // Pyramid base & apex — right side
     const pbX = () => canvas.width * 0.94
@@ -131,7 +131,7 @@ function FlowAnimation({ isDark }) {
     ).flat()
 
     const apexParts = Array.from({ length: 7 }, (_, i) => ({
-      progress: i / 7,
+      progress: i/14,
       speed: 0.0028 + Math.random() * 0.001,
     }))
 
@@ -484,28 +484,19 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 ))}
               </div>
 
-              {/* FLOW ANIMATION — cinematic background atmosphere */}
+              {/* FLOW ANIMATION — bleeds into hero atmosphere */}
               {!empiresOpen && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '-40px',
-                    right: '-120px',
-                    bottom: '-120px',
-                    top: '72%',
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    overflow: 'visible',
-                    opacity: 0.82,
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'relative',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
+                <div style={{
+                  position: 'absolute',
+                  left: '-24px',
+                  right: '-20px',
+                  bottom: '-20px',
+                  top: '63%',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                  overflow: 'visible',
+                }}>
+                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                     <FlowAnimation isDark={isDark} />
                   </div>
                 </div>
