@@ -177,7 +177,7 @@ function PowerPyramid({ isDark }) {
     { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: 'rgba(11,11,15,0.35)', border: '0.5px solid rgba(100,30,30,0.4)', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)', height: '100%', boxSizing: 'border-box' }}>
+    <div style={{ height: '100%', boxSizing: 'border-box', padding: '18px 20px 14px' }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
       <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }}>
         {layers.map((l, i) => (
@@ -456,69 +456,78 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
       {/* PHILOSOPHY MODAL */}
       <CenteredModal open={philOpen} onClose={() => setPhilOpen(false)}>
-        <h2 style={{ fontSize: 28, fontWeight: 900, letterSpacing: '-1px', color: '#F3F4F6', marginBottom: 4, lineHeight: 1 }}>Digital<br />Satyagraha</h2>
-        <p style={{ fontSize: 12, color: '#666', fontStyle: 'italic', marginBottom: 20 }}>"Digital Satyagraha is the modern path of non-violent resistance."</p>
-
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>01 — What is this?</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 10 }}>Gandhi's Satyagraha was resistance through daily choices — not rage, not spectacle. Digital Non-Cooperation applies the same idea to how we spend, stream, buy, scroll, and consume in 2025.</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 10 }}>When a few corporate ecosystems control your internet, media, shopping, entertainment, and everyday consumption — awareness becomes resistance.</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 10 }}>Most people already feel something is wrong. The internet feels controlled. Everything is getting more expensive. Local businesses disappear. The same narratives repeat everywhere.</p>
-        <p style={{ fontSize: 12, color: '#F3F4F6', fontWeight: 700, lineHeight: 1.75, marginBottom: 10 }}>But frustration without direction is just noise.</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 20 }}>People stay trapped because they don't see alternatives. This platform exists to make those alternatives visible.</p>
-
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>02 — What it is NOT</p>
-        <div style={{ background: '#111', border: '0.5px solid #1e1e1e', borderRadius: 10, padding: '12px 14px', marginBottom: 20 }}>
-          <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.9, marginBottom: 8 }}>Not violence. Not blind outrage. Not mob politics. Not "cancel everything."</p>
-          <p style={{ fontSize: 12, color: '#F3F4F6', fontWeight: 700, lineHeight: 1.75, marginBottom: 4 }}>It is consumer clarity.</p>
-          <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75 }}>Know who owns what. Choose accordingly. That's all.</p>
+        {/* Header — styled like About page */}
+        <div style={{ marginBottom: 24, paddingBottom: 20, borderBottom: '0.5px solid #1e1e1e' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '3px', color: '#F59E0B', textTransform: 'uppercase', marginBottom: 12 }}>Our Philosophy · Our Method · Our Movement</p>
+          <h2 style={{ fontSize: 38, fontWeight: 900, letterSpacing: '-1.5px', color: '#F3F4F6', marginBottom: 8, lineHeight: 1 }}>Digital<br />Satyagraha</h2>
+          <p style={{ fontSize: 13, color: '#777', fontStyle: 'italic' }}>"Digital Satyagraha is the modern path of non-violent resistance."</p>
         </div>
 
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 12 }}>The 4 Pillars</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 20 }}>
+        {/* 01 */}
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 12 }}>01 — What is this?</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>Gandhi's Satyagraha was resistance through daily choices — not rage, not spectacle. Digital Non-Cooperation applies the same idea to how we spend, stream, buy, scroll, and consume in 2025.</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>When a few corporate ecosystems control your internet, media, shopping, entertainment, and everyday consumption — awareness becomes resistance.</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>Most people already feel something is wrong. The internet feels controlled. Everything is getting more expensive. Local businesses disappear. The same narratives repeat everywhere.</p>
+        <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6', lineHeight: 1.6, marginBottom: 10 }}>But frustration without direction is just noise.</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 24 }}>People stay trapped because they don't see alternatives. This platform exists to make those alternatives visible.</p>
+
+        {/* 02 */}
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 12 }}>02 — What it is NOT</p>
+        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: 10, padding: '16px 18px', marginBottom: 24 }}>
+          <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.9, marginBottom: 10 }}>Not violence. Not blind outrage. Not mob politics. Not "cancel everything."</p>
+          <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6', marginBottom: 8 }}>It is consumer clarity.</p>
+          <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8 }}>Know who owns what. Choose accordingly. That's all.</p>
+        </div>
+
+        {/* 4 Pillars */}
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 16 }}>The 4 Pillars</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
           {[
-            { icon: '✊', title: 'Non-Violence', desc: 'No hate. No intimidation. No mobs.\nJust awareness and choice.' },
-            { icon: '💸', title: 'Non-Cooperation', desc: 'Monopolies survive because we keep feeding them.\nOne switch matters. One rupee at a time.' },
-            { icon: '👁️', title: 'Truth & Awareness', desc: "Most people don't even know who owns what.\nThat's where control begins." },
-            { icon: '🧠', title: 'Self-Respect', desc: 'Convenience becomes dangerous when it creates dependency.\nFreedom over dependency.' },
+            { icon: '✊', title: 'Non-Violence', desc: 'No hate. No intimidation. No mobs. Just awareness and choice.' },
+            { icon: '💸', title: 'Non-Cooperation', desc: 'Monopolies survive because we keep feeding them. One switch matters. One rupee at a time.' },
+            { icon: '👁️', title: 'Truth & Awareness', desc: "Most people don't even know who owns what. That's where control begins." },
+            { icon: '🧠', title: 'Self-Respect', desc: 'Convenience becomes dangerous when it creates dependency. Freedom over dependency.' },
           ].map(p => (
-            <div key={p.title} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-              <span style={{ fontSize: 16, flexShrink: 0, marginTop: 2 }}>{p.icon}</span>
+            <div key={p.title} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+              <span style={{ fontSize: 20, flexShrink: 0 }}>{p.icon}</span>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 800, color: '#F3F4F6', marginBottom: 3 }}>{p.title}</p>
-                <p style={{ fontSize: 11, color: '#7a6a40', lineHeight: 1.6 }}>{p.desc}</p>
+                <p style={{ fontSize: 14, fontWeight: 800, color: '#F3F4F6', marginBottom: 4 }}>{p.title}</p>
+                <p style={{ fontSize: 12, color: '#888', lineHeight: 1.65 }}>{p.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 12 }}>Start Small</p>
-        <div style={{ marginBottom: 20 }}>
+        {/* Start Small */}
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 16 }}>Start Small</p>
+        <div style={{ marginBottom: 24 }}>
           {[
             ['Switch one service', 'One app. One payment method. One subscription. That\'s enough to begin.'],
             ['Support local first', 'Kirana over monopoly platforms. Your money is your leverage.'],
             ['Check before you buy', '10 seconds to know where your rupee goes.'],
             ['Diversify your media', 'If every channel sounds the same, something is broken. Seek independent voices.'],
           ].map(([title, desc]) => (
-            <div key={title} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 0', borderBottom: '0.5px solid #111' }}>
-              <span style={{ color: '#F59E0B', fontSize: 13, flexShrink: 0, marginTop: 1 }}>→</span>
+            <div key={title} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 0', borderBottom: '0.5px solid #1a1a1a' }}>
+              <span style={{ color: '#F59E0B', fontSize: 16, flexShrink: 0, marginTop: 1 }}>→</span>
               <div>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#F3F4F6', marginBottom: 2 }}>{title}</p>
-                <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontSize: 14, fontWeight: 700, color: '#F3F4F6', marginBottom: 4 }}>{title}</p>
+                <p style={{ fontSize: 12, color: '#888', lineHeight: 1.55 }}>{desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>05 — Economic Non-Cooperation</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 10 }}>Economic Non-Cooperation means gradually redirecting parts of everyday spending toward alternatives: local businesses, independent media, smaller competitors, open ecosystems, and community-driven services.</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 20 }}>Not perfectly. Not all at once. Just consciously. Because systems survive through dependency. And dependency weakens when people realize they have choices.</p>
+        {/* 05 */}
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#D84B4B', marginBottom: 12 }}>05 — Economic Non-Cooperation</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 10 }}>Economic Non-Cooperation means gradually redirecting parts of everyday spending toward alternatives: local businesses, independent media, smaller competitors, open ecosystems, and community-driven services.</p>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.8, marginBottom: 24 }}>Not perfectly. Not all at once. Just consciously. Because systems survive through dependency. And dependency weakens when people realize they have choices.</p>
 
-        <div style={{ padding: '14px 16px', borderLeft: '2px solid #F59E0B', borderRadius: '0 10px 10px 0', background: '#080600', marginBottom: 12 }}>
-          <p style={{ fontSize: 13, color: '#8a7a50', lineHeight: 1.8, fontStyle: 'italic' }}>"Be the change without shouting. One conscious choice at a time."</p>
+        <div style={{ padding: '16px 18px', borderLeft: '3px solid #F59E0B', borderRadius: '0 10px 10px 0', background: '#080600', marginBottom: 12 }}>
+          <p style={{ fontSize: 14, color: '#c8a84a', lineHeight: 1.8, fontStyle: 'italic' }}>"Be the change without shouting. One conscious choice at a time."</p>
         </div>
-        <div style={{ padding: '12px 14px', borderLeft: '2px solid #F59E0B', borderRadius: '0 8px 8px 0', background: '#0a0800' }}>
-          <p style={{ fontSize: 12, color: '#8a7a50', lineHeight: 1.7, fontStyle: 'italic' }}>"Non-cooperation with evil is as much a duty as cooperation with good."</p>
-          <p style={{ fontSize: 11, color: '#F59E0B', fontWeight: 700, marginTop: 6 }}>— Mahatma Gandhi</p>
+        <div style={{ padding: '14px 16px', borderLeft: '3px solid #F59E0B', borderRadius: '0 8px 8px 0', background: '#0a0800' }}>
+          <p style={{ fontSize: 13, color: '#c8a84a', lineHeight: 1.7, fontStyle: 'italic' }}>"Non-cooperation with evil is as much a duty as cooperation with good."</p>
+          <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginTop: 8 }}>— Mahatma Gandhi</p>
         </div>
       </CenteredModal>
 
