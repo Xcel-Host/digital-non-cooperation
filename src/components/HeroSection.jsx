@@ -83,61 +83,44 @@ function RippleFlowDiagram() {
     <div style={{ marginTop: 28 }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
 
-      <div style={{ position: 'relative' }}>
+      {/* Outer rounded dashed track wrapping entire list */}
+      <div style={{ position: 'relative', padding: '12px 12px 12px 0' }}>
+        {/* The continuous dashed rounded-rect border */}
+        <div style={{
+          position: 'absolute',
+          top: 0, bottom: 0, left: 28, right: 0,
+          border: '1.5px dashed #333',
+          borderRadius: 32,
+          pointerEvents: 'none',
+        }} />
+
+        {/* Entry arrow at top right */}
+        <div style={{ position: 'absolute', top: -10, right: 20, color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>↓</div>
+        {/* Exit arrow at bottom right */}
+        <div style={{ position: 'absolute', bottom: -10, right: 20, color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>↓</div>
+
         {rippleSteps.map((step, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: i < rippleSteps.length - 1 ? 0 : 0 }}>
-
-            {/* Left dashed line column */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 16 }}>
-              {/* top connector */}
-              <div style={{
-                width: '1.5px',
-                height: i === 0 ? 20 : 20,
-                background: i === 0 ? 'transparent' : 'repeating-linear-gradient(to bottom, #333 0px, #333 5px, transparent 5px, transparent 10px)',
-              }} />
-              {/* bottom connector */}
-              <div style={{
-                width: '1.5px',
-                height: i === rippleSteps.length - 1 ? 20 : 20,
-                background: i === rippleSteps.length - 1 ? 'transparent' : 'repeating-linear-gradient(to bottom, #333 0px, #333 5px, transparent 5px, transparent 10px)',
-              }} />
-            </div>
-
-            {/* Circle icon */}
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '10px 16px 10px 0', position: 'relative' }}>
+            {/* Circle sits on the left dashed line */}
             <div style={{
-              width: 40,
-              height: 40,
+              width: 44,
+              height: 44,
               borderRadius: '50%',
               border: `2px solid ${step.color}`,
               background: '#0d0d12',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 18,
+              fontSize: 20,
               flexShrink: 0,
-              boxShadow: `0 0 12px ${step.color}55`,
-              position: 'relative',
+              boxShadow: `0 0 14px ${step.color}66`,
               zIndex: 1,
+              position: 'relative',
             }}>
               {step.icon}
             </div>
-
-            {/* Right dashed line column */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 16 }}>
-              <div style={{
-                width: '1.5px',
-                height: 20,
-                background: i === 0 ? 'transparent' : 'repeating-linear-gradient(to bottom, #333 0px, #333 5px, transparent 5px, transparent 10px)',
-              }} />
-              <div style={{
-                width: '1.5px',
-                height: 20,
-                background: i === rippleSteps.length - 1 ? 'transparent' : 'repeating-linear-gradient(to bottom, #333 0px, #333 5px, transparent 5px, transparent 10px)',
-              }} />
-            </div>
-
             {/* Text */}
-            <div style={{ paddingTop: 2, paddingBottom: 2 }}>
+            <div>
               <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
               <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
             </div>
@@ -146,7 +129,7 @@ function RippleFlowDiagram() {
       </div>
 
       {/* Footer */}
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <div style={{ marginTop: 16, textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#D84B4B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
         <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
       </div>
@@ -162,7 +145,7 @@ function PowerPyramid({ isDark }) {
     { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? 'rgba(17,17,17,0.82)' : 'rgba(255,255,255,0.88)', border: `0.5px solid ${isDark ? 'rgba(80,20,20,0.6)' : '#ddd'}`, backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', height: '100%', boxSizing: 'border-box' }}>
+    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? 'rgba(17,17,17,0.60)' : 'rgba(255,255,255,0.75)', border: `0.5px solid ${isDark ? 'rgba(80,20,20,0.5)' : '#ddd'}`, backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)', height: '100%', boxSizing: 'border-box' }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
       <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }}>
         {layers.map((l, i) => (

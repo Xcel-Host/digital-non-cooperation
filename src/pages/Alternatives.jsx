@@ -112,11 +112,13 @@ export default function Alternatives() {
                     <span className="text-xs text-muted">{item.sector}</span>
                   </div>
                   <p
-                    className="text-sm font-black tracking-tight line-through"
-                    style={item.isAdani
-                      ? { color: '#4a4000', textDecorationColor: '#2a2000' }
-                      : { color: '#4a1010', textDecorationColor: '#2a0808' }
-                    }
+                    className="text-sm font-black tracking-tight"
+                    style={{
+                      color: item.isAdani ? '#c8a820' : '#e05050',
+                      textDecoration: 'line-through',
+                      textDecorationColor: item.isAdani ? '#F59E0B' : '#D84B4B',
+                      textDecorationThickness: '2px',
+                    }}
                   >
                     {item.avoid}
                   </p>
@@ -127,9 +129,9 @@ export default function Alternatives() {
 
               {/* Arrow divider */}
               <div className="flex items-center gap-2 px-4 py-2" style={{ background: '#111' }}>
-                <div className="flex-1 h-px" style={{ background: '#1a1a1a' }} />
-                <span className="text-xs font-bold text-muted uppercase tracking-widest">Try instead</span>
-                <div className="flex-1 h-px" style={{ background: '#1a1a1a' }} />
+                <div className="flex-1 h-px" style={{ background: '#2a2a2a' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#4adb4a', letterSpacing: '1.5px' }}>✓ TRY INSTEAD</span>
+                <div className="flex-1 h-px" style={{ background: '#2a2a2a' }} />
               </div>
 
               {/* Picks */}
