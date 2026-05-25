@@ -108,7 +108,7 @@ function FlowAnimation({ isDark }) {
     ]
 
     // Collector — mid area
-    const collector = { x: 0.52, y: 0.42, label: 'Capital Concentration' }
+    const collector = { x: 0.42, y: 0.72, label: 'Capital Concentration' }
 
     // Pyramid base & apex — right side
     const pbX = () => canvas.width * 0.94
@@ -130,8 +130,8 @@ function FlowAnimation({ isDark }) {
       }))
     ).flat()
 
-    const apexParts = Array.from({ length: 14 }, (_, i) => ({
-      progress: i/14,
+    const apexParts = Array.from({ length: 7 }, (_, i) => ({
+      progress: i / 7,
       speed: 0.0028 + Math.random() * 0.001,
     }))
 
@@ -175,10 +175,10 @@ function FlowAnimation({ isDark }) {
         const midX = px(o.x + (collector.x - o.x) * 0.5) + (i%2===0 ? 18 : -18)
         const midY = py(o.y + (collector.y - o.y) * 0.5) - 12
         const isHovered = hoveredOrigin === i
-        const lineAlpha = isHovered ? 0.55 : 0.18 + hi * 0.08
+        const lineAlpha = isHovered ? 0.42 : 0.11 + hi * 0.05
 
         // Blurred glow behind
-        ctx.save(); ctx.filter = 'blur(3px)'
+        ctx.save(); ctx.filter = 'blur(2px)'
         ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(midX, midY, colX, colY)
         ctx.strokeStyle = `rgba(210,90,50,${lineAlpha * 0.5})`
         ctx.lineWidth = 3; ctx.stroke(); ctx.restore()
@@ -197,12 +197,6 @@ function FlowAnimation({ isDark }) {
       ctx.beginPath(); ctx.moveTo(colX, colY); ctx.quadraticCurveTo(cbMidX, cbMidY, _pbX, _pbY)
       ctx.strokeStyle = `rgba(245,120,65,${mainAlpha})`; ctx.lineWidth = 2; ctx.stroke()
 
-      // === PATH: base → apex (travels up through pyramid) ===
-      ctx.save(); ctx.filter = 'blur(1.5px)'
-      ctx.beginPath(); ctx.moveTo(_pbX, _pbY); ctx.quadraticCurveTo(px(0.94), py(0.48), _paX, _paY)
-      ctx.strokeStyle = `rgba(235,110,60,${mainAlpha * 0.7})`; ctx.lineWidth = 3; ctx.stroke(); ctx.restore()
-      ctx.beginPath(); ctx.moveTo(_pbX, _pbY); ctx.quadraticCurveTo(px(0.94), py(0.48), _paX, _paY)
-      ctx.strokeStyle = `rgba(255,140,70,${mainAlpha + 0.1})`; ctx.lineWidth = 1.2; ctx.stroke()
 
       // === RETURN PATH (faint blue) ===
       ctx.beginPath(); ctx.moveTo(_paX, _paY)
@@ -298,7 +292,7 @@ function FlowAnimation({ isDark }) {
       ctx.fillStyle = `rgba(255,140,70,0.9)`; ctx.fill()
 
       // === STREAM PARTICLES ===
-      const speedBoost = 1 + hi * 0.6
+      const speedBoost = 1 + hi * 0.25
       streamParts.forEach(p => {
         p.progress += p.speed * speedBoost
         if (p.progress > 1) p.progress = 0
@@ -418,7 +412,13 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
           <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
 
             {/* LEFT */}
-            <div style={{ position: 'relative' }}>
+            <div
+              style={{
+                position: 'relative',
+                overflow: 'hidden',
+                zIndex: 1,
+              }}
+            >
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
 
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
@@ -484,19 +484,28 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 ))}
               </div>
 
-              {/* FLOW ANIMATION — bleeds into hero atmosphere */}
+              {/* FLOW ANIMATION — cinematic background atmosphere */}
               {!empiresOpen && (
-                <div style={{
-                  position: 'absolute',
-                  left: '-24px',
-                  right: '-20px',
-                  bottom: '-20px',
-                  top: '55%',
-                  pointerEvents: 'none',
-                  zIndex: 0,
-                  overflow: 'visible',
-                }}>
-                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '-40px',
+                    right: '-120px',
+                    bottom: '-120px',
+                    top: '72%',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    overflow: 'visible',
+                    opacity: 0.82,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  >
                     <FlowAnimation isDark={isDark} />
                   </div>
                 </div>
