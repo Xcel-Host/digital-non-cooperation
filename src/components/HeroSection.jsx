@@ -370,7 +370,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     fontStyle: 'italic',
                     color: '#D84B4B',
                     lineHeight: 1.0,
-                    textShadow: '0 2px 24px rgba(216,75,75,0.6)',
+                    textShadow: '0 2px 12px rgba(216,75,75,0.3)',
                     margin: 0,
                     marginBottom: 24,
                   }}>
@@ -421,6 +421,11 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 <div style={{ flexGrow: 1 }}>
                   <PowerPyramid isDark={isDark} />
                 </div>
+
+                {/* Fist symbol below pyramid */}
+                <div style={{ textAlign: 'center', paddingTop: 12, paddingBottom: 8 }}>
+                  <span style={{ fontSize: 32, opacity: 0.85 }}>✊</span>
+                </div>
               </div>
             )}
 
@@ -437,13 +442,14 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               </div>
               <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
                 {[
-                  { num: '95+', label: 'Brands Tracked', color: '#e8950a' },
-                  { num: '2', label: 'Big Empires', color: textColor },
-                  { num: '15', label: 'Sectors Covered', color: textColor },
-                  { num: '75+', label: 'Alternatives Listed', color: '#e8950a' },
-                  { num: '✊', label: 'Movement Growing', color: '#c44040' },
+                  { num: '95+', label: 'Brands Tracked', color: '#e8950a', icon: '🏛️' },
+                  { num: '2', label: 'Big Empires', color: textColor, icon: '👁️' },
+                  { num: '15', label: 'Sectors Covered', color: textColor, icon: '🛡️' },
+                  { num: '75+', label: 'Alternatives Listed', color: '#e8950a', icon: '🔲' },
+                  { num: '✊', label: 'Movement Growing', color: '#c44040', icon: '👥' },
                 ].map(s => (
                   <div key={s.label} style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: 18, marginBottom: 4 }}>{s.icon}</div>
                     <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
                     <div style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>{s.label}</div>
                   </div>
