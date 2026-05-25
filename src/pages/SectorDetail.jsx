@@ -109,10 +109,11 @@ export default function SectorDetail() {
                   <p
                     className="text-lg font-black tracking-tight mb-1"
                     style={{
-                      color: isAdani ? '#c8a820' : '#e05050',
+                      color: isAdani ? '#e8c84a' : '#f07070',
                       textDecoration: 'line-through',
                       textDecorationColor: isAdani ? '#F59E0B' : '#D84B4B',
-                      textDecorationThickness: '2px',
+                      textDecorationThickness: '3px',
+                      opacity: 0.85,
                     }}
                   >
                     {alt.avoid}

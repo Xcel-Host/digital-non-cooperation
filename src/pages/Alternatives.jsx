@@ -114,10 +114,11 @@ export default function Alternatives() {
                   <p
                     className="text-sm font-black tracking-tight"
                     style={{
-                      color: item.isAdani ? '#c8a820' : '#e05050',
+                      color: item.isAdani ? '#e8c84a' : '#f07070',
                       textDecoration: 'line-through',
                       textDecorationColor: item.isAdani ? '#F59E0B' : '#D84B4B',
-                      textDecorationThickness: '2px',
+                      textDecorationThickness: '3px',
+                      opacity: 0.85,
                     }}
                   >
                     {item.avoid}
