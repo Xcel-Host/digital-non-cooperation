@@ -65,142 +65,209 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 
-// Cinematic flow animation — spending flowing upward into concentrated power
+
+// Cinematic flow animation — consumer spending flowing into concentrated power
 function FlowAnimation({ isDark }) {
   const canvasRef = React.useRef(null)
+
   React.useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    let animId
-    const W = canvas.offsetWidth
-    const H = canvas.offsetHeight
-    canvas.width = W
-    canvas.height = H
+    let animId, t = 0
 
-    // Spending icons as simple glyphs
-    const icons = ['₹', '🛒', '📶', '⛽', '📱', '🛍️', '💊', '📺']
+    function resize() {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+    resize()
+    const W = () => canvas.width
+    const H = () => canvas.height
 
-    // Particles: originate bottom-left, flow toward top-right (pyramid apex)
-    const particles = Array.from({ length: 38 }, (_, i) => ({
-      x: Math.random() * W * 0.55,
-      y: H * 0.4 + Math.random() * H * 0.6,
-      targetX: W * 0.82 + Math.random() * 20,
-      targetY: 20 + Math.random() * 30,
-      progress: Math.random(),
-      speed: 0.0008 + Math.random() * 0.0012,
-      icon: icons[Math.floor(Math.random() * icons.length)],
-      showIcon: i < 10,
-      opacity: 0.08 + Math.random() * 0.18,
-      size: 1.2 + Math.random() * 1.4,
-      trail: [],
-      returning: Math.random() < 0.06, // only 6% return
+    // Origin nodes — bottom left area, spread out
+    const originNodes = [
+      { icon: '🛒', label: 'Groceries', x: 0.04, y: 0.82 },
+      { icon: '📶', label: 'Telecom',   x: 0.13, y: 0.92 },
+      { icon: '⛽', label: 'Fuel',      x: 0.22, y: 0.78 },
+      { icon: '📱', label: 'Apps',      x: 0.31, y: 0.88 },
+      { icon: '🛍️', label: 'Shopping', x: 0.08, y: 0.68 },
+      { icon: '💊', label: 'Pharma',    x: 0.20, y: 0.62 },
+    ]
+
+    // Collection node — where streams merge before pyramid
+    const collector = { x: 0.52, y: 0.32 }
+
+    // Pyramid apex — top right
+    const apex = { x: 0.88, y: 0.06 }
+
+    // Particles per stream
+    const streamParticles = originNodes.map((o, i) => 
+      Array.from({ length: 6 }, (_, j) => ({
+        progress: (j / 6) + (i * 0.07),
+        speed: 0.0018 + Math.random() * 0.001,
+        fromOrig: true,
+        origIdx: i,
+        phase: Math.random() * Math.PI * 2,
+      }))
+    ).flat()
+
+    // Collector to apex particles
+    const apexParticles = Array.from({ length: 10 }, (_, i) => ({
+      progress: i / 10,
+      speed: 0.0025 + Math.random() * 0.001,
+      phase: Math.random() * Math.PI * 2,
     }))
 
-    // Stream lines — thin paths from bottom-left to top-right
-    const streams = Array.from({ length: 12 }, (_, i) => {
-      const startX = W * 0.05 + (i / 12) * W * 0.5
-      const startY = H * 0.7 + Math.random() * H * 0.28
-      const midX = W * 0.35 + Math.random() * W * 0.2
-      const midY = H * 0.3 + Math.random() * H * 0.2
-      const endX = W * 0.78 + Math.random() * W * 0.08
-      const endY = H * 0.06 + Math.random() * H * 0.08
-      return { startX, startY, midX, midY, endX, endY, opacity: 0.04 + Math.random() * 0.06 }
-    })
+    // Return particles (weak, downward)
+    const returnParticles = Array.from({ length: 3 }, (_, i) => ({
+      progress: i / 3,
+      speed: 0.0008,
+    }))
 
-    function getBezierPoint(t, sx, sy, mx, my, ex, ey) {
+    function lerp(a, b, t) { return a + (b - a) * t }
+
+    function bezier(t, ax, ay, bx, by, cx, cy) {
       const mt = 1 - t
       return {
-        x: mt * mt * sx + 2 * mt * t * mx + t * t * ex,
-        y: mt * mt * sy + 2 * mt * t * my + t * t * ey,
+        x: mt * mt * ax + 2 * mt * t * bx + t * t * cx,
+        y: mt * mt * ay + 2 * mt * t * by + t * t * cy,
       }
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, W, H)
-
-      // Draw stream paths
-      streams.forEach(s => {
-        ctx.beginPath()
-        ctx.moveTo(s.startX, s.startY)
-        ctx.quadraticCurveTo(s.midX, s.midY, s.endX, s.endY)
-        ctx.strokeStyle = `rgba(180, 60, 60, ${s.opacity})`
-        ctx.lineWidth = 0.6
-        ctx.stroke()
-      })
-
-      // Draw particles along bezier paths
-      particles.forEach(p => {
-        p.progress += p.speed
-        if (p.progress > 1) {
-          p.progress = 0
-          p.x = Math.random() * W * 0.55
-          p.y = H * 0.4 + Math.random() * H * 0.6
-        }
-
-        const stream = streams[Math.floor(Math.random() * streams.length) % streams.length]
-        let pos
-        if (p.returning) {
-          // Small weak return flow — goes downward
-          pos = getBezierPoint(
-            p.progress,
-            W * 0.82, H * 0.08,
-            W * 0.6, H * 0.4,
-            W * 0.1 + Math.random() * 0.1 * W, H * 0.9
-          )
-        } else {
-          pos = getBezierPoint(
-            p.progress,
-            stream.startX, stream.startY,
-            stream.midX, stream.midY,
-            stream.endX, stream.endY
-          )
-        }
-
-        // Particle gets brighter and smaller as it approaches apex
-        const proximityToApex = 1 - p.progress
-        const glowIntensity = p.returning ? 0.06 : (0.1 + p.progress * 0.25)
-        const alpha = p.opacity * glowIntensity * (p.returning ? 0.3 : 1)
-        const r = p.returning ? p.size * 0.6 : p.size * (0.6 + p.progress * 0.5)
-
-        // Glow
-        if (!p.returning && p.progress > 0.7) {
-          const grd = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 4)
-          grd.addColorStop(0, `rgba(200, 100, 60, ${alpha * 0.8})`)
-          grd.addColorStop(1, `rgba(200, 100, 60, 0)`)
-          ctx.beginPath()
-          ctx.arc(pos.x, pos.y, r * 4, 0, Math.PI * 2)
-          ctx.fillStyle = grd
-          ctx.fill()
-        }
-
-        // Dot
-        ctx.beginPath()
-        ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2)
-        ctx.fillStyle = p.returning
-          ? `rgba(100, 100, 200, ${alpha})`
-          : `rgba(${180 + p.progress * 40}, ${60 + p.progress * 20}, ${40}, ${alpha})`
-        ctx.fill()
-
-        // Icon label for first few particles at low progress
-        if (p.showIcon && p.progress < 0.3) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 1.5})`
-          ctx.font = `${8 + p.progress * 4}px sans-serif`
-          ctx.fillText(p.icon, pos.x + r + 1, pos.y + 3)
-        }
-      })
-
-      // Apex convergence glow
-      const apexX = W * 0.82
-      const apexY = H * 0.07
-      const grd = ctx.createRadialGradient(apexX, apexY, 0, apexX, apexY, 18)
-      grd.addColorStop(0, 'rgba(210, 90, 50, 0.22)')
-      grd.addColorStop(0.5, 'rgba(180, 60, 40, 0.08)')
-      grd.addColorStop(1, 'rgba(180, 60, 40, 0)')
+    function drawPath(ax, ay, bx, by, cx, cy, alpha, width, color) {
       ctx.beginPath()
-      ctx.arc(apexX, apexY, 18, 0, Math.PI * 2)
-      ctx.fillStyle = grd
+      ctx.moveTo(ax, ay)
+      ctx.quadraticCurveTo(bx, by, cx, cy)
+      ctx.strokeStyle = `rgba(${color}, ${alpha})`
+      ctx.lineWidth = width
+      ctx.stroke()
+    }
+
+    function drawNode(x, y, r, alpha, color, glow) {
+      if (glow) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3)
+        g.addColorStop(0, `rgba(${color}, ${alpha * 0.6})`)
+        g.addColorStop(1, `rgba(${color}, 0)`)
+        ctx.beginPath()
+        ctx.arc(x, y, r * 3, 0, Math.PI * 2)
+        ctx.fillStyle = g
+        ctx.fill()
+      }
+      ctx.beginPath()
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(${color}, ${alpha})`
       ctx.fill()
+    }
+
+    function draw() {
+      const cw = W(), ch = H()
+      ctx.clearRect(0, 0, cw, ch)
+      t += 0.016
+
+      const cx = x => x * cw
+      const cy = y => y * ch
+      const col = cx(collector.x), coly = cy(collector.y)
+      const ax = cx(apex.x), ay = cy(apex.y)
+
+      // === STEP 1: Draw stream paths from origins to collector ===
+      originNodes.forEach((o, i) => {
+        const ox = cx(o.x), oy = cy(o.y)
+        const midX = lerp(ox, col, 0.5) + (i % 2 === 0 ? 10 : -10)
+        const midY = lerp(oy, coly, 0.5) - 20
+
+        // Blurred background path
+        ctx.save()
+        ctx.filter = 'blur(2px)'
+        drawPath(ox, oy, midX, midY, col, coly, 0.06, 2.5, '200,80,50')
+        ctx.restore()
+
+        // Sharp foreground path
+        drawPath(ox, oy, midX, midY, col, coly, 0.18, 1, '220,100,60')
+      })
+
+      // === STEP 2: Draw collector to apex path ===
+      const apexMidX = lerp(col, ax, 0.5)
+      const apexMidY = lerp(coly, ay, 0.5) - 30
+
+      ctx.save()
+      ctx.filter = 'blur(1.5px)'
+      drawPath(col, coly, apexMidX, apexMidY, ax, ay, 0.12, 4, '210,80,50')
+      ctx.restore()
+      drawPath(col, coly, apexMidX, apexMidY, ax, ay, 0.35, 1.5, '230,110,60')
+
+      // === STEP 3: Return path (weak, downward, blue-ish) ===
+      const retMidX = cx(0.3)
+      const retMidY = cy(0.7)
+      drawPath(ax, ay, retMidX, retMidY, cx(0.1), cy(0.95), 0.06, 0.8, '100,120,200')
+
+      // === STEP 4: Origin nodes ===
+      originNodes.forEach((o, i) => {
+        const ox = cx(o.x), oy = cy(o.y)
+        const pulse = 0.5 + 0.5 * Math.sin(t * 1.5 + i * 1.1)
+
+        // Node glow
+        drawNode(ox, oy, 5 + pulse * 2, 0.15 + pulse * 0.1, '220,100,60', true)
+        // Node dot
+        drawNode(ox, oy, 4, 0.7 + pulse * 0.2, '230,110,60', false)
+
+        // Icon
+        ctx.font = `${10 + pulse}px sans-serif`
+        ctx.fillStyle = `rgba(255,255,255,${0.55 + pulse * 0.2})`
+        ctx.fillText(o.icon, ox - 7, oy - 7)
+
+        // Label
+        ctx.font = '7px Inter, sans-serif'
+        ctx.fillStyle = `rgba(180,120,80,0.6)`
+        ctx.fillText(o.label, ox - 14, oy + 14)
+      })
+
+      // === STEP 5: Collector node (merge point) ===
+      const colPulse = 0.5 + 0.5 * Math.sin(t * 2)
+      drawNode(col, coly, 10 + colPulse * 3, 0.12 + colPulse * 0.08, '210,80,50', true)
+      drawNode(col, coly, 6, 0.65 + colPulse * 0.2, '230,100,60', false)
+      ctx.font = '8px Inter, sans-serif'
+      ctx.fillStyle = `rgba(200,140,80,0.65)`
+      ctx.textAlign = 'center'
+      ctx.fillText('Capital', col, coly + 18)
+      ctx.fillText('Concentration', col, coly + 28)
+      ctx.textAlign = 'left'
+
+      // === STEP 6: Apex glow ===
+      const apexPulse = 0.5 + 0.5 * Math.sin(t * 2.5)
+      drawNode(ax, ay, 14 + apexPulse * 5, 0.1 + apexPulse * 0.08, '210,70,40', true)
+      drawNode(ax, ay, 5 + apexPulse, 0.6 + apexPulse * 0.25, '230,100,50', false)
+
+      // === STEP 7: Stream particles — origin to collector ===
+      streamParticles.forEach(p => {
+        p.progress += p.speed
+        if (p.progress > 1) p.progress = 0
+        const o = originNodes[p.origIdx]
+        const ox = cx(o.x), oy = cy(o.y)
+        const midX = lerp(ox, col, 0.5) + (p.origIdx % 2 === 0 ? 10 : -10)
+        const midY = lerp(oy, coly, 0.5) - 20
+        const pos = bezier(p.progress, ox, oy, midX, midY, col, coly)
+        const alpha = 0.4 + p.progress * 0.4
+        const r = 1.5 + p.progress * 1.2
+        drawNode(pos.x, pos.y, r, alpha, `220,${90 + p.progress * 30},50`, p.progress > 0.8)
+      })
+
+      // === STEP 8: Collector to apex particles ===
+      apexParticles.forEach(p => {
+        p.progress += p.speed
+        if (p.progress > 1) p.progress = 0
+        const pos = bezier(p.progress, col, coly, apexMidX, apexMidY, ax, ay)
+        const alpha = 0.5 + p.progress * 0.4
+        const r = 2 + p.progress * 1.5
+        drawNode(pos.x, pos.y, r, alpha, `230,${100 + p.progress * 40},50`, p.progress > 0.85)
+      })
+
+      // === STEP 9: Return particles (weak, blue) ===
+      returnParticles.forEach(p => {
+        p.progress += p.speed
+        if (p.progress > 1) p.progress = 0
+        const pos = bezier(p.progress, ax, ay, retMidX, retMidY, cx(0.1), cy(0.95))
+        drawNode(pos.x, pos.y, 1.2, 0.2 + p.progress * 0.1, '100,120,200', false)
+      })
 
       animId = requestAnimationFrame(draw)
     }
@@ -212,7 +279,8 @@ function FlowAnimation({ isDark }) {
   return (
     <canvas
       ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', opacity: 0.85 }}
+      aria-hidden="true"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
     />
   )
 }
@@ -333,7 +401,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
               {/* FLOW ANIMATION — cinematic background */}
               {!empiresOpen && (
-                <div style={{ position: 'relative', height: 120, marginBottom: 0, marginTop: -8, overflow: 'hidden' }}>
+                <div style={{ position: 'relative', height: 160, marginBottom: 0, marginTop: 4, overflow: 'hidden' }}>
                   <FlowAnimation isDark={isDark} />
                 </div>
               )}
