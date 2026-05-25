@@ -288,25 +288,25 @@ function FlowAnimation({ isDark }) {
 // Pyramid component
 function PowerPyramid({ isDark, textColor }) {
   const layers = [
-    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? '#2a0808' : '#fee2e2', textFill: '#D84B4B', subFill: isDark ? '#a05050' : '#b91c1c', pts: '140,10 188,46 92,46' },
-    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? '#1f0808' : '#fecaca', textFill: isDark ? '#e07070' : '#b91c1c', subFill: isDark ? '#7a5050' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
-    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? '#160505' : '#fca5a5', textFill: isDark ? '#c06060' : '#7f1d1d', subFill: isDark ? '#6a4040' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
-    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#0d0303' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ccc' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
+    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? '#3a0a0a' : '#fee2e2', textFill: '#e05050', subFill: isDark ? '#b06060' : '#b91c1c', pts: '140,10 188,46 92,46' },
+    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? '#2e0808' : '#fecaca', textFill: isDark ? '#e87070' : '#b91c1c', subFill: isDark ? '#8a5858' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
+    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? '#220606' : '#fca5a5', textFill: isDark ? '#cc6868' : '#7f1d1d', subFill: isDark ? '#7a4848' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
+    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
     <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
-      <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
       <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }} role="img" aria-label="Power pyramid: Few own at top, We pay at bottom">
         {layers.map((l, i) => (
           <g key={l.label}>
-            <polygon points={l.pts} fill={l.fill} stroke={isDark ? '#2a0808' : '#D84B4B'} strokeWidth="0.5" />
+            <polygon points={l.pts} fill={l.fill} stroke={isDark ? '#6a2020' : '#D84B4B'} strokeWidth="1" />
             <text x="140" y={28 + i * 40} textAnchor="middle" fill={l.textFill} fontSize="9" fontWeight="800">{l.label}</text>
             <text x="140" y={40 + i * 40} textAnchor="middle" fill={l.subFill} fontSize="7">{l.sub}</text>
           </g>
         ))}
       </svg>
-      <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 8, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B', lineHeight: 1.55 }}>But change starts small.<br />You + Your choices = Real change</p>
+      <div style={{ marginTop: 10, padding: '8px 10px', borderRadius: 8, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
+        <p style={{ fontSize: 13, fontWeight: 800, color: '#F59E0B', lineHeight: 1.5 }}>But change starts small.<br />You + Your choices = Real change</p>
       </div>
     </div>
   )
