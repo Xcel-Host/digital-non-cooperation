@@ -84,9 +84,13 @@ export default function SectorDetail() {
 
           {/* ALTERNATIVES */}
           <div>
-            <p className="text-xs font-bold tracking-widest text-muted uppercase mb-4">
-              Boycott / Non-Cooperate → Alternatives
-            </p>
+            {/* Change 8: Brighter, eye-catching alternatives heading */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <div style={{ width: 3, height: 18, borderRadius: 2, background: '#4a9a4a' }} />
+              <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#4adb4a', margin: 0 }}>
+                ✓ Alternatives — Switch Today
+              </p>
+            </div>
             {sector.alternatives.map(alt => (
               <div key={alt.avoid}>
                 {/* Avoid block */}
@@ -101,9 +105,15 @@ export default function SectorDetail() {
                     style={{ color: accentColor }}>
                     Boycott / Non-Cooperate
                   </p>
+                  {/* Change 9: Brand name clearly visible with strong strikethrough */}
                   <p
-                    className="text-lg font-black tracking-tight mb-1 line-through"
-                    style={{ color: isAdani ? '#3a3000' : '#3a1010', textDecorationColor: isAdani ? '#2a2000' : '#2a0808' }}
+                    className="text-lg font-black tracking-tight mb-1"
+                    style={{
+                      color: isAdani ? '#c8a820' : '#e05050',
+                      textDecoration: 'line-through',
+                      textDecorationColor: isAdani ? '#F59E0B' : '#D84B4B',
+                      textDecorationThickness: '2px',
+                    }}
                   >
                     {alt.avoid}
                   </p>

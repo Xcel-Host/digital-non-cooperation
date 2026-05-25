@@ -16,8 +16,9 @@ export default function HomeParticipate({ theme }) {
             <p className="text-xs mt-1" style={{ color: muted }}>Silent. Non-violent. Consistent.</p>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-black tracking-tight" style={{ color: '#F59E0B' }}>24,382</div>
-            <div className="text-xs" style={{ color: muted }}>participating</div>
+            <div className="text-xl font-black tracking-tight" style={{ color: '#F59E0B' }}>✊</div>
+            <div className="text-sm font-bold" style={{ color: '#F59E0B' }}>Movement</div>
+            <div className="text-xs" style={{ color: muted }}>Growing</div>
           </div>
         </div>
         <Link

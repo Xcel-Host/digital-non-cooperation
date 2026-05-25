@@ -7,11 +7,11 @@ export const GROUPS = {
 }
 
 export const stats = {
-  brands: '812+',
+  brands: '81+',
   empires: '2',
-  sectors: '36+',
-  alternatives: '1,245+',
-  participating: '24,382+',
+  sectors: '15',
+  alternatives: '75+',
+  participating: 'Movement Growing',
 }
 
 export const trendingSearches = [

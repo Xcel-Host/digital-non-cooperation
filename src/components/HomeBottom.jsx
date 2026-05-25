@@ -123,9 +123,9 @@ export default function HomeBottom() {
           className="rounded-xl p-4 mb-4"
           style={{ background: '#0d0800', border: '0.5px solid #2a1800' }}
         >
-          <p className="text-xs text-amber/60 uppercase tracking-widest mb-1 font-bold">People Participating</p>
-          <p className="text-4xl font-black text-amber tracking-tighter">24,382+</p>
-          <p className="text-xs text-amber/40 mt-1">and growing every day</p>
+          <p className="text-xs text-amber/60 uppercase tracking-widest mb-1 font-bold">Movement Growing</p>
+          <p className="text-3xl font-black text-amber tracking-tighter">✊ Join Us</p>
+          <p className="text-xs text-amber/40 mt-1">thousands taking silent action every day</p>
         </div>
 
         <div className="mb-4">

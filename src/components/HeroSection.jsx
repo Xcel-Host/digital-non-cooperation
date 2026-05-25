@@ -16,6 +16,14 @@ const disconnectSteps = [
   { num: '5', bg: '#2a1a3a', color: '#8a5a9a', title: 'Build a Movement', desc: 'Share. Millions of small acts of non-cooperation create big change.' },
 ]
 
+const rippleNodes = [
+  { id: 0, label: 'You choose\nalternatives', color: '#F59E0B', angle: 270 },
+  { id: 1, label: 'Empires\nlose share', color: '#D84B4B', angle: 342 },
+  { id: 2, label: 'Local jobs\ngrow', color: '#4a9a4a', angle: 54 },
+  { id: 3, label: 'Less funding\nto power', color: '#4a6a9a', angle: 126 },
+  { id: 4, label: 'Fairer\nelections', color: '#8a5a9a', angle: 198 },
+]
+
 const comingEmpires = ['Tata Group (A3)', 'Aditya Birla (A4)', 'Times Group · Media', 'Bajaj · Mahindra']
 
 function CenteredModal({ open, onClose, children }) {
@@ -64,318 +72,89 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
   )
 }
 
+function RippleLoopDiagram() {
+  const cx = 200, cy = 200, r = 120
+  const nodeR = 38
 
+  const nodes = rippleNodes.map(n => {
+    const rad = (n.angle * Math.PI) / 180
+    return { ...n, x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) }
+  })
 
-// Cinematic flow animation — consumer spending flowing into concentrated power
+  function arcPath(from, to) {
+    return `M ${from.x} ${from.y} A ${r} ${r} 0 0 1 ${to.x} ${to.y}`
+  }
 
-
-function FlowAnimation({ isDark }) {
-  const canvasRef = React.useRef(null)
-  const mouseRef = React.useRef({ x: -999, y: -999 })
-  const hoverNodeRef = React.useRef(null)
-  const hoverIntensityRef = React.useRef(0)
-
-  React.useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    let animId, t = 0
-
-    function resize() {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-
-    // Track mouse over parent section
-    const section = canvas.closest('section')
-    function onMove(e) {
-      const rect = canvas.getBoundingClientRect()
-      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
-    }
-    function onLeave() { mouseRef.current = { x: -999, y: -999 }; hoverNodeRef.current = null }
-    canvas.addEventListener('mousemove', onMove)
-    canvas.addEventListener('mouseleave', onLeave)
-
-    // Origins — far bottom-left, spread wide
-    const origins = [
-      { icon: '🛒', label: 'Groceries', x: 0.01, y: 0.86 },
-      { icon: '📶', label: null,        x: 0.10, y: 0.96 },
-      { icon: '⛽', label: 'Fuel',      x: 0.19, y: 0.90 },
-      { icon: '📱', label: null,        x: 0.28, y: 0.96 },
-      { icon: '🛍️', label: null,        x: 0.03, y: 0.72 },
-      { icon: '💊', label: 'Apps',      x: 0.15, y: 0.76 },
-    ]
-
-    // Collector — mid area
-    const collector = { x: 0.46, y: 0.58, label: 'Capital Concentration' }
-
-    // Pyramid base & apex — right side
-    const pbX = () => canvas.width * 0.94
-    const pbY = () => canvas.height * 0.92
-    const paX = () => canvas.width * 0.94
-    const paY = () => canvas.height * 0.04
-
-    function quad(t, ax, ay, bx, by, cx, cy) {
-      const mt = 1 - t
-      return { x: mt*mt*ax + 2*mt*t*bx + t*t*cx, y: mt*mt*ay + 2*mt*t*by + t*t*cy }
-    }
-
-    // Particles
-    const streamParts = origins.map((o, i) =>
-      Array.from({ length: 6 }, (_, j) => ({
-        progress: ((j/6) + i*0.09) % 1,
-        speed: 0.002 + Math.random() * 0.001,
-        origIdx: i,
-      }))
-    ).flat()
-
-    const apexParts = Array.from({ length: 7 }, (_, i) => ({
-      progress: i/14,
-      speed: 0.0028 + Math.random() * 0.001,
-    }))
-
-    const returnParts = Array.from({ length: 3 }, (_, i) => ({
-      progress: i/3, speed: 0.0006,
-    }))
-
-    function dist(ax, ay, bx, by) {
-      return Math.sqrt((ax-bx)**2 + (ay-by)**2)
-    }
-
-    function draw() {
-      const W = canvas.width, H = canvas.height
-      ctx.clearRect(0, 0, W, H)
-      t += 0.016
-
-      const px = x => x * W
-      const py = y => y * H
-      const colX = px(collector.x), colY = py(collector.y)
-      const _pbX = pbX(), _pbY = pbY()
-      const _paX = paX(), _paY = paY()
-      const cbMidX = px(0.73), cbMidY = py(0.67)
-      const mx = mouseRef.current.x, my = mouseRef.current.y
-
-      // Detect hover node
-      let hoveredOrigin = -1
-      let hoverCollector = false
-      origins.forEach((o, i) => {
-        if (dist(mx, my, px(o.x), py(o.y)) < 28) hoveredOrigin = i
-      })
-      if (dist(mx, my, colX, colY) < 36) hoverCollector = true
-
-      // Smooth hover intensity
-      const targetIntensity = (hoveredOrigin >= 0 || hoverCollector) ? 1 : 0
-      hoverIntensityRef.current += (targetIntensity - hoverIntensityRef.current) * 0.08
-      const hi = hoverIntensityRef.current
-
-      // === PATHS: origins → collector ===
-      origins.forEach((o, i) => {
-        const ox = px(o.x), oy = py(o.y)
-        const midX = px(o.x + (collector.x - o.x) * 0.5) + (i%2===0 ? 18 : -18)
-        const midY = py(o.y + (collector.y - o.y) * 0.5) - 12
-        const isHovered = hoveredOrigin === i
-        const lineAlpha = isHovered ? 0.42 : 0.11 + hi * 0.05
-
-        // Blurred glow behind
-        ctx.save(); ctx.filter = 'blur(2px)'
-        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(midX, midY, colX, colY)
-        ctx.strokeStyle = `rgba(210,90,50,${lineAlpha * 0.5})`
-        ctx.lineWidth = 3; ctx.stroke(); ctx.restore()
-
-        // Sharp line
-        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(midX, midY, colX, colY)
-        ctx.strokeStyle = `rgba(235,115,65,${lineAlpha})`
-        ctx.lineWidth = 1; ctx.stroke()
-      })
-
-      // === PATH: collector → pyramid base ===
-      const mainAlpha = 0.35 + hi * 0.15 + hoverCollector * 0.2
-      ctx.save(); ctx.filter = 'blur(2.5px)'
-      ctx.beginPath(); ctx.moveTo(colX, colY); ctx.quadraticCurveTo(cbMidX, cbMidY, _pbX, _pbY)
-      ctx.strokeStyle = `rgba(215,85,50,${mainAlpha * 0.6})`; ctx.lineWidth = 5; ctx.stroke(); ctx.restore()
-      ctx.beginPath(); ctx.moveTo(colX, colY); ctx.quadraticCurveTo(cbMidX, cbMidY, _pbX, _pbY)
-      ctx.strokeStyle = `rgba(245,120,65,${mainAlpha})`; ctx.lineWidth = 2; ctx.stroke()
-
-
-      // === RETURN PATH (faint blue) ===
-      ctx.beginPath(); ctx.moveTo(_paX, _paY)
-      ctx.quadraticCurveTo(px(0.65), py(0.55), px(0.02), py(0.97))
-      ctx.strokeStyle = 'rgba(100,120,220,0.05)'; ctx.lineWidth = 0.8; ctx.stroke()
-
-      // === ORIGIN NODES ===
-      origins.forEach((o, i) => {
-        const ox = px(o.x), oy = py(o.y)
-        const pulse = 0.5 + 0.5 * Math.sin(t * 1.5 + i * 1.1)
-        const isHov = hoveredOrigin === i
-        const glowR = isHov ? 22 + pulse * 6 : 10 + pulse * 3
-        const glowAlpha = isHov ? 0.22 + pulse * 0.1 : 0.08 + pulse * 0.05
-
-        // Glow
-        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, glowR)
-        g.addColorStop(0, `rgba(225,105,60,${glowAlpha * 1.5})`)
-        g.addColorStop(1, `rgba(225,105,60,0)`)
-        ctx.beginPath(); ctx.arc(ox, oy, glowR, 0, Math.PI*2)
-        ctx.fillStyle = g; ctx.fill()
-
-        // Core dot
-        ctx.beginPath(); ctx.arc(ox, oy, isHov ? 6 + pulse : 4 + pulse * 0.5, 0, Math.PI*2)
-        ctx.fillStyle = `rgba(245,130,70,${isHov ? 0.95 : 0.75})`; ctx.fill()
-
-        // Icon
-        const iconSize = isHov ? 16 + pulse * 2 : 14
-        ctx.font = `${iconSize}px sans-serif`
-        ctx.textAlign = 'center'
-        ctx.globalAlpha = isHov ? 0.95 : 0.65 + pulse * 0.15
-        ctx.fillText(o.icon, ox, oy - 9)
-        ctx.globalAlpha = 1
-
-        // Label — only on hover, soft fade
-        if (o.label && isHov) {
-          ctx.font = '9px Inter, sans-serif'
-          ctx.fillStyle = `rgba(230,160,90,${hi * 0.9})`
-          ctx.fillText(o.label, ox, oy + 18)
-        }
-        ctx.textAlign = 'left'
-      })
-
-      // === COLLECTOR NODE ===
-      const colPulse = 0.5 + 0.5 * Math.sin(t * 2.2)
-      const colHov = hoverCollector
-      const colR = colHov ? 32 + colPulse * 10 : 22 + colPulse * 6
-
-      // Outer glow rings
-      for (let r = 3; r >= 1; r--) {
-        const ringG = ctx.createRadialGradient(colX, colY, 0, colX, colY, colR * r * 0.7)
-        ringG.addColorStop(0, `rgba(215,85,50,${(colHov ? 0.14 : 0.06) / r})`)
-        ringG.addColorStop(1, `rgba(215,85,50,0)`)
-        ctx.beginPath(); ctx.arc(colX, colY, colR * r * 0.7, 0, Math.PI*2)
-        ctx.fillStyle = ringG; ctx.fill()
-      }
-      // Pulsing rings
-      for (let r = 1; r <= 3; r++) {
-        ctx.beginPath(); ctx.arc(colX, colY, 10 + r * 9 + colPulse * 4, 0, Math.PI*2)
-        ctx.strokeStyle = `rgba(225,100,55,${colHov ? 0.18 : 0.07})`
-        ctx.lineWidth = 0.7; ctx.stroke()
-      }
-      // Core
-      ctx.beginPath(); ctx.arc(colX, colY, 8 + colPulse * 2, 0, Math.PI*2)
-      ctx.fillStyle = `rgba(240,120,65,${colHov ? 0.95 : 0.75})`; ctx.fill()
-
-      // Label — always visible but faint, brightens on hover
-      const labelAlpha = 0.35 + hi * 0.5 + (colHov ? 0.3 : 0)
-      ctx.font = 'bold 9px Inter, sans-serif'
-      ctx.fillStyle = `rgba(230,150,85,${labelAlpha})`
-      ctx.textAlign = 'center'
-      ctx.fillText('CAPITAL', colX, colY + 22)
-      ctx.fillText('CONCENTRATION', colX, colY + 33)
-      ctx.textAlign = 'left'
-
-      // === PYRAMID BASE NODE ===
-      const pbPulse = 0.5 + 0.5 * Math.sin(t * 2.8)
-      const pbG = ctx.createRadialGradient(_pbX, _pbY, 0, _pbX, _pbY, 20 + pbPulse * 6)
-      pbG.addColorStop(0, `rgba(215,85,50,${0.18 + pbPulse * 0.1})`)
-      pbG.addColorStop(1, 'rgba(215,85,50,0)')
-      ctx.beginPath(); ctx.arc(_pbX, _pbY, 20 + pbPulse * 6, 0, Math.PI*2)
-      ctx.fillStyle = pbG; ctx.fill()
-      ctx.beginPath(); ctx.arc(_pbX, _pbY, 6 + pbPulse * 2, 0, Math.PI*2)
-      ctx.fillStyle = `rgba(245,125,65,0.8)`; ctx.fill()
-
-      // === APEX GLOW ===
-      const apPulse = 0.5 + 0.5 * Math.sin(t * 3.2)
-      const apG = ctx.createRadialGradient(_paX, _paY, 0, _paX, _paY, 24 + apPulse * 8)
-      apG.addColorStop(0, `rgba(215,80,45,${0.2 + apPulse * 0.12})`)
-      apG.addColorStop(1, 'rgba(215,80,45,0)')
-      ctx.beginPath(); ctx.arc(_paX, _paY, 24 + apPulse * 8, 0, Math.PI*2)
-      ctx.fillStyle = apG; ctx.fill()
-      ctx.beginPath(); ctx.arc(_paX, _paY, 5 + apPulse * 2, 0, Math.PI*2)
-      ctx.fillStyle = `rgba(255,140,70,0.9)`; ctx.fill()
-
-      // === STREAM PARTICLES ===
-      const speedBoost = 1 + hi * 0.25
-      streamParts.forEach(p => {
-        p.progress += p.speed * speedBoost
-        if (p.progress > 1) p.progress = 0
-        const o = origins[p.origIdx]
-        const ox = px(o.x), oy = py(o.y)
-        const midX = px(o.x + (collector.x - o.x) * 0.5) + (p.origIdx%2===0 ? 18 : -18)
-        const midY = py(o.y + (collector.y - o.y) * 0.5) - 12
-        const pos = quad(p.progress, ox, oy, midX, midY, colX, colY)
-        const r = 1.8 + p.progress * 1.8
-        const alpha = 0.45 + p.progress * 0.45
-        const glow = p.progress > 0.78
-        if (glow) {
-          const g = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 3.5)
-          g.addColorStop(0, `rgba(235,115,65,${alpha * 0.6})`)
-          g.addColorStop(1, 'rgba(235,115,65,0)')
-          ctx.beginPath(); ctx.arc(pos.x, pos.y, r * 3.5, 0, Math.PI*2)
-          ctx.fillStyle = g; ctx.fill()
-        }
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2)
-        ctx.fillStyle = `rgba(240,120,65,${alpha})`; ctx.fill()
-      })
-
-      // === APEX PARTICLES ===
-      apexParts.forEach(p => {
-        p.progress += p.speed * speedBoost
-        if (p.progress > 1) p.progress = 0
-        let pos
-        if (p.progress < 0.5) {
-          pos = quad(p.progress * 2, colX, colY, cbMidX, cbMidY, _pbX, _pbY)
-        } else {
-          pos = quad((p.progress - 0.5) * 2, _pbX, _pbY, px(0.94), py(0.48), _paX, _paY)
-        }
-        const r = 2.2 + p.progress * 2.2
-        const alpha = 0.5 + p.progress * 0.45
-        if (p.progress > 0.82) {
-          const g = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 4)
-          g.addColorStop(0, `rgba(250,135,65,${alpha * 0.7})`)
-          g.addColorStop(1, 'rgba(250,135,65,0)')
-          ctx.beginPath(); ctx.arc(pos.x, pos.y, r * 4, 0, Math.PI*2)
-          ctx.fillStyle = g; ctx.fill()
-        }
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2)
-        ctx.fillStyle = `rgba(250,135,65,${alpha})`; ctx.fill()
-      })
-
-      // === RETURN PARTICLES ===
-      returnParts.forEach(p => {
-        p.progress += p.speed
-        if (p.progress > 1) p.progress = 0
-        const pos = quad(p.progress, _paX, _paY, px(0.65), py(0.55), px(0.02), py(0.97))
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, 1.4, 0, Math.PI*2)
-        ctx.fillStyle = `rgba(100,120,215,${0.18 + p.progress * 0.1})`; ctx.fill()
-      })
-
-      animId = requestAnimationFrame(draw)
-    }
-
-    draw()
-    return () => {
-      cancelAnimationFrame(animId)
-      canvas.removeEventListener('mousemove', onMove)
-      canvas.removeEventListener('mouseleave', onLeave)
-    }
-  }, [])
+  function arrowTip(from, to, offset = 14) {
+    const dx = to.x - from.x, dy = to.y - from.y
+    const len = Math.sqrt(dx * dx + dy * dy)
+    return { x: to.x - (dx / len) * offset, y: to.y - (dy / len) * offset }
+  }
 
   return (
-    <canvas ref={canvasRef} aria-hidden="true"
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'all', cursor: 'default' }} />
+    <div style={{ marginTop: 28 }}>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>The Ripple Effect — a virtuous loop</p>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <svg viewBox="0 0 400 400" width="100%" style={{ maxWidth: 340 }} aria-label="Ripple loop diagram">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M1,1 L7,4 L1,7 Z" fill="#F59E0B" opacity="0.7" />
+            </marker>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          {nodes.map((node, i) => {
+            const next = nodes[(i + 1) % nodes.length]
+            return (
+              <g key={`arc-${i}`}>
+                <path d={arcPath(node, next)} fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.35" />
+              </g>
+            )
+          })}
+          <circle cx={cx} cy={cy} r={46} fill="#0d0900" stroke="#2a1800" strokeWidth="0.5" />
+          <text x={cx} y={cy - 8} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">YOUR</text>
+          <text x={cx} y={cy + 6} textAnchor="middle" fill="#F59E0B" fontSize="11" fontWeight="800">CHOICE</text>
+          <text x={cx} y={cy + 20} textAnchor="middle" fill="#555" fontSize="8">ripples outward</text>
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F59E0B" strokeWidth="0.5" opacity="0.1" />
+          {nodes.map((node, i) => (
+            <g key={`node-${i}`} filter="url(#glow)">
+              <circle cx={node.x} cy={node.y} r={nodeR} fill="#0d0d12" stroke={node.color} strokeWidth="1" opacity="0.9" />
+              {node.label.split('\n').map((line, li) => (
+                <text key={li} x={node.x} y={node.y + (li - (node.label.split('\n').length - 1) / 2) * 12}
+                  textAnchor="middle" dominantBaseline="middle" fill={node.color} fontSize="8.5" fontWeight="700">{line}</text>
+              ))}
+            </g>
+          ))}
+        </svg>
+      </div>
+      <p style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>
+        Every conscious purchase breaks the loop of exploitation.<br />
+        <span style={{ color: '#F59E0B', fontWeight: 700 }}>Less exploitation → loops back to you.</span>
+      </p>
+    </div>
   )
 }
 
-// Pyramid component
 function PowerPyramid({ isDark, textColor }) {
   const layers = [
-    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? '#3a0a0a' : '#fee2e2', textFill: '#e05050', subFill: isDark ? '#b06060' : '#b91c1c', pts: '140,10 188,46 92,46' },
-    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? '#2e0808' : '#fecaca', textFill: isDark ? '#e87070' : '#b91c1c', subFill: isDark ? '#8a5858' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
-    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? '#220606' : '#fca5a5', textFill: isDark ? '#cc6868' : '#7f1d1d', subFill: isDark ? '#7a4848' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
-    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
+    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? 'rgba(58,10,10,0.72)' : '#fee2e2', textFill: '#e05050', subFill: isDark ? '#b06060' : '#b91c1c', pts: '140,10 188,46 92,46' },
+    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? 'rgba(46,8,8,0.72)' : '#fecaca', textFill: isDark ? '#e87070' : '#b91c1c', subFill: isDark ? '#8a5858' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
+    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? 'rgba(34,6,6,0.72)' : '#fca5a5', textFill: isDark ? '#cc6868' : '#7f1d1d', subFill: isDark ? '#7a4848' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
+    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? 'rgba(24,4,4,0.72)' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
+    <div style={{
+      borderRadius: 14,
+      padding: '18px 20px 14px',
+      background: isDark ? 'rgba(10,10,10,0.72)' : 'rgba(255,255,255,0.85)',
+      border: `0.5px solid ${isDark ? 'rgba(60,20,20,0.6)' : '#ddd'}`,
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+    }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
-      <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }} role="img" aria-label="Power pyramid: Few own at top, We pay at bottom">
+      <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }} role="img" aria-label="Power pyramid">
         {layers.map((l, i) => (
           <g key={l.label}>
             <polygon points={l.pts} fill={l.fill} stroke={isDark ? '#6a2020' : '#D84B4B'} strokeWidth="1" />
@@ -384,7 +163,7 @@ function PowerPyramid({ isDark, textColor }) {
           </g>
         ))}
       </svg>
-      <div style={{ marginTop: 10, padding: '8px 10px', borderRadius: 8, background: isDark ? '#0d0800' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
+      <div style={{ marginTop: 10, padding: '8px 10px', borderRadius: 8, background: isDark ? 'rgba(13,8,0,0.8)' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, textAlign: 'center' }}>
         <p style={{ fontSize: 13, fontWeight: 800, color: '#F59E0B', lineHeight: 1.5 }}>But change starts small.<br />You + Your choices = Real change</p>
       </div>
     </div>
@@ -397,8 +176,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
   const isDark = theme !== 'light'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const mutedColor = isDark ? '#888' : '#666'
-  const cardBg = isDark ? '#1a1a1f' : '#fff'
-  const borderCol = isDark ? '#222' : '#ddd'
+  const cardBg = isDark ? 'rgba(26,26,31,0.75)' : '#fff'
+  const borderCol = isDark ? 'rgba(40,40,40,0.8)' : '#ddd'
 
   const empires = [
     { badge: 'A1', name: 'Ambani Empire', person: 'Mukesh Ambani', sectors: 'Telecom · Retail · Media · Digital Energy · Fashion · More', group: 'reliance' },
@@ -407,181 +186,225 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
   return (
     <>
-      <section style={{ background: isDark ? '#0B0B0F' : '#f8f8f4', borderBottom: `0.5px solid ${borderCol}`, paddingTop: 48 }}>
-        <div className="max-w-6xl mx-auto px-4">
-          <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
+      {/* SECTION — hero-bg.png spans full width behind everything */}
+      <section style={{ position: 'relative', borderBottom: `0.5px solid ${isDark ? '#222' : '#ddd'}`, paddingTop: 48, overflow: 'hidden' }}>
 
-            {/* LEFT */}
-            <div
+        {/* Full-width background image */}
+        {!empiresOpen && (
+          <>
+            <img
+              src="/hero-bg.png"
+              alt=""
+              aria-hidden="true"
               style={{
-                position: 'relative',
-                overflow: 'hidden',
-                zIndex: 1,
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center bottom',
+                zIndex: 0,
               }}
-            >
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
+            />
+            {/* Top fade — keeps heading text readable over dark part of image */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, rgba(11,11,15,0.72) 0%, rgba(11,11,15,0.38) 40%, rgba(11,11,15,0.55) 75%, rgba(11,11,15,0.88) 100%)',
+              zIndex: 1,
+            }} />
+          </>
+        )}
 
-              <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
-                How do you{' '}
-                <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
-                <span style={{ color: '#D84B4B' }}>Modi</span> silently?
-              </h1>
+        {/* Page background when empiresOpen (no bg image) */}
+        {empiresOpen && (
+          <div style={{ position: 'absolute', inset: 0, background: isDark ? '#0B0B0F' : '#f8f8f4', zIndex: 0 }} />
+        )}
 
-              <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through non-cooperation.</p>
-              <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 28 }}>
-                Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
-                <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
-              </p>
+        {/* All content above bg */}
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <div className="max-w-6xl mx-auto px-4">
+            <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
 
-              {/* BUTTONS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <button onClick={() => setPhilOpen(true)}
-                    style={{ padding: '11px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                    <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
-                    Digital Satyagraha Philosophy
+              {/* ── LEFT COLUMN ── */}
+              <div style={{ position: 'relative' }}>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
+
+                <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: '#F3F4F6' }}>
+                  How do you{' '}
+                  <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
+                  being exploited?
+                </h1>
+
+                <p style={{ fontSize: 15, fontWeight: 700, color: '#F3F4F6', marginBottom: 6 }}>Through your choices. Through alternatives. Through non-cooperation.</p>
+                <p style={{ fontSize: 13, color: 'rgba(243,244,246,0.65)', lineHeight: 1.65, marginBottom: 28 }}>
+                  Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
+                  <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
+                </p>
+
+                {/* BUTTONS */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <button onClick={() => setPhilOpen(true)}
+                      style={{ padding: '11px 12px', background: 'rgba(13,9,0,0.75)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(42,24,0,0.9)', color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                      <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
+                      Digital Satyagraha Philosophy
+                    </button>
+                    <button onClick={() => setStepsOpen(true)}
+                      style={{ padding: '11px 12px', background: 'rgba(26,26,31,0.75)', backdropFilter: 'blur(6px)', border: `0.5px solid ${borderCol}`, color: '#F3F4F6', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                      <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
+                      How It Works
+                    </button>
+                  </div>
+                  <button onClick={() => setEmpiresOpen(e => !e)}
+                    style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.3)' }}>
+                    {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
                   </button>
-                  <button onClick={() => setStepsOpen(true)}
-                    style={{ padding: '11px 12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                    <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
-                    How It Works
-                  </button>
                 </div>
-                {/* Explore Empires — subtle gradient, less height, soft shadow */}
-                <button onClick={() => setEmpiresOpen(e => !e)}
-                  style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.22)' }}>
-                  {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
-                </button>
-              </div>
 
-              {/* STATS ROW — all 3 pills in one line, larger numbers */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 32, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                  <div style={{ display: 'flex' }}>
-                    {[0,1,2].map(i => (
-                      <div key={i} style={{ width: 30, height: 30, borderRadius: '50%', background: isDark ? '#2a2a2a' : '#ddd', border: `2px solid ${isDark ? '#0B0B0F' : '#f4f4f0'}`, marginLeft: i > 0 ? -9 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                        <svg viewBox="0 0 30 30" style={{ width: '100%', height: '100%' }}>
-                          <circle cx="15" cy="11" r="5" fill={isDark ? '#555' : '#aaa'} />
-                          <ellipse cx="15" cy="23" rx="8" ry="6" fill={isDark ? '#555' : '#aaa'} />
-                        </svg>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ flexShrink: 0 }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: '#e8950a', lineHeight: 1 }}>24,382+</div>
-                    <div style={{ fontSize: 9, color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 2 }}>People Taking Action</div>
-                  </div>
-                </div>
-                <div style={{ width: '0.5px', height: 32, background: borderCol, flexShrink: 0 }} />
-                {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
-                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: cardBg, border: `0.5px solid ${borderCol}`, borderRadius: 18, flexShrink: 0 }}>
-                    <span style={{ fontSize: 12 }}>{icon}</span>
+                {/* STATS PILLS */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 28, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: 'rgba(13,9,0,0.72)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(42,24,0,0.8)', borderRadius: 18, flexShrink: 0 }}>
+                    <span style={{ fontSize: 14 }}>✊</span>
                     <div>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: textColor, lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
-                      <div style={{ fontSize: 9, color: mutedColor, whiteSpace: 'nowrap' }}>{sub}</div>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: '#F59E0B', lineHeight: 1, whiteSpace: 'nowrap' }}>Movement Growing</div>
+                      <div style={{ fontSize: 9, color: 'rgba(243,244,246,0.5)', whiteSpace: 'nowrap' }}>Join thousands taking action</div>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* FLOW ANIMATION — bleeds into hero atmosphere */}
-              {!empiresOpen && (
-                <div style={{
-                  position: 'absolute',
-                  left: '-24px',
-                  right: '-20px',
-                  bottom: '-20px',
-                  top: '63%',
-                  pointerEvents: 'none',
-                  zIndex: 0,
-                  overflow: 'visible',
-                }}>
-                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                    <FlowAnimation isDark={isDark} />
-                  </div>
-                </div>
-              )}
-
-              {/* EXPANDED EMPIRES */}
-              {empiresOpen && (
-                <div style={{ marginBottom: 32 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-                    {empires.map(e => (
-                      <EmpireCard key={e.badge} {...e} isDark={isDark}
-                        onClick={() => window.location.href = `/explore/${e.group}`} />
-                    ))}
-                  </div>
-                  <div style={{ background: isDark ? '#111' : '#fff', border: `0.5px solid ${borderCol}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
-                    <span style={{ fontSize: 18, flexShrink: 0 }}>💡</span>
-                    <div>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 3 }}>Their power. Your choices.</p>
-                      <p style={{ fontSize: 11, color: mutedColor, lineHeight: 1.5 }}>Concentration gives control — over prices, news, and choices. This affects your daily life.</p>
-                    </div>
-                  </div>
-                  <div style={{ background: isDark ? '#0d0d0d' : '#f8f8f4', border: `0.5px solid ${borderCol}`, borderRadius: 12, padding: '12px 16px' }}>
-                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>Coming soon</p>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 10 }}>More Empires Being Mapped</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {comingEmpires.map(e => (
-                        <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#666', border: `0.5px solid ${borderCol}` }}>{e}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* RIGHT */}
-            {!empiresOpen && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                {/* Caricatures — enlarged */}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
-                  {[
-                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
-                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
-                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
-                  ].map(c => (
-                    <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
-                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
-                        <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                  <div style={{ width: '0.5px', height: 32, background: 'rgba(255,255,255,0.12)', flexShrink: 0 }} />
+                  {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
+                    <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: 'rgba(26,26,31,0.72)', backdropFilter: 'blur(6px)', border: '0.5px solid rgba(40,40,40,0.8)', borderRadius: 18, flexShrink: 0 }}>
+                      <span style={{ fontSize: 12 }}>{icon}</span>
+                      <div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: '#F3F4F6', lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
+                        <div style={{ fontSize: 9, color: 'rgba(243,244,246,0.5)', whiteSpace: 'nowrap' }}>{sub}</div>
                       </div>
-                      <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
                     </div>
                   ))}
                 </div>
 
-                {/* PYRAMID */}
-                <PowerPyramid isDark={isDark} textColor={textColor} />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* BOTTOM STRIP */}
-        {!empiresOpen && (
-          <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '22px 0' }}>
-            <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-              <div>
-                <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
-                <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
-              </div>
-              <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
-                {[
-                  { num: '812+', label: 'Brands Tracked', color: '#e8950a' },
-                  { num: '2', label: 'Big Empires', color: textColor },
-                  { num: '36+', label: 'Sectors Covered', color: textColor },
-                  { num: '1,245+', label: 'Alternatives Listed', color: '#e8950a' },
-                  { num: '24,382+', label: 'People Taking Action', color: '#c44040' },
-                ].map(s => (
-                  <div key={s.label} style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
-                    <div style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>{s.label}</div>
+                {/* EXPANDED EMPIRES */}
+                {empiresOpen && (
+                  <div style={{ marginBottom: 32 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+                      {empires.map(e => (
+                        <EmpireCard key={e.badge} {...e} isDark={isDark}
+                          onClick={() => window.location.href = `/explore/${e.group}`} />
+                      ))}
+                    </div>
+                    <div style={{ background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
+                      <span style={{ fontSize: 18, flexShrink: 0 }}>💡</span>
+                      <div>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 3 }}>Their power. Your choices.</p>
+                        <p style={{ fontSize: 11, color: mutedColor, lineHeight: 1.5 }}>Concentration gives control — over prices, news, and choices. This affects your daily life.</p>
+                      </div>
+                    </div>
+                    <div style={{ background: isDark ? '#0d0d0d' : '#f8f8f4', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, borderRadius: 12, padding: '12px 16px' }}>
+                      <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>Coming soon</p>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 10 }}>More Empires Being Mapped</p>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {comingEmpires.map(e => (
+                          <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#666', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>{e}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                ))}
+                )}
+
+                {/* JOIN THE MOVEMENT — flows after stats pills, on top of bg image */}
+                {!empiresOpen && (
+                  <div style={{
+                    background: 'rgba(0,0,0,0.55)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '0.5px solid rgba(216,75,75,0.25)',
+                    borderRadius: 16,
+                    padding: '24px 22px 20px',
+                    marginBottom: 36,
+                  }}>
+                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(245,158,11,0.9)', marginBottom: 10 }}>Join the Movement</p>
+                    <p style={{
+                      fontFamily: 'Georgia, serif',
+                      fontSize: 'clamp(28px,4vw,42px)',
+                      fontWeight: 900,
+                      fontStyle: 'italic',
+                      color: '#F3F4F6',
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.5px',
+                      marginBottom: 6,
+                    }}>
+                      Join the<br />
+                      <span style={{ color: '#D84B4B' }}>Movement</span>
+                    </p>
+                    <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.5)', marginBottom: 16 }}>Silent. Non-violent. Consistent.</p>
+                    <Link to="/participate"
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 8,
+                        background: '#D84B4B',
+                        color: '#fff', fontSize: 13, fontWeight: 800,
+                        padding: '13px 24px', borderRadius: 10, textDecoration: 'none',
+                        boxShadow: '0 4px 20px rgba(216,75,75,0.4)',
+                        border: '0.5px solid rgba(255,100,100,0.3)',
+                      }}>
+                      I'll Take Action ✊
+                    </Link>
+                  </div>
+                )}
               </div>
+
+              {/* ── RIGHT COLUMN ── */}
+              {!empiresOpen && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  {/* Caricatures */}
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
+                    {[
+                      { src: '/a1.png', label: 'A1', labelBg: 'rgba(26,26,26,0.8)', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                      { src: '/vg.png', label: 'Modi', labelBg: 'rgba(26,5,5,0.85)', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
+                      { src: '/a2.png', label: 'A2', labelBg: 'rgba(26,26,26,0.8)', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                    ].map(c => (
+                      <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
+                        <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.3)' : '0 4px 16px rgba(0,0,0,0.5)' }}>
+                          <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                        </div>
+                        <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pyramid — semi-transparent so bg shows through */}
+                  <PowerPyramid isDark={isDark} textColor={textColor} />
+                </div>
+              )}
+
             </div>
           </div>
-        )}
+
+          {/* BOTTOM STATS STRIP */}
+          {!empiresOpen && (
+            <div style={{ borderTop: `0.5px solid rgba(255,255,255,0.08)`, marginTop: 0, padding: '22px 0', background: 'rgba(11,11,15,0.85)', backdropFilter: 'blur(8px)' }}>
+              <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+                <div>
+                  <p style={{ fontSize: 20, fontWeight: 900, color: '#F3F4F6', lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
+                  <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
+                </div>
+                <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
+                  {[
+                    { num: '81+', label: 'Brands Tracked', color: '#e8950a' },
+                    { num: '2', label: 'Big Empires', color: '#F3F4F6' },
+                    { num: '15', label: 'Sectors Covered', color: '#F3F4F6' },
+                    { num: '75+', label: 'Alternatives Listed', color: '#e8950a' },
+                    { num: '✊', label: 'Movement Growing', color: '#c44040' },
+                  ].map(s => (
+                    <div key={s.label} style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: 22, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(243,244,246,0.5)', marginTop: 4 }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* PHILOSOPHY MODAL */}
@@ -658,6 +481,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             </div>
           ))}
         </div>
+        <RippleLoopDiagram />
       </CenteredModal>
 
       <style>{`

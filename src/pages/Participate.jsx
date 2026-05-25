@@ -15,7 +15,7 @@ export default function Participate() {
   const [submitted, setSubmitted] = useState(false)
 
   const total = Object.values(checked).filter(Boolean).length
-  const counter = 24382 + total
+  const counter = 'Movement Growing'
 
   return (
     <main>
@@ -34,9 +34,9 @@ export default function Participate() {
           className="rounded-2xl p-6 text-center mb-8"
           style={{ background: '#0d0800', border: '0.5px solid #2a1800' }}
         >
-          <p className="text-xs font-bold text-amber/60 uppercase tracking-widest mb-2">People Participating</p>
-          <p className="text-5xl font-black text-amber tracking-tighter">{counter.toLocaleString('en-IN')}+</p>
-          <p className="text-xs text-amber/40 mt-2">and growing every day</p>
+          <p className="text-xs font-bold text-amber/60 uppercase tracking-widest mb-2">Movement Growing</p>
+          <p className="text-4xl font-black text-amber tracking-tighter">✊ Join Us</p>
+          <p className="text-xs text-amber/40 mt-2">thousands taking silent action every day</p>
         </div>
 
         {/* Steps */}
