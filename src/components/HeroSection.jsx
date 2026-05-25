@@ -64,13 +64,166 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
   )
 }
 
+
+// Cinematic flow animation — spending flowing upward into concentrated power
+function FlowAnimation({ isDark }) {
+  const canvasRef = React.useRef(null)
+  React.useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    let animId
+    const W = canvas.offsetWidth
+    const H = canvas.offsetHeight
+    canvas.width = W
+    canvas.height = H
+
+    // Spending icons as simple glyphs
+    const icons = ['₹', '🛒', '📶', '⛽', '📱', '🛍️', '💊', '📺']
+
+    // Particles: originate bottom-left, flow toward top-right (pyramid apex)
+    const particles = Array.from({ length: 38 }, (_, i) => ({
+      x: Math.random() * W * 0.55,
+      y: H * 0.4 + Math.random() * H * 0.6,
+      targetX: W * 0.82 + Math.random() * 20,
+      targetY: 20 + Math.random() * 30,
+      progress: Math.random(),
+      speed: 0.0008 + Math.random() * 0.0012,
+      icon: icons[Math.floor(Math.random() * icons.length)],
+      showIcon: i < 10,
+      opacity: 0.08 + Math.random() * 0.18,
+      size: 1.2 + Math.random() * 1.4,
+      trail: [],
+      returning: Math.random() < 0.06, // only 6% return
+    }))
+
+    // Stream lines — thin paths from bottom-left to top-right
+    const streams = Array.from({ length: 12 }, (_, i) => {
+      const startX = W * 0.05 + (i / 12) * W * 0.5
+      const startY = H * 0.7 + Math.random() * H * 0.28
+      const midX = W * 0.35 + Math.random() * W * 0.2
+      const midY = H * 0.3 + Math.random() * H * 0.2
+      const endX = W * 0.78 + Math.random() * W * 0.08
+      const endY = H * 0.06 + Math.random() * H * 0.08
+      return { startX, startY, midX, midY, endX, endY, opacity: 0.04 + Math.random() * 0.06 }
+    })
+
+    function getBezierPoint(t, sx, sy, mx, my, ex, ey) {
+      const mt = 1 - t
+      return {
+        x: mt * mt * sx + 2 * mt * t * mx + t * t * ex,
+        y: mt * mt * sy + 2 * mt * t * my + t * t * ey,
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H)
+
+      // Draw stream paths
+      streams.forEach(s => {
+        ctx.beginPath()
+        ctx.moveTo(s.startX, s.startY)
+        ctx.quadraticCurveTo(s.midX, s.midY, s.endX, s.endY)
+        ctx.strokeStyle = `rgba(180, 60, 60, ${s.opacity})`
+        ctx.lineWidth = 0.6
+        ctx.stroke()
+      })
+
+      // Draw particles along bezier paths
+      particles.forEach(p => {
+        p.progress += p.speed
+        if (p.progress > 1) {
+          p.progress = 0
+          p.x = Math.random() * W * 0.55
+          p.y = H * 0.4 + Math.random() * H * 0.6
+        }
+
+        const stream = streams[Math.floor(Math.random() * streams.length) % streams.length]
+        let pos
+        if (p.returning) {
+          // Small weak return flow — goes downward
+          pos = getBezierPoint(
+            p.progress,
+            W * 0.82, H * 0.08,
+            W * 0.6, H * 0.4,
+            W * 0.1 + Math.random() * 0.1 * W, H * 0.9
+          )
+        } else {
+          pos = getBezierPoint(
+            p.progress,
+            stream.startX, stream.startY,
+            stream.midX, stream.midY,
+            stream.endX, stream.endY
+          )
+        }
+
+        // Particle gets brighter and smaller as it approaches apex
+        const proximityToApex = 1 - p.progress
+        const glowIntensity = p.returning ? 0.06 : (0.1 + p.progress * 0.25)
+        const alpha = p.opacity * glowIntensity * (p.returning ? 0.3 : 1)
+        const r = p.returning ? p.size * 0.6 : p.size * (0.6 + p.progress * 0.5)
+
+        // Glow
+        if (!p.returning && p.progress > 0.7) {
+          const grd = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 4)
+          grd.addColorStop(0, `rgba(200, 100, 60, ${alpha * 0.8})`)
+          grd.addColorStop(1, `rgba(200, 100, 60, 0)`)
+          ctx.beginPath()
+          ctx.arc(pos.x, pos.y, r * 4, 0, Math.PI * 2)
+          ctx.fillStyle = grd
+          ctx.fill()
+        }
+
+        // Dot
+        ctx.beginPath()
+        ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2)
+        ctx.fillStyle = p.returning
+          ? `rgba(100, 100, 200, ${alpha})`
+          : `rgba(${180 + p.progress * 40}, ${60 + p.progress * 20}, ${40}, ${alpha})`
+        ctx.fill()
+
+        // Icon label for first few particles at low progress
+        if (p.showIcon && p.progress < 0.3) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 1.5})`
+          ctx.font = `${8 + p.progress * 4}px sans-serif`
+          ctx.fillText(p.icon, pos.x + r + 1, pos.y + 3)
+        }
+      })
+
+      // Apex convergence glow
+      const apexX = W * 0.82
+      const apexY = H * 0.07
+      const grd = ctx.createRadialGradient(apexX, apexY, 0, apexX, apexY, 18)
+      grd.addColorStop(0, 'rgba(210, 90, 50, 0.22)')
+      grd.addColorStop(0.5, 'rgba(180, 60, 40, 0.08)')
+      grd.addColorStop(1, 'rgba(180, 60, 40, 0)')
+      ctx.beginPath()
+      ctx.arc(apexX, apexY, 18, 0, Math.PI * 2)
+      ctx.fillStyle = grd
+      ctx.fill()
+
+      animId = requestAnimationFrame(draw)
+    }
+
+    draw()
+    return () => cancelAnimationFrame(animId)
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', opacity: 0.85 }}
+    />
+  )
+}
+
 // Pyramid component
 function PowerPyramid({ isDark, textColor }) {
   const layers = [
-    { label: 'FEW OWN', sub: 'Most companies', fill: isDark ? '#2a0808' : '#fee2e2', textFill: '#D84B4B', subFill: isDark ? '#a05050' : '#b91c1c', pts: '140,10 188,46 92,46' },
-    { label: 'FEW CONTROL', sub: 'Media & narrative', fill: isDark ? '#1f0808' : '#fecaca', textFill: isDark ? '#e07070' : '#b91c1c', subFill: isDark ? '#7a5050' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
-    { label: 'FEW DECIDE', sub: 'Policies & resources', fill: isDark ? '#160505' : '#fca5a5', textFill: isDark ? '#c06060' : '#7f1d1d', subFill: isDark ? '#6a4040' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
-    { label: 'WE PAY', sub: 'Higher prices, fewer choices', fill: isDark ? '#0d0303' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ccc' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
+    { label: 'THEY OWN MARKETS', sub: 'System structure', fill: isDark ? '#2a0808' : '#fee2e2', textFill: '#D84B4B', subFill: isDark ? '#a05050' : '#b91c1c', pts: '140,10 188,46 92,46' },
+    { label: 'THEY SHAPE NARRATIVES', sub: 'Media & information', fill: isDark ? '#1f0808' : '#fecaca', textFill: isDark ? '#e07070' : '#b91c1c', subFill: isDark ? '#7a5050' : '#991b1b', pts: '92,46 188,46 208,86 72,86' },
+    { label: 'THEY INFLUENCE GOVT', sub: 'Policy & resources', fill: isDark ? '#160505' : '#fca5a5', textFill: isDark ? '#c06060' : '#7f1d1d', subFill: isDark ? '#6a4040' : '#7f1d1d', pts: '72,86 208,86 228,126 52,126' },
+    { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#0d0303' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ccc' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
     <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
@@ -177,6 +330,13 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   </div>
                 ))}
               </div>
+
+              {/* FLOW ANIMATION — cinematic background */}
+              {!empiresOpen && (
+                <div style={{ position: 'relative', height: 120, marginBottom: 0, marginTop: -8, overflow: 'hidden' }}>
+                  <FlowAnimation isDark={isDark} />
+                </div>
+              )}
 
               {/* EXPANDED EMPIRES */}
               {empiresOpen && (
