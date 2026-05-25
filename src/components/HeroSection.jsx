@@ -122,7 +122,7 @@ function PowerPyramid({ isDark }) {
     { label: 'YOU FUND IT EVERY DAY', sub: 'Every rupee. Every purchase.', fill: isDark ? '#180404' : '#f87171', textFill: isDark ? '#F3F4F6' : '#fff', subFill: isDark ? '#ddd' : '#fee2e2', pts: '52,126 228,126 254,170 16,170' },
   ]
   return (
-    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}` }}>
+    <div style={{ borderRadius: 14, padding: '18px 20px 14px', background: isDark ? '#111' : '#fff', border: `0.5px solid ${isDark ? '#222' : '#ddd'}`, height: '100%', boxSizing: 'border-box' }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#888', marginBottom: 14, textAlign: 'center' }}>Today, power looks like this</p>
       <svg viewBox="0 0 270 180" style={{ width: '100%', height: 'auto' }}>
         {layers.map((l, i) => (
@@ -158,11 +158,49 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
     <>
       <section style={{ background: isDark ? '#0B0B0F' : '#f8f8f4', borderBottom: `0.5px solid ${borderCol}`, paddingTop: 48 }}>
         <div className="max-w-6xl mx-auto px-4">
-          <div style={{ display: 'grid', gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr', gap: 40, alignItems: 'start' }} className="hero-grid">
+
+          {/* HERO GRID — position relative so bg image can be absolute behind both columns */}
+          <div
+            className="hero-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr',
+              gap: 40,
+              alignItems: 'stretch',
+              position: 'relative',
+            }}
+          >
+            {/* BG IMAGE — sits behind both columns, from left edge to right edge of grid */}
+            {!empiresOpen && (
+              <>
+                <img
+                  src="/hero-bg.png"
+                  alt=""
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center center',
+                    zIndex: 0,
+                    borderRadius: 0,
+                  }}
+                />
+                {/* Overlay — dark at top so heading text is readable, lighter in middle to show image */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 1,
+                  background: 'linear-gradient(to bottom, rgba(11,11,15,0.92) 0%, rgba(11,11,15,0.65) 45%, rgba(11,11,15,0.75) 100%)',
+                }} />
+              </>
+            )}
 
             {/* ── LEFT COLUMN ── */}
-            <div>
-              {/* TOP HALF — plain dark bg, heading + buttons */}
+            <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column' }}>
+
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
 
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
@@ -181,12 +219,12 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   <button onClick={() => setPhilOpen(true)}
-                    style={{ padding: '11px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    style={{ padding: '11px 12px', background: isDark ? 'rgba(13,9,0,0.8)' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                     <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
                     Digital Satyagraha Philosophy
                   </button>
                   <button onClick={() => setStepsOpen(true)}
-                    style={{ padding: '11px 12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    style={{ padding: '11px 12px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                     <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
                     How It Works
                   </button>
@@ -198,8 +236,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               </div>
 
               {/* STATS PILLS */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 0, paddingTop: 8, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, borderRadius: 18, flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: isDark ? 'rgba(13,9,0,0.8)' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, borderRadius: 18, flexShrink: 0 }}>
                   <span style={{ fontSize: 14 }}>✊</span>
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 800, color: '#F59E0B', lineHeight: 1, whiteSpace: 'nowrap' }}>Movement Growing</div>
@@ -208,7 +246,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 </div>
                 <div style={{ width: '0.5px', height: 32, background: borderCol, flexShrink: 0 }} />
                 {[['🕊️', 'Silent', 'Non-violent'], ['✊', 'Consistent', 'Non-cooperation'], ['🇮🇳', 'India First', 'People First']].map(([icon, bold, sub]) => (
-                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: cardBg, border: `0.5px solid ${borderCol}`, borderRadius: 18, flexShrink: 0 }}>
+                  <div key={bold} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, borderRadius: 18, flexShrink: 0 }}>
                     <span style={{ fontSize: 12 }}>{icon}</span>
                     <div>
                       <div style={{ fontSize: 11, fontWeight: 700, color: textColor, lineHeight: 1, whiteSpace: 'nowrap' }}>{bold}</div>
@@ -246,104 +284,68 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 </div>
               )}
 
-              {/* BOTTOM HALF — hero-bg.png block with Join the Movement overlay */}
+              {/* JOIN THE MOVEMENT — grows to fill remaining vertical space */}
               {!empiresOpen && (
                 <div style={{
-                  position: 'relative',
-                  marginTop: 20,
-                  borderRadius: 16,
-                  overflow: 'hidden',
-                  minHeight: 280,
-                  marginBottom: 32,
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  paddingTop: 32,
+                  paddingBottom: 32,
                 }}>
-                  {/* bg image */}
-                  <img
-                    src="/hero-bg.png"
-                    alt=""
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center center',
-                    }}
-                  />
-                  {/* dark overlay so text is readable */}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.4) 100%)',
-                  }} />
-
-                  {/* Join the Movement — centered on image */}
-                  <div style={{
-                    position: 'relative',
-                    zIndex: 1,
-                    height: '100%',
-                    minHeight: 280,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
-                    padding: '32px 24px',
-                    gap: 4,
+                  <p style={{
+                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontSize: 'clamp(36px, 4vw, 52px)',
+                    fontWeight: 700,
+                    fontStyle: 'italic',
+                    color: '#F3F4F6',
+                    lineHeight: 1.05,
+                    textShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                    margin: 0,
                   }}>
-                    <p style={{
-                      fontFamily: 'Georgia, "Times New Roman", serif',
-                      fontSize: 'clamp(36px, 5vw, 52px)',
-                      fontWeight: 700,
-                      fontStyle: 'italic',
+                    Join the
+                  </p>
+                  <p style={{
+                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontSize: 'clamp(44px, 5.5vw, 66px)',
+                    fontWeight: 900,
+                    fontStyle: 'italic',
+                    color: '#D84B4B',
+                    lineHeight: 1.0,
+                    textShadow: '0 2px 24px rgba(216,75,75,0.6)',
+                    margin: 0,
+                    marginBottom: 24,
+                  }}>
+                    Movement
+                  </p>
+                  <Link to="/participate"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      background: 'transparent',
                       color: '#F3F4F6',
-                      lineHeight: 1.05,
-                      letterSpacing: '-0.5px',
-                      textShadow: '0 2px 16px rgba(0,0,0,0.8)',
-                      margin: 0,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      padding: '12px 32px',
+                      borderRadius: 10,
+                      textDecoration: 'none',
+                      border: '1.5px solid rgba(243,244,246,0.65)',
+                      boxShadow: '0 2px 16px rgba(0,0,0,0.5)',
+                      letterSpacing: '0.3px',
                     }}>
-                      Join the
-                    </p>
-                    <p style={{
-                      fontFamily: 'Georgia, "Times New Roman", serif',
-                      fontSize: 'clamp(42px, 6vw, 62px)',
-                      fontWeight: 900,
-                      fontStyle: 'italic',
-                      color: '#D84B4B',
-                      lineHeight: 1.0,
-                      letterSpacing: '-1px',
-                      textShadow: '0 2px 20px rgba(216,75,75,0.5)',
-                      margin: 0,
-                      marginBottom: 20,
-                    }}>
-                      Movement
-                    </p>
-                    <Link to="/participate"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        background: 'transparent',
-                        color: '#F3F4F6',
-                        fontSize: 14,
-                        fontWeight: 700,
-                        padding: '12px 28px',
-                        borderRadius: 10,
-                        textDecoration: 'none',
-                        border: '1.5px solid rgba(243,244,246,0.6)',
-                        boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
-                        letterSpacing: '0.2px',
-                      }}>
-                      I'll Take Action ✊
-                    </Link>
-                  </div>
+                    I'll Take Action ✊
+                  </Link>
                 </div>
               )}
             </div>
 
-            {/* ── RIGHT COLUMN — plain dark bg, caricatures + pyramid ── */}
+            {/* ── RIGHT COLUMN ── caricatures + pyramid, also above bg */}
             {!empiresOpen && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 20 }}>
                 {/* Caricatures */}
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
                   {[
@@ -360,8 +362,10 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   ))}
                 </div>
 
-                {/* Pyramid — solid dark, same as original */}
-                <PowerPyramid isDark={isDark} />
+                {/* Pyramid — flexGrow so it fills remaining height matching left column */}
+                <div style={{ flexGrow: 1 }}>
+                  <PowerPyramid isDark={isDark} />
+                </div>
               </div>
             )}
 
@@ -438,7 +442,6 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
           ))}
         </div>
         <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>05 — Economic Non-Cooperation</p>
-        <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 8 }}>Concentration of corporate power is not fixed. It grows with every subscription renewed, every app kept, every purchase unreflected on.</p>
         <p style={{ fontSize: 12, color: 'rgba(243,244,246,0.7)', lineHeight: 1.75, marginBottom: 20 }}><strong style={{ color: '#F3F4F6' }}>Economic Non-Cooperation</strong> means redirecting small amounts of everyday spending toward alternatives — cooperatives, local businesses, open-source tools, government services. Not all at once. One step at a time.</p>
         <div style={{ padding: '14px 16px', borderLeft: '2px solid #F59E0B', borderRadius: '0 10px 10px 0', background: '#080600', marginBottom: 12 }}>
           <p style={{ fontSize: 13, color: '#8a7a50', lineHeight: 1.8, fontStyle: 'italic' }}>"Be the change without shouting.<br />This is how India wins back its future.<br /><strong style={{ color: '#F59E0B' }}>One choice at a time."</strong></p>
