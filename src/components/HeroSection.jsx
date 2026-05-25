@@ -124,7 +124,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             <div>
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#D84B4B', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
-                How can you stop <span style={{ color: '#D84B4B' }}>Vishwaguru</span> silently?
+                How do you <span style={{ color: '#F59E0B', fontStyle: 'normal' }}>RESIST</span> <span style={{ color: '#D84B4B' }}>Modi</span> silently?
               </h1>
               <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through non-cooperation.</p>
               <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 24 }}>
@@ -138,12 +138,12 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   <button onClick={() => setPhilOpen(true)}
                     style={{ padding: '12px', background: isDark ? '#0d0900' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, color: '#F59E0B', fontSize: 12, fontWeight: 700, borderRadius: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                     <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 14 }} />
-                    Satyagraha Philosophy
+                    Digital Satyagraha Philosophy
                   </button>
                   <button onClick={() => setStepsOpen(true)}
                     style={{ padding: '12px', background: cardBg, border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                     <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 14 }} />
-                    Steps to Disconnect
+                    How It Works
                   </button>
                 </div>
                 <button onClick={() => setEmpiresOpen(e => !e)}
@@ -340,7 +340,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
       {/* STEPS MODAL */}
       <CenteredModal open={stepsOpen} onClose={() => setStepsOpen(false)}>
-        <h2 style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', color: '#F3F4F6', marginBottom: 4 }}>Steps to Disconnect</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', color: '#F3F4F6', marginBottom: 4 }}>How It Works</h2>
         <p style={{ fontSize: 12, color: '#666', marginBottom: 20 }}>Know → Explore → Choose → Act → Spread</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {disconnectSteps.map(s => (
