@@ -9,7 +9,7 @@ export default function Navbar({ theme, toggleTheme, closeEmpires }) {
   const bg = isDark ? 'rgba(11,11,15,0.97)' : 'rgba(244,244,240,0.97)'
   const border = isDark ? '#222' : '#ddd'
   const textColor = isDark ? '#F3F4F6' : '#111'
-  const muted = isDark ? '#777' : '#999'
+  const muted = isDark ? '#aaa' : '#666'
 
   const links = [
     { to: '/', label: 'Home' },

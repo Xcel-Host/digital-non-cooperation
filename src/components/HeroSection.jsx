@@ -122,7 +122,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
             {/* LEFT */}
             <div>
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#D84B4B', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#c44040', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
               <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
                 How do you <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '0 6px', borderRadius: 4 }}>RESIST</span> <span style={{ color: '#D84B4B' }}>Modi</span> silently?
               </h1>
@@ -147,13 +147,13 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   </button>
                 </div>
                 <button onClick={() => setEmpiresOpen(e => !e)}
-                  style={{ width: '100%', padding: '14px 20px', background: '#D84B4B', color: '#fff', fontSize: 14, fontWeight: 800, borderRadius: 12, border: 'none', cursor: 'pointer' }}>
+                  style={{ width: '100%', padding: '11px 20px', background: 'linear-gradient(135deg, #c94444 0%, #D84B4B 50%, #c94444 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', boxShadow: '0 4px 16px rgba(216,75,75,0.25)' }}>
                   {empiresOpen ? 'Close Empires ↑' : 'Explore Empires →'}
                 </button>
               </div>
 
               {/* STATS ROW — 3 pills all in one row, no wrapping */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 32, flexWrap: 'nowrap', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 32, paddingTop: 20, flexWrap: 'nowrap', overflow: 'hidden' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                   <div style={{ display: 'flex' }}>
                     {[0,1,2].map(i => (
@@ -166,8 +166,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     ))}
                   </div>
                   <div style={{ flexShrink: 0 }}>
-                    <div style={{ fontSize: 15, fontWeight: 900, color: '#F59E0B', lineHeight: 1 }}>24,382+</div>
-                    <div style={{ fontSize: 8, color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.5px' }}>People Taking Action</div>
+                    <div style={{ fontSize: 20, fontWeight: 900, color: '#F59E0B', lineHeight: 1 }}>24,382+</div>
+                    <div style={{ fontSize: 9, color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 2 }}>People Taking Action</div>
                   </div>
                 </div>
                 <div style={{ width: '0.5px', height: 28, background: borderCol, flexShrink: 0 }} />
@@ -217,9 +217,9 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 20, padding: '20px 0 0' }}>
                   {[
-                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 88, border: '1.5px solid #2a2a2a' },
-                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 112, border: '3px solid #D84B4B', mb: 8 },
-                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 88, border: '1.5px solid #2a2a2a' },
+                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 104, border: '1.5px solid #2a2a2a' },
+                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 136, border: '2.5px solid #D84B4B', mb: 12 },
+                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 104, border: '1.5px solid #2a2a2a' },
                   ].map(c => (
                     <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: c.mb || 0 }}>
                       <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111' }}>
@@ -262,11 +262,11 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               </div>
               <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                 {[
-                  { num: '812+', label: 'Brands Tracked', color: '#F59E0B' },
+                  { num: '812+', label: 'Brands Tracked', color: '#d4920a' },
                   { num: '2', label: 'Big Empires', color: textColor },
                   { num: '36+', label: 'Sectors Covered', color: textColor },
-                  { num: '1,245+', label: 'Alternatives Listed', color: '#F59E0B' },
-                  { num: '24,382+', label: 'People Taking Action', color: '#D84B4B' },
+                  { num: '1,245+', label: 'Alternatives Listed', color: '#d4920a' },
+                  { num: '24,382+', label: 'People Taking Action', color: '#c44040' },
                 ].map(s => (
                   <div key={s.label} style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: 20, fontWeight: 900, color: s.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{s.num}</div>

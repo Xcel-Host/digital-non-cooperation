@@ -19,8 +19,8 @@ export default function Footer({ theme }) {
   ]
 
   return (
-    <footer style={{ background: bg, borderTop: `0.5px solid ${border}`, padding: '14px 0' }}>
-      <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px 12px' }}>
+    <footer style={{ background: bg, borderTop: `0.5px solid ${border}`, padding: '20px 0' }}>
+      <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px 16px' }}>
 
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 5, textDecoration: 'none', flexShrink: 0 }}>

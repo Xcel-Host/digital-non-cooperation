@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { stats, trendingSearches } from '../data'
+import { stats } from '../data'
+const trendingSearches = ['Jio', 'NDTV', 'Fortune', 'Adani Power', 'AJIO', 'JioHotstar', 'Campa Cola', 'Mumbai Airport', 'Ambuja Cement', 'JioMart']
 import { reliance } from '../data/reliance'
 import { adani } from '../data/adani'
 
@@ -82,7 +83,7 @@ export default function SearchSection({ theme }) {
   }
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-6">
+    <section className="max-w-6xl mx-auto px-4 pt-4 pb-3">
       {/* Search bar */}
       <form onSubmit={handleSubmit} className="relative flex gap-2 mb-4">
         <div
@@ -152,7 +153,7 @@ export default function SearchSection({ theme }) {
       </form>
 
       {/* Trending */}
-      <div className="flex flex-wrap items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-4 overflow-x-auto hide-scrollbar">
         <span className="text-xs font-semibold text-muted">Trending:</span>
         {trendingSearches.map(t => (
           <button key={t} onClick={() => handleSearch(t)}
