@@ -595,9 +595,9 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
           </div>
 
           {/* Ripple flow with SVG rails */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', padding: '0 20px 0 20px' }}>
             <svg
-              viewBox="0 0 492 1050"
+              viewBox="0 0 452 1050"
               preserveAspectRatio="none"
               style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1 }}
             >
@@ -611,10 +611,10 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   <stop offset="100%" stopColor="#ff3d3d"/>
                 </linearGradient>
               </defs>
-              {/* LEFT rail — near the circles */}
-              <path className="hiw-left" d="M 42 20 Q 8 80 10 300 L 10 780 Q 10 980 80 1020"/>
-              {/* RIGHT rail — far right of modal */}
-              <path className="hiw-right" d="M 450 20 Q 484 80 482 300 L 482 780 Q 482 980 412 1020"/>
+              {/* LEFT rail — to the left of circles */}
+              <path className="hiw-left" d="M 8 20 Q 2 80 4 300 L 4 780 Q 4 980 60 1020"/>
+              {/* RIGHT rail — far right */}
+              <path className="hiw-right" d="M 444 20 Q 450 80 448 300 L 448 780 Q 448 980 392 1020"/>
             </svg>
 
             <div className="hiw-container" style={{ position:'relative', zIndex:2 }}>
