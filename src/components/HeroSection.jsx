@@ -594,55 +594,106 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             ))}
           </div>
 
-          {/* Ripple flow with SVG rails */}
-          <div style={{ position: 'relative', padding: '0 20px 0 20px' }}>
+          {/* Ripple flow */}
+          <div style={{ position: 'relative', padding: '0 0 40px 0' }}>
+
+            {/* LEFT vertical dashed rail */}
+            <div style={{
+              position: 'absolute',
+              left: 26,
+              top: 26,
+              bottom: 60,
+              width: 0,
+              borderLeft: '2.5px dashed',
+              borderImage: 'linear-gradient(to bottom, #ffb800, #ff3d3d) 1',
+              zIndex: 0,
+            }} />
+
+            {/* RIGHT vertical dashed rail */}
+            <div style={{
+              position: 'absolute',
+              right: 0,
+              top: 26,
+              bottom: 60,
+              width: 0,
+              borderLeft: '2.5px dashed',
+              borderImage: 'linear-gradient(to bottom, #ffb800, #ff3d3d) 1',
+              zIndex: 0,
+            }} />
+
+            {/* Bottom curve connecting both rails */}
             <svg
-              viewBox="0 0 452 1050"
-              preserveAspectRatio="none"
-              style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1 }}
+              viewBox="0 0 100 50"
+              style={{ position: 'absolute', bottom: 10, left: 14, right: 0, width: 'calc(100% - 14px)', height: 50, overflow: 'visible', zIndex: 0 }}
             >
               <defs>
-                <linearGradient id="hiwLeft" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#ffb800"/>
-                  <stop offset="100%" stopColor="#ff3d3d"/>
-                </linearGradient>
-                <linearGradient id="hiwRight" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#ffb800"/>
+                <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#ff3d3d"/>
                   <stop offset="100%" stopColor="#ff3d3d"/>
                 </linearGradient>
               </defs>
-              {/* LEFT rail — to the left of circles */}
-              <path className="hiw-left" d="M 8 20 Q 2 80 4 300 L 4 780 Q 4 980 60 1020"/>
-              {/* RIGHT rail — far right */}
-              <path className="hiw-right" d="M 444 20 Q 450 80 448 300 L 448 780 Q 448 980 392 1020"/>
+              <path
+                d="M 2 0 Q 2 40 50 40 Q 98 40 98 0"
+                fill="none"
+                stroke="#ff3d3d"
+                strokeWidth="2.5"
+                strokeDasharray="8 6"
+                opacity="0.65"
+              />
             </svg>
 
-            <div className="hiw-container" style={{ position:'relative', zIndex:2 }}>
+            {/* Steps */}
+            <div style={{ position: 'relative', zIndex: 2 }}>
               {[
-                {c:'c-orange',e:'🛒',t:'Choose alternatives',d:'One switch. One kirana. One search before you buy.'},
-                {c:'c-red',e:'📉',t:'Monopolies weaken',d:'They lose money, market share and control.'},
-                {c:'c-pink',e:'🏪',t:'Local businesses survive',d:'Local shops, services and brands get breathing space.'},
-                {c:'c-purple',e:'👥',t:'Others copy you',d:'Your choice inspires others in your circle.'},
-                {c:'c-blue',e:'📢',t:'Non-cooperation spreads',d:'Millions of small acts build a movement.'},
-                {c:'c-cyan',e:'📺',t:'Less control over media & narratives',d:'Their grip on stories and public mindshare weakens.'},
-                {c:'c-green',e:'💰',t:'Less funding to political parties',d:'Ruling parties like BJP get less corporate funding.'},
-                {c:'c-yellow',e:'👑',t:'Personality cults weaken',d:'"Vishwaguru" image loses power and influence.'},
-                {c:'c-teal',e:'⚖️',t:'Power becomes accountable',d:'Leaders think twice. Policies become people-focused.'},
-                {c:'c-cyan',e:'🔁',t:'Money returns locally',d:'Wealth stays in communities, not in distant corporations.'},
-                {c:'c-orange',e:'✊',t:'Citizens gain leverage',d:'People gain real power. Democracy gets stronger.'},
+                {c:'#ffae00',e:'🛒',t:'Choose alternatives',d:'One switch. One kirana. One search before you buy.'},
+                {c:'#ff4d4d',e:'📉',t:'Monopolies weaken',d:'They lose money, market share and control.'},
+                {c:'#ff4fa8',e:'🏪',t:'Local businesses survive',d:'Local shops, services and brands get breathing space.'},
+                {c:'#b14dff',e:'👥',t:'Others copy you',d:'Your choice inspires others in your circle.'},
+                {c:'#5b7dff',e:'📢',t:'Non-cooperation spreads',d:'Millions of small acts build a movement.'},
+                {c:'#1ad6ff',e:'📺',t:'Less control over media & narratives',d:'Their grip on stories and public mindshare weakens.'},
+                {c:'#45ff59',e:'💰',t:'Less funding to political parties',d:'Ruling parties like BJP get less corporate funding.'},
+                {c:'#ffd400',e:'👑',t:'Personality cults weaken',d:'"Vishwaguru" image loses power and influence.'},
+                {c:'#49ffcb',e:'⚖️',t:'Power becomes accountable',d:'Leaders think twice. Policies become people-focused.'},
+                {c:'#1ad6ff',e:'🔁',t:'Money returns locally',d:'Wealth stays in communities, not in distant corporations.'},
+                {c:'#ffae00',e:'✊',t:'Citizens gain leverage',d:'People gain real power. Democracy gets stronger.'},
               ].map((s, i, arr) => (
-                <div key={i} className="hiw-step">
-                  <div className={`hiw-circle ${s.c}`}>{s.e}</div>
-                  <div className="hiw-content">
-                    <h2 className={s.c}>{s.t}</h2>
-                    <p>{s.d}</p>
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                    {/* Circle */}
+                    <div style={{
+                      width: 52, height: 52, borderRadius: '50%',
+                      border: `2.5px solid ${s.c}`,
+                      background: 'rgba(255,255,255,0.02)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 22, flexShrink: 0,
+                      boxShadow: `0 0 14px ${s.c}55`,
+                      position: 'relative', zIndex: 2,
+                    }}>
+                      {s.e}
+                    </div>
+                    {/* Text */}
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 800, color: s.c, marginBottom: 2, lineHeight: 1.2 }}>{s.t}</p>
+                      <p style={{ fontSize: 11, color: '#999', lineHeight: 1.5 }}>{s.d}</p>
+                    </div>
                   </div>
-                  {i < arr.length - 1 && <div className="hiw-connector"/>}
+                  {/* Dashed downward arrow between steps */}
+                  {i < arr.length - 1 && (
+                    <div style={{
+                      marginLeft: 22,
+                      display: 'flex', flexDirection: 'column', alignItems: 'center',
+                      gap: 1, padding: '2px 0',
+                    }}>
+                      {[...Array(3)].map((_, di) => (
+                        <div key={di} style={{ width: 2, height: 4, background: 'rgba(255,255,255,0.3)', borderRadius: 1 }} />
+                      ))}
+                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 8, lineHeight: 1 }}>▼</div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-
           <div className="hiw-bottom">
             <h3>❤️ Every act counts. Together, we change the system.</h3>
             <p>Less exploitation • More freedom • Real democracy</p>
