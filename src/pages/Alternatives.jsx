@@ -64,7 +64,7 @@ export default function Alternatives() {
     <main>
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">Alternatives</h1>
-        <p className="text-sm text-muted mb-6">
+        <p className="text-sm text-[#aaa] mb-6">
           Real alternatives. Named brands. Available in India. Reduce monopoly dependency one choice at a time.
         </p>
 
@@ -77,7 +77,7 @@ export default function Alternatives() {
               className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-xl transition-all"
               style={activeTab === tab
                 ? { background: '#D84B4B', color: '#fff', border: '0.5px solid #D84B4B' }
-                : { background: '#161616', color: '#666', border: '0.5px solid #1e1e1e' }
+                : { background: '#161616', color: '#aaa', border: '0.5px solid #1e1e1e' }
               }
             >
               {tab}
@@ -109,7 +109,7 @@ export default function Alternatives() {
                     >
                       {item.isAdani ? 'A2' : 'A1'}
                     </span>
-                    <span className="text-xs text-muted">{item.sector}</span>
+                    <span className="text-xs text-[#aaa]">{item.sector}</span>
                   </div>
                   <p
                     className="text-sm font-black tracking-tight"
@@ -123,7 +123,7 @@ export default function Alternatives() {
                   >
                     {item.avoid}
                   </p>
-                  <p className="text-xs text-muted mt-1 leading-relaxed">{item.avoidReason}</p>
+                  <p className="text-xs text-[#aaa] mt-1 leading-relaxed">{item.avoidReason}</p>
                 </div>
                 <span className="text-lg flex-shrink-0">🚫</span>
               </div>
@@ -154,7 +154,7 @@ export default function Alternatives() {
                           {pick.tag}
                         </span>
                       )}
-                      <p className="text-xs text-muted leading-relaxed">{pick.note}</p>
+                      <p className="text-xs text-[#aaa] leading-relaxed">{pick.note}</p>
                     </div>
                   </div>
                 ))}
@@ -164,7 +164,7 @@ export default function Alternatives() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-muted text-sm">
+          <div className="text-center py-16 text-[#aaa] text-sm">
             No alternatives listed for this category yet.
           </div>
         )}

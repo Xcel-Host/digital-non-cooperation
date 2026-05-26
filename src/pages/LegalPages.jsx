@@ -5,7 +5,7 @@ export function PrivacyPage() {
     <main>
       <div className="max-w-2xl mx-auto px-4 py-10">
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">Privacy Policy</h1>
-        <p className="text-xs text-muted mb-8">Last updated: January 2025</p>
+        <p className="text-xs text-[#aaa] mb-8">Last updated: January 2025</p>
 
         {[
           { title: 'What we collect', content: 'This platform does not collect personal data. We do not require registration, login, or any personal information to use the site. The participation counter stores only a count — no names, no emails, no identifying information.' },
@@ -17,7 +17,7 @@ export function PrivacyPage() {
         ].map(s => (
           <div key={s.title} className="mb-6">
             <h2 className="text-sm font-bold text-offwhite mb-2">{s.title}</h2>
-            <p className="text-xs text-muted leading-relaxed">{s.content}</p>
+            <p className="text-xs text-[#aaa] leading-relaxed">{s.content}</p>
           </div>
         ))}
       </div>
@@ -31,7 +31,7 @@ export function TermsPage() {
     <main>
       <div className="max-w-2xl mx-auto px-4 py-10">
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">Terms of Use</h1>
-        <p className="text-xs text-muted mb-8">Last updated: January 2025</p>
+        <p className="text-xs text-[#aaa] mb-8">Last updated: January 2025</p>
 
         {[
           { title: 'Purpose', content: 'Digital Non-Cooperation is an independent civic transparency platform. It is not affiliated with any political party, religious organisation, or foreign entity. Its sole purpose is consumer and corporate transparency education.' },
@@ -45,11 +45,11 @@ export function TermsPage() {
         ].map(s => (
           <div key={s.title} className="mb-6">
             <h2 className="text-sm font-bold text-offwhite mb-2">{s.title}</h2>
-            <p className="text-xs text-muted leading-relaxed">{s.content}</p>
+            <p className="text-xs text-[#aaa] leading-relaxed">{s.content}</p>
           </div>
         ))}
 
-        <div className="mt-8 p-4 rounded-xl text-xs text-muted"
+        <div className="mt-8 p-4 rounded-xl text-xs text-[#aaa]"
           style={{ background: '#111', border: '0.5px solid #1e1e1e' }}>
           © 2025–2026 Digital Non-Cooperation. Not propaganda. Not rage. Just clarity.<br />
           Non-violence · Non-cooperation · India First

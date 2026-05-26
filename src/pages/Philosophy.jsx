@@ -19,7 +19,7 @@ export default function Philosophy() {
           Digital<br />Satyagraha
         </h1>
 
-        <p className="text-sm italic text-muted mb-8">
+        <p className="text-sm italic text-[#aaa] mb-8">
           "Digital Satyagraha is the modern path of non-violent resistance."
         </p>
 
@@ -33,12 +33,12 @@ export default function Philosophy() {
 
         {/* What is it */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-muted uppercase mb-3">01 — What is this?</p>
-          <p className="text-sm text-offwhite/70 leading-loose">
+          <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-3">01 — What is this?</p>
+          <p className="text-sm text-[#ddd] leading-loose">
             Gandhi's Satyagraha was non-violent resistance through <strong className="text-offwhite">daily, consistent choices</strong> — not marches, not rage.
             Digital Non-Cooperation applies the same idea to how we spend, stream, and consume in 2025.
           </p>
-          <p className="text-sm text-offwhite/70 leading-loose mt-3">
+          <p className="text-sm text-[#ddd] leading-loose mt-3">
             When two corporate groups control your internet, your news, your groceries, and your airports —
             awareness and redirection of spending is a form of quiet, peaceful resistance.
           </p>
@@ -46,12 +46,12 @@ export default function Philosophy() {
 
         {/* What it is NOT */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-muted uppercase mb-3">02 — What it is NOT</p>
+          <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-3">02 — What it is NOT</p>
           <div
             className="p-4 rounded-xl"
             style={{ background: '#111', border: '0.5px solid #1e1e1e' }}
           >
-            <p className="text-sm text-offwhite/70 leading-loose">
+            <p className="text-sm text-[#ddd] leading-loose">
               Not a political party.<br />
               Not ideology.<br />
               Not violence.<br />
@@ -64,7 +64,7 @@ export default function Philosophy() {
 
         {/* 4 Pillars */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-muted uppercase mb-5">03 — The 4 Pillars</p>
+          <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-5">03 — The 4 Pillars</p>
           <div className="flex flex-col gap-5">
             {pillars.map((p, i) => (
               <div key={p.title} className="flex items-start gap-4">
@@ -74,7 +74,7 @@ export default function Philosophy() {
                 />
                 <div>
                   <p className="text-sm font-black text-offwhite mb-1">{p.title}</p>
-                  <p className="text-xs text-muted leading-relaxed">{p.desc}</p>
+                  <p className="text-xs text-[#aaa] leading-relaxed">{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -83,7 +83,7 @@ export default function Philosophy() {
 
         {/* The 4 acts */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-muted uppercase mb-5">04 — The 4 Acts</p>
+          <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-5">04 — The 4 Acts</p>
           {[
             ['Switch one service', 'Telecom, streaming, or grocery. One redirect per month matters.'],
             ['Know before you buy', '10 seconds on this platform to know who benefits from your rupee.'],
@@ -98,7 +98,7 @@ export default function Philosophy() {
               <span className="text-amber text-sm flex-shrink-0">→</span>
               <div>
                 <p className="text-sm font-bold text-offwhite mb-0.5">{title}</p>
-                <p className="text-xs text-muted leading-relaxed">{desc}</p>
+                <p className="text-xs text-[#aaa] leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
@@ -106,12 +106,12 @@ export default function Philosophy() {
 
         {/* Economic Non-Cooperation */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-muted uppercase mb-3">05 — Economic Non-Cooperation</p>
-          <p className="text-sm text-offwhite/70 leading-loose">
+          <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-3">05 — Economic Non-Cooperation</p>
+          <p className="text-sm text-[#ddd] leading-loose">
             Concentration of corporate power is not fixed. It grows with every subscription renewed,
             every app kept, every purchase unreflected on.
           </p>
-          <p className="text-sm text-offwhite/70 leading-loose mt-3">
+          <p className="text-sm text-[#ddd] leading-loose mt-3">
             <strong className="text-offwhite">Economic Non-Cooperation</strong> means redirecting small amounts
             of everyday spending toward alternatives — cooperatives, local businesses, open-source tools,
             government services. Not all at once. One step at a time.

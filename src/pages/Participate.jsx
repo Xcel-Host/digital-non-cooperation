@@ -84,7 +84,7 @@ export default function Participate() {
         </button>
 
         {submitted && (
-          <p className="text-xs text-center text-muted mt-3">
+          <p className="text-xs text-center text-[#aaa] mt-3">
             Share this platform — awareness is non-cooperation
           </p>
         )}
@@ -95,7 +95,7 @@ export default function Participate() {
           style={{ background: '#080600', border: '0.5px solid #1e1800' }}
         >
           <p className="text-xs font-bold text-amber uppercase tracking-widest mb-3">Digital Satyagraha</p>
-          <p className="text-sm text-offwhite/70 leading-relaxed mb-3">
+          <p className="text-sm text-[#ddd] leading-relaxed mb-3">
             Gandhi's Satyagraha was daily, non-violent choice — not marches, not rage.
             Digital Non-Cooperation applies the same idea to how we spend, stream, and consume.
           </p>

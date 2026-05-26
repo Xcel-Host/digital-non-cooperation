@@ -15,7 +15,7 @@ const tagColors = {
   'Community': { bg: '#180a00', color: '#9a6a1a', border: '#2a1800' },
   'Local': { bg: '#180a00', color: '#9a6a1a', border: '#2a1800' },
   'Public media': { bg: '#080818', color: '#3a8aaa', border: '#1a2a4a' },
-  'Systemic': { bg: '#181818', color: '#666', border: '#2a2a2a' },
+  'Systemic': { bg: '#181818', color: '#aaa', border: '#2a2a2a' },
   'Open standard': { bg: '#081a08', color: '#4a9a4a', border: '#1a3a1a' },
 }
 
@@ -26,7 +26,7 @@ export default function SectorDetail() {
   const accentColor = isAdani ? '#F59E0B' : '#D84B4B'
 
   const sector = data.sectors.find(s => s.id === sectorId)
-  if (!sector) return <div className="p-8 text-muted">Sector not found.</div>
+  if (!sector) return <div className="p-8 text-[#aaa]">Sector not found.</div>
 
   return (
     <main>
@@ -34,7 +34,7 @@ export default function SectorDetail() {
         {/* Back */}
         <Link
           to={`/explore/${group}`}
-          className="inline-flex items-center gap-2 text-xs text-muted hover:text-offwhite mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-xs text-[#aaa] hover:text-offwhite mb-6 transition-colors"
         >
           ← {data.badge} {data.name}
         </Link>
@@ -45,13 +45,13 @@ export default function SectorDetail() {
             <span className="text-3xl">{sector.icon}</span>
             <h1 className="text-2xl font-black tracking-tight text-offwhite">{sector.name}</h1>
           </div>
-          <p className="text-xs text-muted leading-relaxed max-w-xl">{sector.description}</p>
+          <p className="text-xs text-[#aaa] leading-relaxed max-w-xl">{sector.description}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* BRANDS */}
           <div>
-            <p className="text-xs font-bold tracking-widest text-muted uppercase mb-4">
+            <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-4">
               Brands & Services
             </p>
             <div
@@ -70,7 +70,7 @@ export default function SectorDetail() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="text-sm font-bold text-offwhite">{brand.name}</p>
-                      <p className="text-xs text-muted mt-0.5 leading-relaxed">{brand.detail}</p>
+                      <p className="text-xs text-[#aaa] mt-0.5 leading-relaxed">{brand.detail}</p>
                     </div>
                     <div
                       className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5"
@@ -118,13 +118,13 @@ export default function SectorDetail() {
                   >
                     {alt.avoid}
                   </p>
-                  <p className="text-xs text-muted leading-relaxed">{alt.avoidReason}</p>
+                  <p className="text-xs text-[#aaa] leading-relaxed">{alt.avoidReason}</p>
                 </div>
 
                 {/* Divider */}
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex-1 h-px" style={{ background: '#1a1a1a' }} />
-                  <span className="text-xs font-bold text-muted uppercase tracking-widest">Instead, try</span>
+                  <span className="text-xs font-bold text-[#aaa] uppercase tracking-widest">Instead, try</span>
                   <div className="flex-1 h-px" style={{ background: '#1a1a1a' }} />
                 </div>
 
@@ -148,7 +148,7 @@ export default function SectorDetail() {
                               {pick.tag}
                             </span>
                           )}
-                          <p className="text-xs text-muted leading-relaxed">{pick.note}</p>
+                          <p className="text-xs text-[#aaa] leading-relaxed">{pick.note}</p>
                         </div>
                       </div>
                     )
@@ -163,7 +163,7 @@ export default function SectorDetail() {
         <div className="mt-10 flex gap-3 flex-wrap">
           <Link
             to={`/explore/${group}`}
-            className="text-xs font-bold px-4 py-2 rounded-lg transition-colors text-muted hover:text-offwhite"
+            className="text-xs font-bold px-4 py-2 rounded-lg transition-colors text-[#aaa] hover:text-offwhite"
             style={{ background: '#111', border: '0.5px solid #222' }}
           >
             ← All {data.name} sectors

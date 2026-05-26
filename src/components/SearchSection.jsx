@@ -90,7 +90,7 @@ export default function SearchSection({ theme }) {
           className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl"
           style={{ background: bg, border: `0.5px solid ${border}` }}
         >
-          <span className="text-muted text-base">🔍</span>
+          <span className="text-[#aaa] text-base">🔍</span>
           <input
             type="text"
             value={query}
@@ -102,7 +102,7 @@ export default function SearchSection({ theme }) {
           />
           {query && (
             <button type="button" onClick={() => { setQuery(''); setResults([]); setShowResults(false) }}
-              className="text-muted hover:text-offwhite text-xs">✕</button>
+              className="text-[#aaa] hover:text-offwhite text-xs">✕</button>
           )}
         </div>
         <button type="submit"
@@ -134,9 +134,9 @@ export default function SearchSection({ theme }) {
                 </span>
                 <div>
                   <p className="text-sm font-bold text-offwhite">{item.name}</p>
-                  <p className="text-xs text-muted">{item.sector} · {item.groupName}</p>
+                  <p className="text-xs text-[#aaa]">{item.sector} · {item.groupName}</p>
                 </div>
-                <span className="ml-auto text-xs text-muted">→</span>
+                <span className="ml-auto text-xs text-[#aaa]">→</span>
               </div>
             ))}
           </div>
@@ -147,17 +147,17 @@ export default function SearchSection({ theme }) {
             className="absolute top-full left-0 right-12 mt-1 rounded-xl px-4 py-3 z-50"
             style={{ background: bg, border: `0.5px solid ${border}` }}
           >
-            <p className="text-xs text-muted">No exact match — <span className="text-amber cursor-pointer" onClick={() => navigate('/alternatives')}>browse all alternatives →</span></p>
+            <p className="text-xs text-[#aaa]">No exact match — <span className="text-amber cursor-pointer" onClick={() => navigate('/alternatives')}>browse all alternatives →</span></p>
           </div>
         )}
       </form>
 
       {/* Trending */}
       <div className="flex items-center gap-2 mb-4 overflow-x-auto hide-scrollbar">
-        <span className="text-xs font-semibold text-muted">Trending:</span>
+        <span className="text-xs font-semibold text-[#aaa]">Trending:</span>
         {trendingSearches.map(t => (
           <button key={t} onClick={() => handleSearch(t)}
-            className="text-xs px-3 py-1 rounded-full transition-colors text-muted hover:text-offwhite"
+            className="text-xs px-3 py-1 rounded-full transition-colors text-[#aaa] hover:text-offwhite"
             style={{ background: bg3, border: `0.5px solid ${border}` }}>
             {t}
           </button>

@@ -65,7 +65,7 @@ export default function WhatElsePage() {
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">
           What else can you do?
         </h1>
-        <p className="text-sm text-muted mb-3 leading-relaxed">
+        <p className="text-sm text-[#aaa] mb-3 leading-relaxed">
           16 non-violent, practical acts of consumer non-cooperation.
           You don't need to do all of them. Start with one.
         </p>
@@ -99,7 +99,7 @@ export default function WhatElsePage() {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-offwhite mb-1">{s.action}</p>
-                    <p className="text-xs text-muted leading-relaxed">{s.detail}</p>
+                    <p className="text-xs text-[#aaa] leading-relaxed">{s.detail}</p>
                   </div>
                 </div>
               ))}
@@ -114,7 +114,7 @@ export default function WhatElsePage() {
           <p className="text-sm italic leading-loose" style={{ color: '#8a7a50' }}>
             "Non-cooperation with evil is as much a duty as cooperation with good."
           </p>
-          <p className="text-xs text-muted mt-2">— Mahatma Gandhi</p>
+          <p className="text-xs text-[#aaa] mt-2">— Mahatma Gandhi</p>
         </div>
       </div>
       <Footer />

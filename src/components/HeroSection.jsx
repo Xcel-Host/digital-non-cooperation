@@ -70,7 +70,7 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
       )}
       <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 8, marginBottom: 16, background: isA1 ? '#D84B4B' : '#F59E0B', color: isA1 ? '#fff' : '#000', fontSize: 12, fontWeight: 900 }}>{badge}</div>
       <div style={{ fontSize: 28, fontWeight: 900, color: '#F3F4F6', letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 8 }}>{name}</div>
-      <div style={{ fontSize: 12, color: '#555', marginBottom: 14, fontWeight: 500 }}>{person}</div>
+      <div style={{ fontSize: 12, color: '#aaa', marginBottom: 14, fontWeight: 500 }}>{person}</div>
       <div style={{ fontSize: 11, color: '#3a3a3a', lineHeight: 1.8 }}>{sectors}</div>
       <div style={{ position: 'absolute', right: 20, bottom: 20, fontSize: 20, color: accentColor, opacity: 0.6 }}>→</div>
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${accentColor}, transparent)`, opacity: 0.4 }} />
@@ -85,7 +85,7 @@ function RippleFlowDiagram() {
 
   return (
     <div style={{ marginTop: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#aaa', marginBottom: 20, textAlign: 'center' }}>
         The Ripple Effect — what your choice triggers
       </p>
 
@@ -152,7 +152,7 @@ function RippleFlowDiagram() {
       {/* Footer */}
       <div style={{ marginTop: 20, padding: '14px 16px', border: '1px solid rgba(255,80,80,0.25)', borderRadius: 12, background: 'rgba(255,255,255,0.02)', textAlign: 'center' }}>
         <p style={{ fontSize: 12, color: '#ff4d4d', fontWeight: 800, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
-        <p style={{ fontSize: 11, color: '#666' }}>Less exploitation • More freedom • Real democracy</p>
+        <p style={{ fontSize: 11, color: '#aaa' }}>Less exploitation • More freedom • Real democracy</p>
       </div>
     </div>
   )
@@ -325,11 +325,11 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     </div>
                   </div>
                   <div style={{ background: isDark ? '#0d0d0d' : '#f8f8f4', border: `0.5px solid ${borderCol}`, borderRadius: 12, padding: '12px 16px' }}>
-                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', marginBottom: 8 }}>Coming soon</p>
+                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#aaa', marginBottom: 8 }}>Coming soon</p>
                     <p style={{ fontSize: 13, fontWeight: 700, color: textColor, marginBottom: 10 }}>More Empires Being Mapped</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                       {comingEmpires.map(e => (
-                        <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#666', border: `0.5px solid ${borderCol}` }}>{e}</span>
+                        <span key={e} style={{ fontSize: 10, padding: '4px 12px', borderRadius: 8, background: isDark ? '#1a1a1a' : '#eee', color: '#aaa', border: `0.5px solid ${borderCol}` }}>{e}</span>
                       ))}
                     </div>
                   </div>
@@ -533,7 +533,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         <h2 style={{ fontSize: 28, fontWeight: 900, color: '#F3F4F6', marginBottom: 4 }}>
           How It <span style={{ background: 'linear-gradient(90deg,#ffb800,#ff3d3d)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works</span>
         </h2>
-        <p style={{ fontSize: 12, color: '#666', marginBottom: 24 }}>Know → Explore → Choose → Act → Spread</p>
+        <p style={{ fontSize: 12, color: '#aaa', marginBottom: 24 }}>Know → Explore → Choose → Act → Spread</p>
 
         {/* 5 Steps */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28, paddingBottom: 24, borderBottom: '0.5px solid #1e1e1e' }}>
@@ -549,7 +549,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         </div>
 
         {/* Ripple flow — no rails, centered */}
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#aaa', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {[

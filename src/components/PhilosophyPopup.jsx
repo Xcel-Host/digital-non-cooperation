@@ -49,7 +49,7 @@ export default function PhilosophyPopup({ open, onClose }) {
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-muted hover:text-offwhite transition-colors"
+          className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-[#aaa] hover:text-offwhite transition-colors"
           style={{ background: '#1a1200', border: '0.5px solid #2a1800' }}
           aria-label="Close"
         >
@@ -62,7 +62,7 @@ export default function PhilosophyPopup({ open, onClose }) {
         <h2 className="text-2xl font-black tracking-tight text-offwhite mb-1">
           Digital Satyagraha
         </h2>
-        <p className="text-xs text-muted italic mb-5">
+        <p className="text-xs text-[#aaa] italic mb-5">
           "Digital Satyagraha is the modern path of non-violent resistance."
         </p>
 
@@ -80,7 +80,7 @@ export default function PhilosophyPopup({ open, onClose }) {
         </div>
 
         {/* Steps */}
-        <div className="flex gap-3 text-xs text-muted mb-5 flex-wrap">
+        <div className="flex gap-3 text-xs text-[#aaa] mb-5 flex-wrap">
           <span>Withdraw →</span>
           <span>Reduce →</span>
           <span>Replace →</span>

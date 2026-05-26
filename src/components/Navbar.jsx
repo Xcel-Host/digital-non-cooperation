@@ -96,12 +96,6 @@ export default function Navbar({ theme, toggleTheme, closeEmpires }) {
             )}
           </div>
 
-          {/* Theme toggle */}
-          <button onClick={toggleTheme} aria-label="Toggle theme"
-            style={{ width: 34, height: 34, borderRadius: 8, border: `0.5px solid ${border}`, background: isDark ? '#1a1a1f' : '#e8e8e3', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
-            {isDark ? '💡' : '🌙'}
-          </button>
-
           {/* Desktop: Take Action button */}
           {!isMobile && (
             <Link to="/participate"

@@ -63,7 +63,7 @@ export default function WealthPage() {
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">
           Their Wealth. Your Life.
         </h1>
-        <p className="text-sm text-muted mb-8 leading-relaxed max-w-xl">
+        <p className="text-sm text-[#aaa] mb-8 leading-relaxed max-w-xl">
           How much have A1 and A2 grown since 2014 — and what did average Indians earn in the same period?
           The gap tells you everything.
         </p>
@@ -75,12 +75,12 @@ export default function WealthPage() {
               style={{ background: '#1A1A1F', border: '0.5px solid #222' }}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xl">{f.icon}</span>
-                <span className="text-xs text-muted font-medium">{f.title}</span>
+                <span className="text-xs text-[#aaa] font-medium">{f.title}</span>
               </div>
               <div className="text-3xl font-black tracking-tight mb-2" style={{ color: f.color }}>
                 {f.value}
               </div>
-              <p className="text-xs text-muted leading-relaxed">{f.detail}</p>
+              <p className="text-xs text-[#aaa] leading-relaxed">{f.detail}</p>
             </div>
           ))}
         </div>
@@ -90,13 +90,13 @@ export default function WealthPage() {
           <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">
             Net Worth Growth (USD Billion)
           </h2>
-          <p className="text-xs text-muted mb-6">Source: Forbes India Rich List, Bloomberg Billionaires Index</p>
+          <p className="text-xs text-[#aaa] mb-6">Source: Forbes India Rich List, Bloomberg Billionaires Index</p>
 
           <div className="space-y-3">
             {wealthData.map(d => (
               <div key={d.year}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-muted w-8">{d.year}</span>
+                  <span className="text-xs font-bold text-[#aaa] w-8">{d.year}</span>
                   <div className="flex-1 flex flex-col gap-1">
                     {/* Ambani bar */}
                     <div className="flex items-center gap-2">
@@ -124,7 +124,7 @@ export default function WealthPage() {
             ))}
           </div>
 
-          <div className="mt-4 p-3 rounded-lg text-xs text-muted"
+          <div className="mt-4 p-3 rounded-lg text-xs text-[#aaa]"
             style={{ background: '#111', border: '0.5px solid #1e1e1e' }}>
             📌 Average Indian per capita income in 2024: ~$2,400/year (~$0.0000024B).
             Ambani's 2024 net worth = 49,791 times the average Indian annual income.
@@ -144,9 +144,9 @@ export default function WealthPage() {
               { label: 'Average Indian wage growth', value: '+40%', sub: '₹12,000 → ₹16,800/month (approx)' },
             ].map(s => (
               <div key={s.label} className="text-center">
-                <p className="text-xs text-muted mb-1">{s.label}</p>
+                <p className="text-xs text-[#aaa] mb-1">{s.label}</p>
                 <p className="text-2xl font-black text-red">{s.value}</p>
-                <p className="text-xs text-muted mt-1">{s.sub}</p>
+                <p className="text-xs text-[#aaa] mt-1">{s.sub}</p>
               </div>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function WealthPage() {
           <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">
             Tax Cuts & Loan Write-offs
           </h2>
-          <p className="text-xs text-muted mb-5 leading-relaxed">
+          <p className="text-xs text-[#aaa] mb-5 leading-relaxed">
             While wealth grew, public money subsidised the system.
           </p>
           <div className="flex flex-col gap-3">
@@ -168,7 +168,7 @@ export default function WealthPage() {
                   <p className="text-sm font-bold text-offwhite">{l.entity}</p>
                   <span className="text-xs font-bold text-amber flex-shrink-0">{l.amount}</span>
                 </div>
-                <p className="text-xs text-muted leading-relaxed">{l.note}</p>
+                <p className="text-xs text-[#aaa] leading-relaxed">{l.note}</p>
               </div>
             ))}
           </div>
@@ -179,7 +179,7 @@ export default function WealthPage() {
           <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">
             Asia's Richest Person Timeline
           </h2>
-          <p className="text-xs text-muted mb-5">When Indians topped Asia's wealth rankings</p>
+          <p className="text-xs text-[#aaa] mb-5">When Indians topped Asia's wealth rankings</p>
           <div className="flex flex-col gap-2">
             {[
               { year: '2012–2021', person: 'Mukesh Ambani', rank: 'Asia #1', note: 'Consistent Asia richest' },
@@ -190,11 +190,11 @@ export default function WealthPage() {
             ].map(t => (
               <div key={t.year} className="flex items-start gap-4 py-2"
                 style={{ borderBottom: '0.5px solid #111' }}>
-                <span className="text-xs text-muted w-24 flex-shrink-0 font-mono">{t.year}</span>
+                <span className="text-xs text-[#aaa] w-24 flex-shrink-0 font-mono">{t.year}</span>
                 <div>
                   <span className="text-sm font-bold text-offwhite">{t.person} </span>
                   <span className="text-xs text-amber font-bold">{t.rank}</span>
-                  <p className="text-xs text-muted mt-0.5">{t.note}</p>
+                  <p className="text-xs text-[#aaa] mt-0.5">{t.note}</p>
                 </div>
               </div>
             ))}
@@ -204,7 +204,7 @@ export default function WealthPage() {
         {/* CTA */}
         <div className="p-5 rounded-xl" style={{ background: '#080600', border: '0.5px solid #1e1800' }}>
           <p className="text-xs font-bold text-amber uppercase tracking-widest mb-2">The Point</p>
-          <p className="text-sm text-offwhite/70 leading-loose">
+          <p className="text-sm text-[#ddd] leading-loose">
             This is not about jealousy of wealth. It is about the <strong className="text-offwhite">concentration</strong> of wealth,
             its connection to political power, and how it shapes what you pay for electricity,
             internet, cement, groceries, and news.
@@ -213,7 +213,7 @@ export default function WealthPage() {
           </p>
         </div>
 
-        <p className="text-xs text-muted mt-6 leading-relaxed">
+        <p className="text-xs text-[#aaa] mt-6 leading-relaxed">
           Sources: Forbes India Rich List (2012–2024), Bloomberg Billionaires Index, Hurun India Rich List 2024,
           RBI Annual Report 2023, Ministry of Finance corporate tax data.
         </p>

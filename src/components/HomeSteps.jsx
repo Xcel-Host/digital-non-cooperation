@@ -29,7 +29,7 @@ export default function HomeSteps() {
 
       {/* HOW IT WORKS */}
       <div className="mb-8">
-        <p className="text-xs font-bold tracking-widest text-muted uppercase mb-4">How it works</p>
+        <p className="text-xs font-bold tracking-widest text-[#aaa] uppercase mb-4">How it works</p>
         <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
           {steps.map(s => (
             <div
@@ -41,7 +41,7 @@ export default function HomeSteps() {
                 {s.num}
               </div>
               <div className="text-xs font-bold text-offwhite mb-1 leading-tight">{s.title}</div>
-              <div className="text-xs text-muted leading-snug">{s.desc}</div>
+              <div className="text-xs text-[#aaa] leading-snug">{s.desc}</div>
             </div>
           ))}
         </div>
@@ -50,7 +50,7 @@ export default function HomeSteps() {
       {/* STEP 1: CHOOSE EMPIRE */}
       <div className="mb-8">
         <h2 className="text-lg font-black tracking-tight text-offwhite mb-1">Step 1: The Two Empires</h2>
-        <p className="text-xs text-muted mb-4">Most of what you use daily is connected to these two.</p>
+        <p className="text-xs text-[#aaa] mb-4">Most of what you use daily is connected to these two.</p>
 
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* A1 */}
@@ -61,10 +61,10 @@ export default function HomeSteps() {
           >
             <div className="inline-block text-xs font-black px-2 py-0.5 rounded mb-2 bg-red text-white">A1</div>
             <div className="text-lg font-black text-offwhite mb-1">Ambani Empire</div>
-            <div className="text-xs text-muted leading-relaxed">
+            <div className="text-xs text-[#aaa] leading-relaxed">
               Telecom · Retail · Media · Digital<br />Energy · Fashion · Finance
             </div>
-            <span className="absolute right-3 bottom-3 text-muted group-hover:text-red transition-colors">→</span>
+            <span className="absolute right-3 bottom-3 text-[#aaa] group-hover:text-red transition-colors">→</span>
           </Link>
 
           {/* A2 */}
@@ -75,10 +75,10 @@ export default function HomeSteps() {
           >
             <div className="inline-block text-xs font-black px-2 py-0.5 rounded mb-2 bg-amber text-black">A2</div>
             <div className="text-lg font-black text-offwhite mb-1">Adani Empire</div>
-            <div className="text-xs text-muted leading-relaxed">
+            <div className="text-xs text-[#aaa] leading-relaxed">
               Infrastructure · Energy · Ports<br />Airports · Media · Cement
             </div>
-            <span className="absolute right-3 bottom-3 text-muted group-hover:text-amber transition-colors">→</span>
+            <span className="absolute right-3 bottom-3 text-[#aaa] group-hover:text-amber transition-colors">→</span>
           </Link>
         </div>
 
@@ -89,7 +89,7 @@ export default function HomeSteps() {
         >
           <div className="text-lg mb-1">💡</div>
           <div className="text-sm font-bold text-offwhite mb-1">Their power. Your choices.</div>
-          <div className="text-xs text-muted mb-2">Every rupee you spend is a vote. Choose wisely.</div>
+          <div className="text-xs text-[#aaa] mb-2">Every rupee you spend is a vote. Choose wisely.</div>
           <div className="text-xs text-red font-semibold">
             Concentration gives control. Control shapes prices, news, and choices.
           </div>
@@ -101,7 +101,7 @@ export default function HomeSteps() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-lg font-black tracking-tight text-offwhite">Step 2: Explore Sectors</h2>
-            <p className="text-xs text-muted">Select a sector to see brands and companies.</p>
+            <p className="text-xs text-[#aaa]">Select a sector to see brands and companies.</p>
           </div>
           <Link to="/alternatives" className="text-xs font-bold text-red">View All →</Link>
         </div>
@@ -114,7 +114,7 @@ export default function HomeSteps() {
               style={{ background: '#1A1A1F', border: '0.5px solid #222', minWidth: 76 }}
             >
               <span className="text-xl">{s.icon}</span>
-              <span className="text-xs text-muted text-center leading-tight font-medium">{s.name}</span>
+              <span className="text-xs text-[#aaa] text-center leading-tight font-medium">{s.name}</span>
             </Link>
           ))}
         </div>
