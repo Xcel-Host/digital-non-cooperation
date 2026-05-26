@@ -79,91 +79,80 @@ function EmpireCard({ badge, name, person, sectors, group, isDark, onClick }) {
 }
 
 function RippleFlowDiagram() {
+  const circleSize = 56
+  const rowHeight = 86
+  const totalHeight = rippleSteps.length * rowHeight + 40
+
   return (
     <div style={{ marginTop: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 16, textAlign: 'center' }}>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>
         The Ripple Effect — what your choice triggers
       </p>
 
-      {/* Entry arrow */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: 30, marginBottom: 4 }}>
-        <span style={{ color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>→</span>
-      </div>
-
       <div style={{ position: 'relative' }}>
-        {/* LEFT vertical dashed line — fixed position */}
-        <div style={{
-          position: 'absolute',
-          left: 11,
-          top: 0,
-          bottom: 0,
-          width: 0,
-          borderLeft: '2px dashed #444',
-        }} />
+        {/* SVG curved rails behind everything */}
+        <svg
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: totalHeight, pointerEvents: 'none', zIndex: 0 }}
+          viewBox={`0 0 480 ${totalHeight}`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <defs>
+            <linearGradient id="railGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffb800" />
+              <stop offset="100%" stopColor="#ff3d3d" />
+            </linearGradient>
+          </defs>
+          {/* LEFT curved rail */}
+          <path
+            d={`M 44 20 Q 8 60 10 ${totalHeight * 0.3} L 10 ${totalHeight * 0.7} Q 10 ${totalHeight - 30} 60 ${totalHeight - 10}`}
+            fill="none" stroke="url(#railGrad)" strokeWidth="2" strokeDasharray="10 8" opacity="0.55"
+          />
+          {/* RIGHT curved rail */}
+          <path
+            d={`M 88 20 Q 124 60 122 ${totalHeight * 0.3} L 122 ${totalHeight * 0.7} Q 122 ${totalHeight - 30} 72 ${totalHeight - 10}`}
+            fill="none" stroke="url(#railGrad)" strokeWidth="2" strokeDasharray="10 8" opacity="0.55"
+          />
+        </svg>
 
-        {/* RIGHT vertical dashed line — fixed position */}
-        <div style={{
-          position: 'absolute',
-          left: 51,
-          top: 0,
-          bottom: 0,
-          width: 0,
-          borderLeft: '2px dashed #444',
-        }} />
-
-        {rippleSteps.map((step, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, paddingTop: 10, paddingBottom: 10, position: 'relative' }}>
-
-            {/* Left spacer to position circle between the two lines */}
-            <div style={{ width: 62, flexShrink: 0, display: 'flex', justifyContent: 'center', position: 'relative' }}>
-              {/* Down arrow on left line */}
-              {i > 0 && (
-                <div style={{
-                  position: 'absolute',
-                  top: -14,
-                  left: 8,
-                  color: '#555',
-                  fontSize: 8,
-                  lineHeight: 1,
-                }}>▼</div>
-              )}
-              {/* Circle centered between the two lines */}
+        {/* Steps */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          {rippleSteps.map((step, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: i < rippleSteps.length - 1 ? 14 : 0 }}>
+              {/* Circle */}
               <div style={{
-                width: 46,
-                height: 46,
-                borderRadius: '50%',
-                border: `2px solid ${step.color}`,
-                background: '#0d0d12',
-                boxShadow: `0 0 12px ${step.color}55`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-                position: 'relative',
-                zIndex: 2,
+                width: circleSize, height: circleSize, borderRadius: '50%',
+                border: `2.5px solid ${step.color}`,
+                background: 'rgba(255,255,255,0.02)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 24, flexShrink: 0,
+                boxShadow: `0 0 18px ${step.color}44`,
+                position: 'relative', zIndex: 2,
               }}>
                 {step.icon}
+                {/* Short connector to next */}
+                {i < rippleSteps.length - 1 && (
+                  <div style={{
+                    position: 'absolute', left: '50%', top: circleSize - 2,
+                    transform: 'translateX(-50%)',
+                    width: 2, height: 14,
+                    background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.05))',
+                  }} />
+                )}
+              </div>
+              {/* Text */}
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 800, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
+                <p style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>{step.desc}</p>
               </div>
             </div>
-
-            {/* Text */}
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: step.color, marginBottom: 2, lineHeight: 1.2 }}>{step.title}</p>
-              <p style={{ fontSize: 11, color: '#666', lineHeight: 1.5 }}>{step.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Exit arrow */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: 48, marginTop: 4 }}>
-        <span style={{ color: '#F59E0B', fontSize: 14, fontWeight: 900 }}>←</span>
+          ))}
+        </div>
       </div>
 
       {/* Footer */}
-      <div style={{ marginTop: 16, textAlign: 'center' }}>
-        <p style={{ fontSize: 12, color: '#F59E0B', fontWeight: 700, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
-        <p style={{ fontSize: 11, color: '#555' }}>Less exploitation. More freedom. Real democracy.</p>
+      <div style={{ marginTop: 20, padding: '14px 16px', border: '1px solid rgba(255,80,80,0.25)', borderRadius: 12, background: 'rgba(255,255,255,0.02)', textAlign: 'center' }}>
+        <p style={{ fontSize: 12, color: '#ff4d4d', fontWeight: 800, marginBottom: 3 }}>❤️ Every act counts. Together, we change the system.</p>
+        <p style={{ fontSize: 11, color: '#666' }}>Less exploitation • More freedom • Real democracy</p>
       </div>
     </div>
   )
