@@ -530,174 +530,71 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
       {/* HOW IT WORKS MODAL */}
       <CenteredModal open={stepsOpen} onClose={() => setStepsOpen(false)}>
-        <style>{`
-          .hiw-wrapper { position:relative; width:100%; padding: 8px 0 40px; font-family:'Inter',sans-serif; }
-          .hiw-heading { margin-bottom:24px; }
-          .hiw-heading h1 { font-size:32px; font-weight:900; line-height:1; margin-bottom:10px; color:#F3F4F6; }
-          .hiw-heading span { background:linear-gradient(90deg,#ffb800,#ff3d3d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-          .hiw-sub { font-size:12px; color:#666; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
-          .hiw-sub b { color:#F3F4F6; }
-          .hiw-5steps { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; padding-bottom:24px; border-bottom:0.5px solid #1e1e1e; }
-          .hiw-5step { display:flex; align-items:flex-start; gap:12px; }
-          .hiw-5num { width:24px; height:24px; border-radius:50%; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
-          .hiw-5text h3 { font-size:13px; font-weight:700; color:#F3F4F6; margin-bottom:2px; }
-          .hiw-5text p { font-size:11px; color:#666; line-height:1.5; }
-          .hiw-container { position:relative; width:100%; z-index:2; }
-          .hiw-step { display:flex; align-items:center; gap:18px; margin-bottom:22px; position:relative; }
-          .hiw-circle {
-            width:52px; height:52px; border-radius:50%; border:2.5px solid currentColor;
-            display:flex; align-items:center; justify-content:center;
-            font-size:22px; flex-shrink:0; background:rgba(255,255,255,0.02); position:relative;
-          }
-          .hiw-circle::after {
-            content:''; position:absolute; width:130%; height:130%; border-radius:50%;
-            background:currentColor; opacity:0.08; filter:blur(12px); z-index:-1;
-          }
-          .hiw-step:hover .hiw-circle { transform:scale(1.05); transition:0.3s ease; box-shadow:0 0 14px currentColor; }
-          .hiw-content h2 { font-size:14px; margin-bottom:3px; font-weight:800; }
-          .hiw-content p { font-size:11px; color:#999; line-height:1.5; }
-          .hiw-connector {
-            position:absolute; left:24px; top:52px; width:3px; height:22px;
-            background:linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
-          }
-          .hiw-step:last-child .hiw-connector { display:none; }
-          .hiw-bottom {
-            margin-top:24px; border:1px solid rgba(255,80,80,0.3);
-            background:rgba(255,255,255,0.02); border-radius:12px; padding:16px;
-            text-align:center;
-          }
-          .hiw-bottom h3 { font-size:13px; color:#ff4d4d; margin-bottom:6px; font-weight:800; }
-          .hiw-bottom p { font-size:11px; color:#999; }
-          .hiw-left { stroke:url(#hiwLeft); stroke-width:2.5; fill:none; stroke-dasharray:8 7; opacity:0.65; }
-          .hiw-right { stroke:url(#hiwRight); stroke-width:2.5; fill:none; stroke-dasharray:8 7; opacity:0.65; }
-          .c-orange{color:#ffae00;} .c-red{color:#ff4d4d;} .c-pink{color:#ff4fa8;}
-          .c-purple{color:#b14dff;} .c-blue{color:#5b7dff;} .c-cyan{color:#1ad6ff;}
-          .c-green{color:#45ff59;} .c-yellow{color:#ffd400;} .c-teal{color:#49ffcb;}
-        `}</style>
+        <h2 style={{ fontSize: 28, fontWeight: 900, color: '#F3F4F6', marginBottom: 4 }}>
+          How It <span style={{ background: 'linear-gradient(90deg,#ffb800,#ff3d3d)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works</span>
+        </h2>
+        <p style={{ fontSize: 12, color: '#666', marginBottom: 24 }}>Know → Explore → Choose → Act → Spread</p>
 
-        <div className="hiw-wrapper">
-          <div className="hiw-heading">
-            <h1>How It <span>Works</span></h1>
-            <div className="hiw-sub"><b>Know</b> → Explore → Choose → Act → Spread</div>
-          </div>
+        {/* 5 Steps */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28, paddingBottom: 24, borderBottom: '0.5px solid #1e1e1e' }}>
+          {disconnectSteps.map(s => (
+            <div key={s.num} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+              <div style={{ width: 24, height: 24, borderRadius: '50%', background: s.bg, color: s.color, fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{s.num}</div>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#F3F4F6', marginBottom: 2 }}>{s.title}</p>
+                <p style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
 
-          {/* 5 Steps */}
-          <div className="hiw-5steps">
-            {disconnectSteps.map(s => (
-              <div key={s.num} className="hiw-5step">
-                <div className="hiw-5num" style={{ background: s.bg, color: s.color }}>{s.num}</div>
-                <div className="hiw-5text">
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
+        {/* Ripple flow — no rails, centered */}
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#555', marginBottom: 20, textAlign: 'center' }}>The Ripple Effect — what your choice triggers</p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {[
+            { c:'#ffae00', e:'🛒', t:'Choose alternatives', d:'One switch. One kirana. One search before you buy.' },
+            { c:'#ff4d4d', e:'📉', t:'Monopolies weaken', d:'They lose money, market share and control.' },
+            { c:'#ff4fa8', e:'🏪', t:'Local businesses survive', d:'Local shops, services and brands get breathing space.' },
+            { c:'#b14dff', e:'👥', t:'Others copy you', d:'Your choice inspires others in your circle.' },
+            { c:'#5b7dff', e:'📢', t:'Non-cooperation spreads', d:'Millions of small acts build a movement.' },
+            { c:'#1ad6ff', e:'📺', t:'Less control over media & narratives', d:'Their grip on stories and public mindshare weakens.' },
+            { c:'#45ff59', e:'💰', t:'Less funding to political parties', d:'Ruling parties like BJP get less corporate funding.' },
+            { c:'#ffd400', e:'👑', t:'Personality cults weaken', d:'"Vishwaguru" image loses power and influence.' },
+            { c:'#49ffcb', e:'⚖️', t:'Power becomes accountable', d:'Leaders think twice. Policies become people-focused.' },
+            { c:'#1ad6ff', e:'🔁', t:'Money returns locally', d:'Wealth stays in communities, not in distant corporations.' },
+            { c:'#ffae00', e:'✊', t:'Citizens gain leverage', d:'People gain real power. Democracy gets stronger.' },
+          ].map((s, i, arr) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, width: '100%' }}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: '50%',
+                  border: `2.5px solid ${s.c}`,
+                  background: '#0d0d12',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 22, flexShrink: 0,
+                  boxShadow: `0 0 14px ${s.c}44`,
+                }}>{s.e}</div>
+                <div>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: s.c, marginBottom: 2, lineHeight: 1.2 }}>{s.t}</p>
+                  <p style={{ fontSize: 11, color: '#aaa', lineHeight: 1.5 }}>{s.d}</p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Ripple flow */}
-          <div style={{ position: 'relative', padding: '0 0 40px 0' }}>
-
-            {/* LEFT vertical dashed rail */}
-            <div style={{
-              position: 'absolute',
-              left: 26,
-              top: 26,
-              bottom: 60,
-              width: 0,
-              borderLeft: '2.5px dashed',
-              borderImage: 'linear-gradient(to bottom, #ffb800, #ff3d3d) 1',
-              zIndex: 0,
-            }} />
-
-            {/* RIGHT vertical dashed rail */}
-            <div style={{
-              position: 'absolute',
-              right: 0,
-              top: 26,
-              bottom: 60,
-              width: 0,
-              borderLeft: '2.5px dashed',
-              borderImage: 'linear-gradient(to bottom, #ffb800, #ff3d3d) 1',
-              zIndex: 0,
-            }} />
-
-            {/* Bottom curve connecting both rails */}
-            <svg
-              viewBox="0 0 100 50"
-              style={{ position: 'absolute', bottom: 10, left: 14, right: 0, width: 'calc(100% - 14px)', height: 50, overflow: 'visible', zIndex: 0 }}
-            >
-              <defs>
-                <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ff3d3d"/>
-                  <stop offset="100%" stopColor="#ff3d3d"/>
-                </linearGradient>
-              </defs>
-              <path
-                d="M 2 0 Q 2 40 50 40 Q 98 40 98 0"
-                fill="none"
-                stroke="#ff3d3d"
-                strokeWidth="2.5"
-                strokeDasharray="8 6"
-                opacity="0.65"
-              />
-            </svg>
-
-            {/* Steps */}
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              {[
-                {c:'#ffae00',e:'🛒',t:'Choose alternatives',d:'One switch. One kirana. One search before you buy.'},
-                {c:'#ff4d4d',e:'📉',t:'Monopolies weaken',d:'They lose money, market share and control.'},
-                {c:'#ff4fa8',e:'🏪',t:'Local businesses survive',d:'Local shops, services and brands get breathing space.'},
-                {c:'#b14dff',e:'👥',t:'Others copy you',d:'Your choice inspires others in your circle.'},
-                {c:'#5b7dff',e:'📢',t:'Non-cooperation spreads',d:'Millions of small acts build a movement.'},
-                {c:'#1ad6ff',e:'📺',t:'Less control over media & narratives',d:'Their grip on stories and public mindshare weakens.'},
-                {c:'#45ff59',e:'💰',t:'Less funding to political parties',d:'Ruling parties like BJP get less corporate funding.'},
-                {c:'#ffd400',e:'👑',t:'Personality cults weaken',d:'"Vishwaguru" image loses power and influence.'},
-                {c:'#49ffcb',e:'⚖️',t:'Power becomes accountable',d:'Leaders think twice. Policies become people-focused.'},
-                {c:'#1ad6ff',e:'🔁',t:'Money returns locally',d:'Wealth stays in communities, not in distant corporations.'},
-                {c:'#ffae00',e:'✊',t:'Citizens gain leverage',d:'People gain real power. Democracy gets stronger.'},
-              ].map((s, i, arr) => (
-                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                    {/* Circle */}
-                    <div style={{
-                      width: 52, height: 52, borderRadius: '50%',
-                      border: `2.5px solid ${s.c}`,
-                      background: 'rgba(255,255,255,0.02)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 22, flexShrink: 0,
-                      boxShadow: `0 0 14px ${s.c}55`,
-                      position: 'relative', zIndex: 2,
-                    }}>
-                      {s.e}
-                    </div>
-                    {/* Text */}
-                    <div>
-                      <p style={{ fontSize: 13, fontWeight: 800, color: s.c, marginBottom: 2, lineHeight: 1.2 }}>{s.t}</p>
-                      <p style={{ fontSize: 11, color: '#999', lineHeight: 1.5 }}>{s.d}</p>
-                    </div>
-                  </div>
-                  {/* Dashed downward arrow between steps */}
-                  {i < arr.length - 1 && (
-                    <div style={{
-                      marginLeft: 22,
-                      display: 'flex', flexDirection: 'column', alignItems: 'center',
-                      gap: 1, padding: '2px 0',
-                    }}>
-                      {[...Array(3)].map((_, di) => (
-                        <div key={di} style={{ width: 2, height: 4, background: 'rgba(255,255,255,0.3)', borderRadius: 1 }} />
-                      ))}
-                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 8, lineHeight: 1 }}>▼</div>
-                    </div>
-                  )}
+              {i < arr.length - 1 && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '3px 0 3px -166px' }}>
+                  <div style={{ width: 2, height: 6, background: 'rgba(255,255,255,0.15)' }} />
+                  <div style={{ width: 2, height: 6, background: 'rgba(255,255,255,0.1)' }} />
+                  <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 9 }}>▼</span>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-          <div className="hiw-bottom">
-            <h3>❤️ Every act counts. Together, we change the system.</h3>
-            <p>Less exploitation • More freedom • Real democracy</p>
-          </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div style={{ marginTop: 24, padding: '16px', border: '1px solid rgba(255,80,80,0.25)', borderRadius: 12, background: 'rgba(255,255,255,0.02)', textAlign: 'center' }}>
+          <p style={{ fontSize: 13, color: '#F59E0B', fontWeight: 800, marginBottom: 4 }}>❤️ Every act counts. Together, we change the system.</p>
+          <p style={{ fontSize: 11, color: '#888' }}>Less exploitation • More freedom • Real democracy</p>
         </div>
       </CenteredModal>
 
