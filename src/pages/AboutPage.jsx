@@ -17,7 +17,7 @@ export default function AboutPage({ theme }) {
             Digital <span style={{ color: '#ffb100' }}>Non-Cooperation</span>
           </h1>
           <p style={{ color: '#9b9b9b', fontSize: 18, lineHeight: 1.6 }}>
-            A civic transparency platform for India. Independent. Non-partisan. Non-violent.
+            We map who owns what. We name the alternatives. You decide what to do next.
           </p>
         </div>
 

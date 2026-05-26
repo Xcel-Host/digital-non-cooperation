@@ -263,7 +263,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
               <p style={{ fontSize: 15, fontWeight: 700, color: textColor, marginBottom: 6 }}>Through your choices. Through alternatives. Through non-cooperation.</p>
               <p style={{ fontSize: 13, color: mutedColor, lineHeight: 1.65, marginBottom: 28 }}>
-                Every rupee you spend is a vote. Boycott monopoly. Support alternatives.{' '}
+                Your internet. Your news. Your groceries. Your airports. All connected to two families.{' '}
                 <span style={{ color: '#c44040', fontWeight: 600 }}>This is Digital Satyagraha.</span>
               </p>
 
@@ -429,8 +429,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
           <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '22px 0' }}>
             <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, flexDirection: isMobile ? 'column' : 'row' }}>
               <div>
-                <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
-                <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
+                <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Two families. One country.<br />Your choice changes this.</p>
+                <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Silent. Consistent. Powerful.</p>
               </div>
               <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
                 {[

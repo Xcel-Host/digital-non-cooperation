@@ -12,7 +12,7 @@ export default function Explore({ theme }) {
   const cardBg = isDark ? '#1A1A1F' : '#fff'
   const border = isDark ? '#222' : '#ddd'
   const textColor = isDark ? '#F3F4F6' : '#111'
-  const muted = isDark ? '#666' : '#888'
+  const muted = isDark ? '#aaa' : '#888'
   const accentColor = isAdani ? '#F59E0B' : '#D84B4B'
 
   return (
@@ -31,7 +31,7 @@ export default function Explore({ theme }) {
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-1px', color: textColor, marginBottom: 6 }}>{data.name}</h1>
           <p style={{ fontSize: 12, color: muted, marginBottom: 4 }}>{data.person}</p>
-          <p style={{ fontSize: 12, color: muted, lineHeight: 1.6, maxWidth: 600 }}>{data.description}</p>
+          <p style={{ fontSize: 13, color: muted, lineHeight: 1.6, maxWidth: 600 }}>{data.description}</p>
         </div>
 
         {/* Toggle + wealth pill */}
@@ -50,7 +50,7 @@ export default function Explore({ theme }) {
           </Link>
         </div>
 
-        {/* Sector grid — cards */}
+        {/* Sector grid — cards with impact stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {data.sectors.map(sector => (
             <Link key={sector.id} to={`/sector/${group}/${sector.id}`}
@@ -58,9 +58,16 @@ export default function Explore({ theme }) {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.borderColor = accentColor }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = border }}>
               <div style={{ fontSize: 24, marginBottom: 10 }}>{sector.icon}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: textColor, marginBottom: 4 }}>{sector.name}</div>
-              <div style={{ fontSize: 11, color: muted }}>{sector.count}</div>
-              <div style={{ position: 'absolute', right: 14, bottom: 14, fontSize: 14, color: isDark ? '#2a2a2a' : '#ddd' }}>→</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: textColor, marginBottom: 6 }}>{sector.name}</div>
+              {/* Impact stat — punchy, visible */}
+              <div style={{ fontSize: 11, fontWeight: 600, color: accentColor, marginBottom: 4, lineHeight: 1.4 }}>{sector.count}</div>
+              {/* Short description preview */}
+              {sector.description && (
+                <div style={{ fontSize: 11, color: muted, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {sector.description}
+                </div>
+              )}
+              <div style={{ position: 'absolute', right: 14, bottom: 14, fontSize: 14, color: accentColor, opacity: 0.5 }}>→</div>
             </Link>
           ))}
         </div>
@@ -68,9 +75,10 @@ export default function Explore({ theme }) {
         {/* Empire description */}
         <div style={{ marginTop: 28, padding: 20, borderRadius: 14, background: isAdani ? (isDark ? '#0f0f00' : '#fffde6') : (isDark ? '#150505' : '#fff5f5'), border: `0.5px solid ${isAdani ? '#252200' : '#2e0f0f'}` }}>
           <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: accentColor, marginBottom: 8 }}>Concentration gives control</p>
-          <p style={{ fontSize: 13, color: isDark ? 'rgba(243,244,246,0.7)' : '#555', lineHeight: 1.7 }}>{data.tagline}</p>
+          <p style={{ fontSize: 13, color: isDark ? 'rgba(243,244,246,0.85)' : '#555', lineHeight: 1.7 }}>{data.tagline}</p>
           <p style={{ fontSize: 11, color: muted, marginTop: 8 }}>Tap any sector above to see brands and find practical alternatives.</p>
         </div>
+
       </div>
       <Footer theme={theme} />
     </main>

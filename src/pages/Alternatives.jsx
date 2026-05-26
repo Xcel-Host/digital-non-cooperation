@@ -65,7 +65,7 @@ export default function Alternatives() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">Alternatives</h1>
         <p className="text-sm text-[#aaa] mb-6">
-          Real alternatives. Named brands. Available in India. Reduce monopoly dependency one choice at a time.
+          We name names. Real brands. Available in India right now. Every switch is a vote against monopoly.
         </p>
 
         {/* Tabs */}

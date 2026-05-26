@@ -1,0 +1,24 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0B0B0F"/>
+  <!-- Red accent line -->
+  <rect width="1200" height="4" fill="#D84B4B"/>
+  <!-- Fist emoji placeholder - circle -->
+  <circle cx="100" cy="80" r="40" fill="#D84B4B" opacity="0.15"/>
+  <text x="100" y="95" font-size="48" text-anchor="middle" fill="#D84B4B">✊</text>
+  <!-- Main heading -->
+  <text x="100" y="200" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="900" fill="#F3F4F6">Do you know who owns</text>
+  <text x="100" y="275" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="900" fill="#F3F4F6">your internet, news &amp;</text>
+  <text x="100" y="350" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="900" fill="#D84B4B">groceries?</text>
+  <!-- Subtext -->
+  <text x="100" y="420" font-family="Inter, Arial, sans-serif" font-size="26" fill="#aaa">Jio. JioMart. NDTV. AJIO. JioHotstar. All one family.</text>
+  <text x="100" y="460" font-family="Inter, Arial, sans-serif" font-size="26" fill="#aaa">Know the empires. Find alternatives. Take silent action.</text>
+  <!-- URL -->
+  <text x="100" y="560" font-family="Inter, Arial, sans-serif" font-size="20" fill="#555">digital-non-cooperation.vercel.app</text>
+  <!-- Stats -->
+  <text x="900" y="420" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="900" fill="#F59E0B" text-anchor="middle">95+</text>
+  <text x="900" y="455" font-family="Inter, Arial, sans-serif" font-size="18" fill="#aaa" text-anchor="middle">brands tracked</text>
+  <text x="900" y="520" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="900" fill="#D84B4B" text-anchor="middle">2</text>
+  <text x="900" y="555" font-family="Inter, Arial, sans-serif" font-size="18" fill="#aaa" text-anchor="middle">big empires</text>
+  <!-- Bottom border -->
+  <rect y="626" width="1200" height="4" fill="#D84B4B"/>
+</svg>
