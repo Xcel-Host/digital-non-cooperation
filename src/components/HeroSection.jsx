@@ -275,11 +275,11 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
                     Digital Satyagraha Philosophy
                   </button>
-                  <a href="/how-it-works.html" target="_blank" rel="noopener noreferrer"
-                    style={{ padding: '11px 12px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, textDecoration: 'none' }}>
+                  <button onClick={() => setStepsOpen(true)}
+                    style={{ padding: '11px 12px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                     <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
                     How It Works
-                  </a>
+                  </button>
                 </div>
                 <button onClick={() => setEmpiresOpen(e => !e)}
                   style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.22)' }}>
@@ -530,20 +530,101 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
       {/* HOW IT WORKS MODAL */}
       <CenteredModal open={stepsOpen} onClose={() => setStepsOpen(false)}>
-        <h2 style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', color: '#F3F4F6', marginBottom: 4 }}>How It Works</h2>
-        <p style={{ fontSize: 12, color: '#666', marginBottom: 20 }}>Know → Explore → Choose → Act → Spread</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {disconnectSteps.map(s => (
-            <div key={s.num} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-              <div style={{ width: 26, height: 26, borderRadius: '50%', background: s.bg, color: s.color, fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>{s.num}</div>
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#F3F4F6', marginBottom: 3 }}>{s.title}</p>
-                <p style={{ fontSize: 11, color: '#666', lineHeight: 1.55 }}>{s.desc}</p>
-              </div>
+        <style>{`
+          .hiw-wrapper { position:relative; width:100%; padding: 8px 0 40px; font-family:'Inter',sans-serif; }
+          .hiw-heading { margin-bottom:32px; }
+          .hiw-heading h1 { font-size:36px; font-weight:900; line-height:1; margin-bottom:12px; color:#F3F4F6; }
+          .hiw-heading span { background:linear-gradient(90deg,#ffb800,#ff3d3d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+          .hiw-sub { font-size:13px; color:#666; display:flex; gap:8px; align-items:center; }
+          .hiw-sub b { color:#F3F4F6; }
+          .hiw-container { position:relative; width:100%; z-index:2; }
+          .hiw-step { display:flex; align-items:center; gap:18px; margin-bottom:22px; position:relative; }
+          .hiw-circle {
+            width:56px; height:56px; border-radius:50%; border:2.5px solid currentColor;
+            display:flex; align-items:center; justify-content:center;
+            font-size:24px; flex-shrink:0; background:rgba(255,255,255,0.02); position:relative;
+          }
+          .hiw-circle::after {
+            content:''; position:absolute; width:130%; height:130%; border-radius:50%;
+            background:currentColor; opacity:0.08; filter:blur(12px); z-index:-1;
+          }
+          .hiw-step:hover .hiw-circle { transform:scale(1.05); transition:0.3s ease; box-shadow:0 0 16px currentColor; }
+          .hiw-content h2 { font-size:16px; margin-bottom:4px; font-weight:800; }
+          .hiw-content p { font-size:12px; color:#999; line-height:1.5; }
+          .hiw-connector {
+            position:absolute; left:26px; top:56px; width:3px; height:22px;
+            background:linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
+          }
+          .hiw-step:last-child .hiw-connector { display:none; }
+          .hiw-bottom {
+            margin-top:28px; border:1px solid rgba(255,80,80,0.3);
+            background:rgba(255,255,255,0.02); border-radius:14px; padding:20px;
+            text-align:center;
+          }
+          .hiw-bottom h3 { font-size:14px; color:#ff4d4d; margin-bottom:8px; font-weight:800; }
+          .hiw-bottom p { font-size:12px; color:#999; }
+          .hiw-svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+          .hiw-left { stroke:url(#hiwLeft); stroke-width:2; fill:none; stroke-dasharray:8 7; opacity:0.6; }
+          .hiw-right { stroke:url(#hiwRight); stroke-width:2; fill:none; stroke-dasharray:8 7; opacity:0.6; }
+          .c-orange{color:#ffae00;} .c-red{color:#ff4d4d;} .c-pink{color:#ff4fa8;}
+          .c-purple{color:#b14dff;} .c-blue{color:#5b7dff;} .c-cyan{color:#1ad6ff;}
+          .c-green{color:#45ff59;} .c-yellow{color:#ffd400;} .c-teal{color:#49ffcb;}
+        `}</style>
+
+        <div className="hiw-wrapper">
+          <div className="hiw-heading">
+            <h1>How It <span>Works</span></h1>
+            <div className="hiw-sub"><b>Know</b> → Explore → Choose → Act → Spread</div>
+          </div>
+
+          <div style={{ position: 'relative' }}>
+            {/* SVG rails */}
+            <svg className="hiw-svg" viewBox="0 0 480 1050" preserveAspectRatio="none" style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1 }}>
+              <defs>
+                <linearGradient id="hiwLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffb800"/>
+                  <stop offset="100%" stopColor="#ff3d3d"/>
+                </linearGradient>
+                <linearGradient id="hiwRight" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffb800"/>
+                  <stop offset="100%" stopColor="#ff3d3d"/>
+                </linearGradient>
+              </defs>
+              <path className="hiw-left" d="M 44 20 Q 8 80 10 280 L 10 780 Q 10 960 70 1000"/>
+              <path className="hiw-right" d="M 96 20 Q 132 80 130 280 L 130 780 Q 130 960 70 1000"/>
+            </svg>
+
+            <div className="hiw-container" style={{ position:'relative', zIndex:2 }}>
+              {[
+                {c:'c-orange',e:'🛒',t:'Choose alternatives',d:'One switch. One kirana. One search before you buy.'},
+                {c:'c-red',e:'📉',t:'Monopolies weaken',d:'They lose money, market share and control.'},
+                {c:'c-pink',e:'🏪',t:'Local businesses survive',d:'Local shops, services and brands get breathing space.'},
+                {c:'c-purple',e:'👥',t:'Others copy you',d:'Your choice inspires others in your circle.'},
+                {c:'c-blue',e:'📢',t:'Non-cooperation spreads',d:'Millions of small acts build a movement.'},
+                {c:'c-cyan',e:'📺',t:'Less control over media & narratives',d:'Their grip on stories and public mindshare weakens.'},
+                {c:'c-green',e:'💰',t:'Less funding to political parties',d:'Ruling parties like BJP get less corporate funding.'},
+                {c:'c-yellow',e:'👑',t:'Personality cults weaken',d:'"Vishwaguru" image loses power and influence.'},
+                {c:'c-teal',e:'⚖️',t:'Power becomes accountable',d:'Leaders think twice. Policies become people-focused.'},
+                {c:'c-cyan',e:'🔁',t:'Money returns locally',d:'Wealth stays in communities, not in distant corporations.'},
+                {c:'c-orange',e:'✊',t:'Citizens gain leverage',d:'People gain real power. Democracy gets stronger.'},
+              ].map((s, i, arr) => (
+                <div key={i} className="hiw-step">
+                  <div className={`hiw-circle ${s.c}`}>{s.e}</div>
+                  <div className="hiw-content">
+                    <h2 className={s.c}>{s.t}</h2>
+                    <p>{s.d}</p>
+                  </div>
+                  {i < arr.length - 1 && <div className="hiw-connector"/>}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="hiw-bottom">
+            <h3>❤️ Every act counts. Together, we change the system.</h3>
+            <p>Less exploitation • More freedom • Real democracy</p>
+          </div>
         </div>
-        <RippleFlowDiagram />
       </CenteredModal>
 
       <style>{`
