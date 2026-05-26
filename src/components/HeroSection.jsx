@@ -532,40 +532,44 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
       <CenteredModal open={stepsOpen} onClose={() => setStepsOpen(false)}>
         <style>{`
           .hiw-wrapper { position:relative; width:100%; padding: 8px 0 40px; font-family:'Inter',sans-serif; }
-          .hiw-heading { margin-bottom:32px; }
-          .hiw-heading h1 { font-size:36px; font-weight:900; line-height:1; margin-bottom:12px; color:#F3F4F6; }
+          .hiw-heading { margin-bottom:24px; }
+          .hiw-heading h1 { font-size:32px; font-weight:900; line-height:1; margin-bottom:10px; color:#F3F4F6; }
           .hiw-heading span { background:linear-gradient(90deg,#ffb800,#ff3d3d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-          .hiw-sub { font-size:13px; color:#666; display:flex; gap:8px; align-items:center; }
+          .hiw-sub { font-size:12px; color:#666; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
           .hiw-sub b { color:#F3F4F6; }
+          .hiw-5steps { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; padding-bottom:24px; border-bottom:0.5px solid #1e1e1e; }
+          .hiw-5step { display:flex; align-items:flex-start; gap:12px; }
+          .hiw-5num { width:24px; height:24px; border-radius:50%; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+          .hiw-5text h3 { font-size:13px; font-weight:700; color:#F3F4F6; margin-bottom:2px; }
+          .hiw-5text p { font-size:11px; color:#666; line-height:1.5; }
           .hiw-container { position:relative; width:100%; z-index:2; }
           .hiw-step { display:flex; align-items:center; gap:18px; margin-bottom:22px; position:relative; }
           .hiw-circle {
-            width:56px; height:56px; border-radius:50%; border:2.5px solid currentColor;
+            width:52px; height:52px; border-radius:50%; border:2.5px solid currentColor;
             display:flex; align-items:center; justify-content:center;
-            font-size:24px; flex-shrink:0; background:rgba(255,255,255,0.02); position:relative;
+            font-size:22px; flex-shrink:0; background:rgba(255,255,255,0.02); position:relative;
           }
           .hiw-circle::after {
             content:''; position:absolute; width:130%; height:130%; border-radius:50%;
             background:currentColor; opacity:0.08; filter:blur(12px); z-index:-1;
           }
-          .hiw-step:hover .hiw-circle { transform:scale(1.05); transition:0.3s ease; box-shadow:0 0 16px currentColor; }
-          .hiw-content h2 { font-size:16px; margin-bottom:4px; font-weight:800; }
-          .hiw-content p { font-size:12px; color:#999; line-height:1.5; }
+          .hiw-step:hover .hiw-circle { transform:scale(1.05); transition:0.3s ease; box-shadow:0 0 14px currentColor; }
+          .hiw-content h2 { font-size:14px; margin-bottom:3px; font-weight:800; }
+          .hiw-content p { font-size:11px; color:#999; line-height:1.5; }
           .hiw-connector {
-            position:absolute; left:26px; top:56px; width:3px; height:22px;
+            position:absolute; left:24px; top:52px; width:3px; height:22px;
             background:linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
           }
           .hiw-step:last-child .hiw-connector { display:none; }
           .hiw-bottom {
-            margin-top:28px; border:1px solid rgba(255,80,80,0.3);
-            background:rgba(255,255,255,0.02); border-radius:14px; padding:20px;
+            margin-top:24px; border:1px solid rgba(255,80,80,0.3);
+            background:rgba(255,255,255,0.02); border-radius:12px; padding:16px;
             text-align:center;
           }
-          .hiw-bottom h3 { font-size:14px; color:#ff4d4d; margin-bottom:8px; font-weight:800; }
-          .hiw-bottom p { font-size:12px; color:#999; }
-          .hiw-svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
-          .hiw-left { stroke:url(#hiwLeft); stroke-width:2; fill:none; stroke-dasharray:8 7; opacity:0.6; }
-          .hiw-right { stroke:url(#hiwRight); stroke-width:2; fill:none; stroke-dasharray:8 7; opacity:0.6; }
+          .hiw-bottom h3 { font-size:13px; color:#ff4d4d; margin-bottom:6px; font-weight:800; }
+          .hiw-bottom p { font-size:11px; color:#999; }
+          .hiw-left { stroke:url(#hiwLeft); stroke-width:2.5; fill:none; stroke-dasharray:8 7; opacity:0.65; }
+          .hiw-right { stroke:url(#hiwRight); stroke-width:2.5; fill:none; stroke-dasharray:8 7; opacity:0.65; }
           .c-orange{color:#ffae00;} .c-red{color:#ff4d4d;} .c-pink{color:#ff4fa8;}
           .c-purple{color:#b14dff;} .c-blue{color:#5b7dff;} .c-cyan{color:#1ad6ff;}
           .c-green{color:#45ff59;} .c-yellow{color:#ffd400;} .c-teal{color:#49ffcb;}
@@ -577,9 +581,26 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
             <div className="hiw-sub"><b>Know</b> → Explore → Choose → Act → Spread</div>
           </div>
 
+          {/* 5 Steps */}
+          <div className="hiw-5steps">
+            {disconnectSteps.map(s => (
+              <div key={s.num} className="hiw-5step">
+                <div className="hiw-5num" style={{ background: s.bg, color: s.color }}>{s.num}</div>
+                <div className="hiw-5text">
+                  <h3>{s.title}</h3>
+                  <p>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Ripple flow with SVG rails */}
           <div style={{ position: 'relative' }}>
-            {/* SVG rails */}
-            <svg className="hiw-svg" viewBox="0 0 480 1050" preserveAspectRatio="none" style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1 }}>
+            <svg
+              viewBox="0 0 492 1050"
+              preserveAspectRatio="none"
+              style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1 }}
+            >
               <defs>
                 <linearGradient id="hiwLeft" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" stopColor="#ffb800"/>
@@ -590,8 +611,10 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   <stop offset="100%" stopColor="#ff3d3d"/>
                 </linearGradient>
               </defs>
-              <path className="hiw-left" d="M 44 20 Q 8 80 10 280 L 10 780 Q 10 960 70 1000"/>
-              <path className="hiw-right" d="M 96 20 Q 132 80 130 280 L 130 780 Q 130 960 70 1000"/>
+              {/* LEFT rail — near the circles */}
+              <path className="hiw-left" d="M 42 20 Q 8 80 10 300 L 10 780 Q 10 980 80 1020"/>
+              {/* RIGHT rail — far right of modal */}
+              <path className="hiw-right" d="M 450 20 Q 484 80 482 300 L 482 780 Q 482 980 412 1020"/>
             </svg>
 
             <div className="hiw-container" style={{ position:'relative', zIndex:2 }}>
