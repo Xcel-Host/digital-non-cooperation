@@ -275,11 +275,11 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                     <i className="ti ti-book" aria-hidden="true" style={{ fontSize: 13 }} />
                     Digital Satyagraha Philosophy
                   </button>
-                  <button onClick={() => setStepsOpen(true)}
-                    style={{ padding: '11px 12px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                  <a href="/how-it-works.html" target="_blank" rel="noopener noreferrer"
+                    style={{ padding: '11px 12px', background: isDark ? 'rgba(26,26,31,0.8)' : '#fff', border: `0.5px solid ${borderCol}`, color: textColor, fontSize: 12, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, textDecoration: 'none' }}>
                     <i className="ti ti-steps" aria-hidden="true" style={{ fontSize: 13 }} />
                     How It Works
-                  </button>
+                  </a>
                 </div>
                 <button onClick={() => setEmpiresOpen(e => !e)}
                   style={{ width: '100%', padding: '10px 20px', background: 'linear-gradient(135deg, #c43e3e 0%, #d84b4b 40%, #c43e3e 100%)', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 10, border: 'none', cursor: 'pointer', letterSpacing: '0.2px', boxShadow: '0 3px 12px rgba(196,62,62,0.22)' }}>

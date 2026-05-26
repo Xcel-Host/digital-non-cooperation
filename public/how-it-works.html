@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How It Works — Digital Non-Cooperation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{ background:#040404; font-family:'Inter',sans-serif; color:white; min-height:100vh; overflow-x:hidden; }
+
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  background: rgba(26,26,31,0.9);
+  border: 0.5px solid #333;
+  color: #aaa;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(8px);
+}
+.back-btn:hover { color: #F3F4F6; border-color: #555; }
+
+.flow-wrapper{ position:relative; width:100%; max-width:900px; margin:auto; padding:80px 80px 120px; }
+.heading{ margin-bottom:60px; }
+.heading h1{ font-size:72px; font-weight:900; line-height:1; margin-bottom:20px; }
+.heading span{ background:linear-gradient(90deg,#ffb800,#ff3d3d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.sub-flow{ font-size:18px; color:#9e9e9e; display:flex; gap:14px; align-items:center; }
+.sub-flow b{ color:white; }
+
+.flow-container{ position:relative; width:100%; z-index:2; }
+.flow-step{ display:flex; align-items:center; gap:30px; margin-bottom:38px; position:relative; }
+
+.circle{
+  width:90px; height:90px; border-radius:50%; border:3px solid currentColor;
+  display:flex; align-items:center; justify-content:center;
+  font-size:36px; flex-shrink:0;
+  background:rgba(255,255,255,0.02); position:relative;
+}
+.circle::after{
+  content:''; position:absolute; width:130%; height:130%; border-radius:50%;
+  background:currentColor; opacity:0.08; filter:blur(18px); z-index:-1;
+}
+
+.step-content h2{ font-size:32px; margin-bottom:8px; font-weight:800; }
+.step-content p{ font-size:18px; color:#bdbdbd; line-height:1.5; }
+
+.orange{ color:#ffae00; } .red{ color:#ff4d4d; } .pink{ color:#ff4fa8; }
+.purple{ color:#b14dff; } .blue{ color:#5b7dff; } .cyan{ color:#1ad6ff; }
+.green{ color:#45ff59; } .yellow{ color:#ffd400; } .teal{ color:#49ffcb; }
+
+.connector{
+  position:absolute; left:43px; top:90px; width:4px; height:38px;
+  background:linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.1));
+}
+.flow-step:last-child .connector{ display:none; }
+
+.bottom-box{
+  margin-top:60px; border:1px solid rgba(255,80,80,0.3);
+  background:rgba(255,255,255,0.02); border-radius:24px; padding:38px;
+  text-align:center; backdrop-filter:blur(12px);
+}
+.bottom-box h3{ font-size:28px; color:#ff4d4d; margin-bottom:14px; font-weight:800; }
+.bottom-box p{ font-size:20px; color:#d1d1d1; }
+
+.flow-svg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+.left-path{ stroke:url(#leftGradient); stroke-width:3; fill:none; stroke-dasharray:12 10; opacity:0.65; }
+.right-path{ stroke:url(#rightGradient); stroke-width:3; fill:none; stroke-dasharray:12 10; opacity:0.65; }
+
+.flow-step:hover .circle{ transform:scale(1.05); transition:0.3s ease; box-shadow:0 0 24px currentColor; }
+.flow-step:hover h2{ text-shadow:0 0 12px currentColor; }
+
+@media(max-width:768px){
+  .flow-wrapper{ padding:60px 20px 80px; }
+  .heading h1{ font-size:40px; }
+  .flow-step{ gap:16px; }
+  .circle{ width:64px; height:64px; font-size:26px; }
+  .step-content h2{ font-size:22px; }
+  .step-content p{ font-size:14px; }
+  .connector{ left:30px; }
+}
+</style>
+</head>
+<body>
+
+<a href="/" class="back-btn">← Back</a>
+
+<div class="flow-wrapper">
+  <div class="heading">
+    <h1>How It <span>Works</span></h1>
+    <div class="sub-flow"><b>Know</b> → Explore → Choose → Act → Spread</div>
+  </div>
+
+  <svg class="flow-svg" viewBox="0 0 900 2600" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="leftGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffb800"/>
+        <stop offset="100%" stop-color="#ff3d3d"/>
+      </linearGradient>
+      <linearGradient id="rightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffb800"/>
+        <stop offset="100%" stop-color="#ff3d3d"/>
+      </linearGradient>
+    </defs>
+    <path class="left-path" d="M110 180 Q 20 280 30 650 L 30 1900 Q 30 2200 180 2300"/>
+    <path class="right-path" d="M870 180 Q 960 280 950 650 L 950 1900 Q 950 2200 820 2300"/>
+  </svg>
+
+  <div class="flow-container">
+    <div class="flow-step">
+      <div class="circle orange">🛒</div>
+      <div class="step-content"><h2 class="orange">Choose alternatives</h2><p>One switch. One kirana. One search before you buy.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle red">📉</div>
+      <div class="step-content"><h2 class="red">Monopolies weaken</h2><p>They lose money, market share and control.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle pink">🏪</div>
+      <div class="step-content"><h2 class="pink">Local businesses survive</h2><p>Local shops, services and brands get breathing space.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle purple">👥</div>
+      <div class="step-content"><h2 class="purple">Others copy you</h2><p>Your choice inspires others in your circle.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle blue">📢</div>
+      <div class="step-content"><h2 class="blue">Non-cooperation spreads</h2><p>Millions of small acts build a movement.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle cyan">📺</div>
+      <div class="step-content"><h2 class="cyan">Less control over media & narratives</h2><p>Their grip on stories and public mindshare weakens.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle green">💰</div>
+      <div class="step-content"><h2 class="green">Less funding to political parties</h2><p>Ruling parties like BJP get less corporate funding.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle yellow">👑</div>
+      <div class="step-content"><h2 class="yellow">Personality cults weaken</h2><p>"Vishwaguru" image loses power and influence.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle teal">⚖️</div>
+      <div class="step-content"><h2 class="teal">Power becomes accountable</h2><p>Leaders think twice. Policies become people-focused.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle cyan">🔁</div>
+      <div class="step-content"><h2 class="cyan">Money returns locally</h2><p>Wealth stays in communities, not in distant corporations.</p></div>
+      <div class="connector"></div>
+    </div>
+    <div class="flow-step">
+      <div class="circle orange">✊</div>
+      <div class="step-content"><h2 class="orange">Citizens gain leverage</h2><p>People gain real power. Democracy gets stronger.</p></div>
+    </div>
+  </div>
+
+  <div class="bottom-box">
+    <h3>❤️ Every act counts. Together, we change the system.</h3>
+    <p>Less exploitation • More freedom • Real democracy</p>
+  </div>
+</div>
+
+</body>
+</html>
