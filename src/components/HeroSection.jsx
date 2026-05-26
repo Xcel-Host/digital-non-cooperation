@@ -258,7 +258,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', color: '#b83c3c', textTransform: 'uppercase', marginBottom: 16 }}>India · Non-violence · Non-cooperation</p>
 
-              <h1 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
+              <h1 style={{ fontSize: 'clamp(26px,7vw,56px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 14, color: textColor }}>
                 How do you{' '}
                 <span style={{ color: '#fff', background: '#F59E0B', fontStyle: 'normal', padding: '2px 8px', borderRadius: 6, display: 'inline-block' }}>RESIST</span>{' '}
                 being exploited?
@@ -353,7 +353,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 }}>
                   <p style={{
                     fontFamily: 'Georgia, "Times New Roman", serif',
-                    fontSize: 'clamp(36px, 4vw, 52px)',
+                    fontSize: 'clamp(28px, 8vw, 52px)',
                     fontWeight: 700,
                     fontStyle: 'italic',
                     color: '#F3F4F6',
@@ -365,7 +365,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                   </p>
                   <p style={{
                     fontFamily: 'Georgia, "Times New Roman", serif',
-                    fontSize: 'clamp(44px, 5.5vw, 66px)',
+                    fontSize: 'clamp(34px, 10vw, 66px)',
                     fontWeight: 900,
                     fontStyle: 'italic',
                     color: '#D84B4B',
