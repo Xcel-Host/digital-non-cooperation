@@ -93,16 +93,16 @@ export default function Navbar({ theme, toggleTheme, closeEmpires }) {
             {isDark ? '💡' : '🌙'}
           </button>
 
-          {/* Take Action */}
-          <Link to="/participate" className="hidden md:flex"
-            style={{ alignItems: 'center', gap: 6, background: '#D84B4B', color: '#fff', fontSize: 12, fontWeight: 700, padding: '8px 14px', borderRadius: 8, textDecoration: 'none' }}>
+          {/* Take Action — always visible */}
+          <Link to="/participate"
+            style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#D84B4B', color: '#fff', fontSize: 12, fontWeight: 700, padding: '8px 14px', borderRadius: 8, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             Take Action ✊
           </Link>
 
           {/* Mobile hamburger */}
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
-            style={{ padding: 4, color: muted, background: 'none', border: 'none', cursor: 'pointer' }}>
-            <i className="ti ti-menu-2" aria-hidden="true" style={{ fontSize: 20 }} />
+            style={{ padding: '4px 8px', color: muted, background: 'none', border: `0.5px solid ${border}`, borderRadius: 6, cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>
+            ☰
           </button>
         </div>
       </div>

@@ -198,6 +198,15 @@ function PowerPyramid({ isDark }) {
 export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
   const [philOpen, setPhilOpen] = useState(false)
   const [stepsOpen, setStepsOpen] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200)
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const isMobile = windowWidth < 768
   const isDark = theme !== 'light'
   const textColor = isDark ? '#F3F4F6' : '#111'
   const mutedColor = isDark ? '#888' : '#666'
@@ -216,11 +225,10 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
 
           {/* HERO GRID — position relative so bg image can be absolute behind both columns */}
           <div
-            className="hero-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: empiresOpen ? '1fr' : '1fr 1fr',
-              gap: 40,
+              gridTemplateColumns: (empiresOpen || isMobile) ? '1fr' : '1fr 1fr',
+              gap: isMobile ? 24 : 40,
               alignItems: 'stretch',
               position: 'relative',
             }}
@@ -291,7 +299,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
               </div>
 
               {/* STATS PILLS */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'nowrap', overflowX: 'auto' }} className="hide-scrollbar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: isMobile ? 'wrap' : 'nowrap', overflowX: isMobile ? 'visible' : 'auto' }} className="hide-scrollbar">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: isDark ? 'rgba(13,9,0,0.8)' : '#fffbe6', border: `0.5px solid ${isDark ? '#2a1800' : '#f5e080'}`, borderRadius: 18, flexShrink: 0 }}>
                   <span style={{ fontSize: 14 }}>✊</span>
                   <div>
@@ -404,9 +412,9 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 {/* Caricatures */}
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
                   {[
-                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
-                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: 140, border: '2.5px solid #D84B4B', mb: 14 },
-                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: 108, border: '1.5px solid #333' },
+                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
+                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: isMobile ? 104 : 140, border: '2.5px solid #D84B4B', mb: 14 },
+                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
                   ].map(c => (
                     <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
                       <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
@@ -430,7 +438,7 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
         {/* BOTTOM STATS STRIP */}
         {!empiresOpen && (
           <div style={{ borderTop: `0.5px solid ${borderCol}`, marginTop: 0, padding: '22px 0' }}>
-            <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+            <div className="max-w-6xl mx-auto px-4" style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, flexDirection: isMobile ? 'column' : 'row' }}>
               <div>
                 <p style={{ fontSize: 20, fontWeight: 900, color: textColor, lineHeight: 1.2, marginBottom: 4 }}>Small acts of non-cooperation<br />can bring big change.</p>
                 <p style={{ fontSize: 13, color: '#e8950a', fontWeight: 600 }}>Be the change. Build the future.</p>
@@ -550,31 +558,8 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
       </CenteredModal>
 
       <style>{`
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-        }
-
-        @media (max-width: 480px) {
-          /* Prevent anything from overflowing */
-          * { max-width: 100% !important; box-sizing: border-box !important; }
-
-          /* Allow text to wrap naturally */
-          h1, p, span, div, button, a {
-            white-space: normal !important;
-            word-break: break-word !important;
-          }
-
-          /* Stats pills — wrap instead of scroll */
-          .hide-scrollbar {
-            flex-wrap: wrap !important;
-            overflow-x: visible !important;
-          }
-
-          /* Join the Movement text */
-          .join-movement p {
-            font-size: clamp(28px, 10vw, 44px) !important;
-          }
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </>
   )
