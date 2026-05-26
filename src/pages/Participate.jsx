@@ -23,8 +23,8 @@ export default function Participate() {
         <p className="text-xs font-bold tracking-widest text-red uppercase mb-3">
           Step 5 · Take Action
         </p>
-        <h1 className="text-3xl font-black tracking-tight text-offwhite mb-2">Participate</h1>
-        <p className="text-sm text-muted mb-8 leading-relaxed">
+        <h1 style={{ fontSize: 32, fontWeight: 900, color: '#F3F4F6', marginBottom: 8 }}>Participate</h1>
+        <p style={{ fontSize: 14, color: '#aaa', marginBottom: 32, lineHeight: 1.7 }}>
           Join thousands taking silent action. Economic Non-Cooperation doesn't need a march.
           It needs a decision. One switch. One kirana. One search before you buy.
         </p>
@@ -34,13 +34,13 @@ export default function Participate() {
           className="rounded-2xl p-6 text-center mb-8"
           style={{ background: '#0d0800', border: '0.5px solid #2a1800' }}
         >
-          <p className="text-xs font-bold text-amber/60 uppercase tracking-widest mb-2">Movement Growing</p>
-          <p className="text-4xl font-black text-amber tracking-tighter">✊ Join Us</p>
-          <p className="text-xs text-amber/40 mt-2">thousands taking silent action every day</p>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 8 }}>Movement Growing</p>
+          <p style={{ fontSize: 36, fontWeight: 900, color: '#F59E0B' }}>✊ Join Us</p>
+          <p style={{ fontSize: 12, color: '#7a6a40', marginTop: 8 }}>thousands taking silent action every day</p>
         </div>
 
         {/* Steps */}
-        <p className="text-xs font-bold tracking-widest text-muted uppercase mb-4">
+        <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '2px', color: '#888', textTransform: 'uppercase', marginBottom: 16 }}>
           Mark your acts of non-cooperation
         </p>
 
@@ -48,24 +48,24 @@ export default function Participate() {
           {steps.map((s, i) => (
             <div
               key={s.title}
-              className="flex items-start gap-4 py-3 cursor-pointer group"
-              style={{ borderBottom: i < steps.length - 1 ? '0.5px solid #0e0e0e' : 'none' }}
+              className="flex items-start gap-4 py-4 cursor-pointer"
+              style={{ borderBottom: i < steps.length - 1 ? '0.5px solid #2a2a2a' : 'none' }}
               onClick={() => setChecked(prev => ({ ...prev, [i]: !prev[i] }))}
             >
               <div
                 className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-all"
                 style={checked[i]
-                  ? { background: '#081008', border: '0.5px solid #1a4a1a' }
-                  : { border: '0.5px solid #222' }
+                  ? { background: '#1a4a1a', border: '1.5px solid #4a8a4a' }
+                  : { background: '#1a1a1a', border: '1.5px solid #555' }
                 }
               >
-                {checked[i] && <span className="text-green-500 text-xs">✓</span>}
+                {checked[i] && <span style={{ color: '#4adb4a', fontSize: 11 }}>✓</span>}
               </div>
               <div>
-                <p className={`text-sm font-semibold transition-colors ${checked[i] ? 'text-offwhite' : 'text-offwhite/60'}`}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: checked[i] ? '#4adb4a' : '#F3F4F6', marginBottom: 3 }}>
                   {s.title}
                 </p>
-                <p className="text-xs text-muted mt-0.5 leading-relaxed">{s.desc}</p>
+                <p style={{ fontSize: 12, color: '#888', lineHeight: 1.5 }}>{s.desc}</p>
               </div>
             </div>
           ))}
