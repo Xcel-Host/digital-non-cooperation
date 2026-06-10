@@ -401,16 +401,19 @@ export default function HeroSection({ theme, empiresOpen, setEmpiresOpen }) {
                 {/* Caricatures */}
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, paddingTop: 16 }}>
                   {[
-                    { src: '/a1.png', label: 'A1', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
-                    { src: '/vg.png', label: 'Modi', labelBg: '#1a0505', labelColor: '#ff6060', size: isMobile ? 104 : 140, border: '2.5px solid #D84B4B', mb: 14 },
-                    { src: '/a2.png', label: 'A2', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
+                    { src: '/a1.png', label: 'A1', to: '/person/ambani', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
+                    { src: '/vg.png', label: 'Modi', to: '/person/modi', labelBg: '#1a0505', labelColor: '#ff6060', size: isMobile ? 104 : 140, border: '2.5px solid #D84B4B', mb: 14 },
+                    { src: '/a2.png', label: 'A2', to: '/person/adani', labelBg: '#1a1a1a', labelColor: '#888', size: isMobile ? 80 : 108, border: '1.5px solid #333' },
                   ].map(c => (
-                    <div key={c.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0 }}>
-                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
+                    <Link key={c.label} to={c.to} title={`Open ${c.label} profile`}
+                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, marginBottom: c.mb || 0, textDecoration: 'none', cursor: 'pointer' }}
+                      onMouseEnter={e => { e.currentTarget.firstChild.style.transform = 'scale(1.05)'; e.currentTarget.firstChild.style.borderColor = '#D84B4B' }}
+                      onMouseLeave={e => { e.currentTarget.firstChild.style.transform = 'scale(1)'; e.currentTarget.firstChild.style.borderColor = '' }}>
+                      <div style={{ width: c.size, height: c.size, borderRadius: '50%', overflow: 'hidden', border: c.border, background: '#111', transition: 'transform 0.15s, border-color 0.15s', boxShadow: c.label === 'Modi' ? '0 8px 32px rgba(216,75,75,0.2)' : '0 4px 16px rgba(0,0,0,0.4)' }}>
                         <img src={c.src} alt={c.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
                       </div>
-                      <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label}</span>
-                    </div>
+                      <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4, background: c.labelBg, color: c.labelColor }}>{c.label} · tap</span>
+                    </Link>
                   ))}
                 </div>
 

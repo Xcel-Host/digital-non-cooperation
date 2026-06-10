@@ -19,3 +19,4 @@ export const trendingSearches = [
   'Campa Cola', 'JioHotstar', 'Fortune Oil', 'Mumbai Airport',
   'Ambuja Cement', 'JioMart', 'Network18',
 ]
+export { people } from './people'

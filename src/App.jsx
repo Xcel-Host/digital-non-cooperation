@@ -11,6 +11,7 @@ import WealthPage from './pages/WealthPage'
 import WhatElsePage from './pages/WhatElsePage'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
 import AboutPage from './pages/AboutPage'
+import PersonProfile from './pages/PersonProfile'
 
 export default function App() {
   const [theme, setTheme] = useState('dark')
@@ -31,6 +32,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home theme={theme} empiresOpen={empiresOpen} setEmpiresOpen={setEmpiresOpen} />} />
         <Route path="/explore/:group" element={<Explore theme={theme} />} />
+        <Route path="/person/:id" element={<PersonProfile theme={theme} />} />
         <Route path="/sector/:group/:sectorId" element={<SectorDetail theme={theme} />} />
         <Route path="/alternatives" element={<Alternatives theme={theme} />} />
         <Route path="/participate" element={<Participate theme={theme} />} />
