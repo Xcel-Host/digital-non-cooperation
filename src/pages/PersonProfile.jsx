@@ -15,6 +15,7 @@ const TAG_COLORS = {
   Finance: { bg: '#0f1a2e', color: '#7fb0ff', light: '#cce0ff' },
   Airports: { bg: '#252200', color: '#f5c34b', light: '#f5e080' },
   Markets: { bg: '#1a1a1a', color: '#aaa', light: '#ddd' },
+  Media: { bg: '#0f1a2e', color: '#7fb0ff', light: '#cce0ff' },
 }
 
 function Tag({ name, isDark }) {
@@ -116,10 +117,10 @@ export default function PersonProfile({ theme }) {
         {person.statements && (
           <div style={card}>
             <p style={{ fontSize: 12, fontWeight: 700, color: muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '1px' }}>
-              Said vs record
+              He said · What actually happened
             </p>
             <p style={{ fontSize: 11.5, color: muted, marginBottom: 16 }}>
-              Public statements as reported by the press, paired with what official data later showed. Every card carries its sources.
+              Things he said at rallies, as newspapers reported them — next to what the official numbers showed later. Every card has its proof links.
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {person.statements.map((st, i) => (
@@ -146,18 +147,25 @@ export default function PersonProfile({ theme }) {
         {/* ── TIMELINE ── */}
         <div style={card}>
           <p style={{ fontSize: 12, fontWeight: 700, color: muted, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            {isGovt ? 'Policy & proximity timeline' : 'Key events — every card sourced'}
+            {isGovt ? 'What he decided — and what happened next' : 'How the empire was built, year by year'}
           </p>
           <div style={{ borderLeft: `2px solid ${isDark ? '#2a2a2a' : '#ddd'}`, paddingLeft: 18, marginLeft: 4 }}>
             {person.events.map((ev, i) => (
-              <div key={i} style={{ marginBottom: i < person.events.length - 1 ? 18 : 0, position: 'relative' }}>
-                <span style={{ position: 'absolute', left: -24, top: 5, width: 9, height: 9, borderRadius: '50%', background: person.color }} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: muted }}>{ev.year}</span>
-                  <Tag name={ev.tag} isDark={isDark} />
+              <div key={i}>
+                {ev.era && (
+                  <p style={{ fontSize: 11, fontWeight: 800, color: person.color === '#888' ? '#e8950a' : person.color, textTransform: 'uppercase', letterSpacing: '1px', margin: `${i === 0 ? 0 : 6}px 0 14px` }}>
+                    {ev.era}
+                  </p>
+                )}
+                <div style={{ marginBottom: i < person.events.length - 1 ? 18 : 0, position: 'relative' }}>
+                  <span style={{ position: 'absolute', left: -24, top: 5, width: 9, height: 9, borderRadius: '50%', background: person.color }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: muted }}>{ev.year}</span>
+                    <Tag name={ev.tag} isDark={isDark} />
+                  </div>
+                  <p style={{ fontSize: 13, color: textColor, lineHeight: 1.55, marginBottom: 8 }}>{ev.text}</p>
+                  <SourceChip sources={ev.sources} isDark={isDark} />
                 </div>
-                <p style={{ fontSize: 13, color: textColor, lineHeight: 1.55, marginBottom: 8 }}>{ev.text}</p>
-                <SourceChip sources={ev.sources} isDark={isDark} />
               </div>
             ))}
           </div>

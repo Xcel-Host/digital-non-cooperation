@@ -12,6 +12,7 @@ import WhatElsePage from './pages/WhatElsePage'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
 import AboutPage from './pages/AboutPage'
 import PersonProfile from './pages/PersonProfile'
+import RealIndia from './pages/RealIndia'
 
 export default function App() {
   const [theme, setTheme] = useState('dark')
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/participate" element={<Participate theme={theme} />} />
         <Route path="/philosophy" element={<Philosophy theme={theme} />} />
         <Route path="/wealth" element={<WealthPage theme={theme} />} />
+        <Route path="/real-india" element={<RealIndia theme={theme} />} />
         <Route path="/what-else" element={<WhatElsePage theme={theme} />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />

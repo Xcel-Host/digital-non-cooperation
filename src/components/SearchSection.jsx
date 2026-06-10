@@ -31,7 +31,15 @@ export default function SearchSection({ theme }) {
   const [results, setResults] = useState([])
   const [showResults, setShowResults] = useState(false)
   const [copied, setCopied] = useState(null)
+  const [verdict, setVerdict] = useState(null)
   const navigate = useNavigate()
+
+  const findSwaps = (item) => {
+    const data = item.group === 'adani' ? adani : reliance
+    const sector = data.sectors.find(sec => sec.id === item.sectorId)
+    if (!sector || !sector.alternatives || !sector.alternatives.length) return []
+    return sector.alternatives[0].picks ? sector.alternatives[0].picks.slice(0, 3) : []
+  }
 
   const handleSearch = (q) => {
     setQuery(q)
@@ -49,7 +57,7 @@ export default function SearchSection({ theme }) {
   const handleSelect = (item) => {
     setShowResults(false)
     setQuery(item.name)
-    navigate(`/sector/${item.group}/${item.sectorId}`)
+    setVerdict({ ...item, swaps: findSwaps(item) })
   }
 
   const handleSubmit = (e) => {
@@ -91,7 +99,7 @@ export default function SearchSection({ theme }) {
             autoComplete="off"
           />
           {query && (
-            <button type="button" onClick={() => { setQuery(''); setResults([]); setShowResults(false) }}
+            <button type="button" onClick={() => { setQuery(''); setResults([]); setShowResults(false); setVerdict(null) }}
               style={{ color: '#aaa', fontSize: 12, background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
           )}
         </div>
@@ -135,6 +143,48 @@ export default function SearchSection({ theme }) {
           </div>
         )}
       </form>
+
+      {/* Verdict card — the answer, right here */}
+      {verdict && (
+        <div className="mb-4 rounded-xl overflow-hidden" style={{ border: `0.5px solid ${verdict.badge === 'A1' ? '#5a1515' : '#4a3a00'}` }}>
+          <div style={{ background: verdict.badge === 'A1' ? '#2a0a0a' : '#251c00', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span className="text-xs font-black px-1.5 py-0.5 rounded"
+              style={verdict.badge === 'A1' ? { background: '#D84B4B', color: '#fff' } : { background: '#F59E0B', color: '#000' }}>
+              {verdict.badge}
+            </span>
+            <p style={{ fontSize: 14, fontWeight: 800, color: verdict.badge === 'A1' ? '#ff9a9a' : '#ffd479' }}>
+              Yes — {verdict.name} is a {verdict.groupName.replace(' Empire', '')} family brand
+            </p>
+          </div>
+          <div style={{ background: bg, padding: '14px 16px' }}>
+            <p style={{ fontSize: 12.5, color: '#aaa', lineHeight: 1.6, marginBottom: 12 }}>
+              {verdict.name} ({verdict.sector}) is part of the {verdict.groupName}. Money you spend here goes to the same family that owns {verdict.badge === 'A1' ? 'Jio, JioMart and CNN-News18' : 'big ports, airports and NDTV'}.
+            </p>
+            {verdict.swaps.length > 0 && (
+              <>
+                <p style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8 }}>Easy swaps</p>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {verdict.swaps.map(p => (
+                    <span key={p.name} style={{ fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 8, background: '#0f2418', color: '#6fcf97', border: '0.5px solid #1d4030' }}>
+                      {p.name} <span style={{ color: '#4a7a5a', fontWeight: 400 }}>· {p.tag}</span>
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => navigate(`/sector/${verdict.group}/${verdict.sectorId}`)}
+                style={{ fontSize: 12, fontWeight: 700, padding: '7px 14px', borderRadius: 8, background: verdict.badge === 'A1' ? '#D84B4B' : '#F59E0B', color: verdict.badge === 'A1' ? '#fff' : '#000', border: 'none', cursor: 'pointer' }}>
+                See all swaps & details →
+              </button>
+              <button onClick={(e) => handleShare(verdict, e)}
+                style={{ fontSize: 12, fontWeight: 600, padding: '7px 14px', borderRadius: 8, background: 'transparent', color: '#aaa', border: '0.5px solid #333', cursor: 'pointer' }}>
+                {copied === verdict.name ? '✓ copied' : '↗ share this'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Trending */}
       <div className="flex items-center gap-2 mb-4 overflow-x-auto hide-scrollbar">

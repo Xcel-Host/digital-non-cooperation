@@ -17,42 +17,40 @@ const USD_INR = 83
 // Combined growth 2014 → 2024 ≈ $209.8B → per-second pace in ₹
 const GROWTH_PER_SEC_INR = (209.8e9 * USD_INR) / (10 * 365 * 24 * 3600)
 
-// One-scale comparison, ₹ lakh crore (1 lakh crore = 1e12)
-const scaleBars = [
+// Everyday comparisons — no big units, just years and hours
+const everydayComparisons = [
   {
-    label: 'A1 + A2 combined wealth (2024)', value: 19.5, color: '#D84B4B',
-    note: '$235.5 B at ₹83/$',
+    big: '21 years of the health budget', icon: '🏥',
+    text: 'Their combined wealth (about $235 billion) could pay for India\u2019s entire yearly health budget 21 times over.',
     sources: [{ label: 'Business Standard (Forbes 2024)', url: 'https://www.business-standard.com/india-news/forbes-billionaires-2024-list-ambani-tops-india-with-net-worth-of-116-bn-124040300399_1.html' }],
   },
   {
-    label: 'Union health budget (one year)', value: 0.91, color: '#5a7a9a',
-    note: '≈ ₹90,000 crore', sources: [],
+    big: '23 years of MGNREGA', icon: '👷',
+    text: 'MGNREGA is the scheme that guarantees village workers 100 days of paid work a year. Their wealth equals about 23 full years of its budget.',
+    sources: [],
   },
   {
-    label: 'MGNREGA budget (one year)', value: 0.86, color: '#5a7a9a',
-    note: '≈ ₹86,000 crore', sources: [],
-  },
-  {
-    label: 'Annual income of 1,000 average Indians', value: 0.0002, color: '#4a8a4a',
-    note: '₹20 crore — the sliver is the point', sources: [],
+    big: '1 hour vs 1 year', icon: '⏱️',
+    text: 'Take 1,000 ordinary Indians. Everything they earn in a whole year — their wealth grew by that much roughly every hour, on average, over the last decade.',
+    sources: [{ label: 'The Asian Age (avg income)', url: 'https://www.pressreader.com/india/the-asian-age/20211208/282802129634934' }],
   },
 ]
 
 const indices = [
   {
-    label: 'Global Hunger Index 2024', value: '105 / 127', sub: '\u201cSerious\u201d — score 27.3',
+    label: 'India\u2019s hunger rank', value: '105 / 127', sub: 'Behind Bangladesh, Nepal & Sri Lanka',
     sources: [{ label: 'Tribune India (PTI)', url: 'https://www.tribuneindia.com/news/india/global-hunger-index-2024-india-ranks-under-serious-category-on-par-with-pakistan-afghanistan' }],
   },
   {
-    label: 'Wealth held by top 1% (2022-23)', value: '40.1%', sub: 'Highest on record',
+    label: 'Of every ₹100 of wealth, the richest 1% own', value: '₹40', sub: 'Highest ever recorded',
     sources: [{ label: 'World Inequality Lab', url: 'https://wid.world/news-article/inequality-in-india-the-billionaire-raj-is-now-more-unequal-than-the-british-colonial-raj/' }],
   },
   {
-    label: 'Income to bottom 50%', value: '15%', sub: 'Top 10% take ~58%',
+    label: 'Of every ₹100 earned, the poorer half of India gets', value: '₹15', sub: 'That\u2019s about 70 crore people',
     sources: [{ label: 'Scroll.in (WIR 2026)', url: 'https://scroll.in/latest/1089182/inequality-in-india-among-highest-in-the-world-top-1-holds-40-wealth-study' }],
   },
   {
-    label: 'Exited multidimensional poverty', value: '24.82 cr', sub: '2013-14 → 2022-23 (govt data)',
+    label: 'Govt\u2019s side: people out of poverty in 9 years', value: '24.82 cr', sub: 'Its own data — read both',
     sources: [{ label: 'Down To Earth (NITI Aayog)', url: 'https://www.downtoearth.org.in/governance/as-told-to-parliament-march-26-2025-global-hunger-index-flawed-says-centre' }],
   },
 ]
@@ -60,7 +58,7 @@ const indices = [
 const policyFacts = [
   {
     title: 'Corporate tax cut (Sep 2019)', value: '₹1.45 lakh crore / year',
-    detail: 'Rate cut from 30% to 22% (15% for new manufacturing). The finance minister put the annual revenue foregone at ₹1.45 lakh crore.',
+    detail: 'The tax big companies pay was cut from 30% to 22%. The finance minister herself said the country gives up ₹1.45 lakh crore every year because of it — more than the whole yearly health budget.',
     sources: [
       { label: 'Business Today', url: 'https://www.businesstoday.in/latest/economy-politics/story/nirmala-sitharaman-finance-minister-slash-corporate-tax-rate-domestic-firms-227683-2019-09-20' },
       { label: 'The Wire', url: 'https://thewire.in/macro/nirmala-sitharaman-corporate-tax-cuts' },
@@ -68,7 +66,7 @@ const policyFacts = [
   },
   {
     title: 'Wilful defaults — Indian banks (2023)', value: '₹3.16 lakh crore',
-    detail: 'RBI data on wilful defaults — roughly 3.5 years of the entire MGNREGA budget.',
+    detail: 'People who could pay back their bank loans but chose not to. The RBI counted ₹3.16 lakh crore of it — enough to run the village job scheme (MGNREGA) for over 3 years.',
     sources: [],
   },
 ]
@@ -94,7 +92,6 @@ export default function WealthPage({ theme }) {
   const seconds = incomeINR / GROWTH_PER_SEC_INR
   const yearsForOneDay = Math.round((GROWTH_PER_SEC_INR * 86400) / incomeINR)
   const maxWealth = 130
-  const maxBar = 19.5
 
   return (
     <main style={{ background: bg, minHeight: '100vh' }}>
@@ -104,10 +101,10 @@ export default function WealthPage({ theme }) {
           Their wealth · Your country
         </p>
         <h1 style={{ fontSize: 30, fontWeight: 900, letterSpacing: '-1px', color: textColor, marginBottom: 6 }}>
-          Numbers too big to feel — until you use your own salary
+          Billions don't mean anything. Your salary does.
         </h1>
         <p style={{ fontSize: 13, color: muted, lineHeight: 1.6, maxWidth: 620, marginBottom: 24 }}>
-          Billions don't mean anything to a human brain. Time does. Every figure below carries a source link — and where a source is still being verified, you'll see a pending chip instead of a silent claim.
+          Move the slider to your income and see what their wealth growth means in your time. Every number on this page has a proof link. If we haven't verified something yet, you'll see a "source pending" tag — we never hide it.
         </p>
 
         {/* ── CALCULATOR ── */}
@@ -133,35 +130,25 @@ export default function WealthPage({ theme }) {
             </div>
           </div>
           <p style={{ fontSize: 10.5, color: muted, marginTop: 10 }}>
-            Basis: combined Forbes net worth $25.7 B (2014) → $235.5 B (2024), converted at ₹83/$. Net worth growth is not income — it's the rise in what they own — but it's the scale your purchases feed into.
+            How we got this: Forbes says their combined wealth went from $25.7 billion (2014) to $235.5 billion (2024). We turned that 10-year growth into a per-second speed. Wealth is not salary — it's the value of what they own — but your spending is part of what makes it grow.
           </p>
         </div>
 
-        {/* ── ONE-SCALE BARS ── */}
+        {/* ── EVERYDAY COMPARISONS ── */}
         <div style={card}>
           <p style={{ fontSize: 12, fontWeight: 700, color: muted, marginBottom: 14, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            One unit, one scale — ₹ lakh crore
+            How big is their wealth? In things you know
           </p>
-          <div style={{ display: 'grid', gap: 14 }}>
-            {scaleBars.map((b, i) => (
-              <div key={i}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 5, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 12.5, color: textColor, fontWeight: 600 }}>{b.label}</span>
-                  <span style={{ fontSize: 12, color: muted }}>{b.value >= 0.01 ? `₹${b.value} lakh crore` : b.note}</span>
-                </div>
-                <div style={{ height: 16, background: statBg, borderRadius: 8, border: `0.5px solid ${border}`, overflow: 'hidden' }}>
-                  <div style={{ width: `${Math.max((b.value / maxBar) * 100, 0.4)}%`, height: '100%', background: b.color }} />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4, gap: 8, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 10.5, color: muted }}>{b.value >= 0.01 ? b.note : ''}</span>
-                  <SourceChip sources={b.sources} isDark={isDark} />
-                </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
+            {everydayComparisons.map((c, i) => (
+              <div key={i} style={{ background: statBg, border: `0.5px solid ${border}`, borderRadius: 10, padding: 14 }}>
+                <p style={{ fontSize: 22, marginBottom: 6 }}>{c.icon}</p>
+                <p style={{ fontSize: 17, fontWeight: 900, color: textColor, marginBottom: 6, lineHeight: 1.25 }}>{c.big}</p>
+                <p style={{ fontSize: 12.5, color: muted, lineHeight: 1.6, marginBottom: 10 }}>{c.text}</p>
+                <SourceChip sources={c.sources} isDark={isDark} />
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 11, color: '#e8950a', fontWeight: 600, marginTop: 12 }}>
-            The last sliver is drawn at minimum visible width — at true scale it would be invisible. That gap is the message.
-          </p>
         </div>
 
         {/* ── DECADE CHART ── */}
@@ -185,7 +172,7 @@ export default function WealthPage({ theme }) {
             <span style={{ fontSize: 11, color: muted }}><span style={{ display: 'inline-block', width: 10, height: 10, background: '#F59E0B', borderRadius: 2, marginRight: 5 }} />A2 Adani</span>
           </div>
           <p style={{ fontSize: 11.5, color: textColor, lineHeight: 1.5, background: statBg, border: `0.5px solid ${border}`, borderRadius: 8, padding: 10 }}>
-            Where is the average Indian on this chart? At ~$2,400/year, the bar would be <strong>0.0008 pixels tall</strong>. It cannot be drawn. That invisible bar is 140 crore people.
+            Where are YOU on this chart? The average Indian earns about ₹2 lakh a year. On this chart, that bar would be thinner than a hair — too small to draw. That invisible bar is 140 crore people.
           </p>
           <div style={{ marginTop: 10 }}>
             <SourceChip isDark={isDark} sources={[
@@ -198,7 +185,7 @@ export default function WealthPage({ theme }) {
         {/* ── INDICES ── */}
         <div style={card}>
           <p style={{ fontSize: 12, fontWeight: 700, color: muted, marginBottom: 14, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            Meanwhile — India's indices (including the government's counterpoint)
+            Meanwhile, in the rest of India (the government's side included)
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
             {indices.map((x, i) => (
@@ -215,7 +202,7 @@ export default function WealthPage({ theme }) {
         {/* ── POLICY FACTS ── */}
         <div style={card}>
           <p style={{ fontSize: 12, fontWeight: 700, color: muted, marginBottom: 14, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            Public money, documented
+            Where public money went
           </p>
           <div style={{ display: 'grid', gap: 10 }}>
             {policyFacts.map((f, i) => (

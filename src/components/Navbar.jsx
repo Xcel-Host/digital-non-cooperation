@@ -23,6 +23,7 @@ export default function Navbar({ theme, toggleTheme, closeEmpires }) {
     { to: '/', label: 'Home' },
     { to: '/explore/reliance', label: 'A1 Ambani' },
     { to: '/explore/adani', label: 'A2 Adani' },
+    { to: '/real-india', label: 'Real India' },
     { to: '/alternatives', label: 'Alternatives' },
     { to: '/participate', label: 'Participate' },
     { to: '/about', label: 'About' },
