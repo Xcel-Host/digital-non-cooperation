@@ -12,6 +12,7 @@ import WhatElsePage from './pages/WhatElsePage'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
 import AboutPage from './pages/AboutPage'
 import PersonProfile from './pages/PersonProfile'
+import Election2024 from './pages/Election2024'
 import RealIndia from './pages/RealIndia'
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/philosophy" element={<Philosophy theme={theme} />} />
         <Route path="/wealth" element={<WealthPage theme={theme} />} />
         <Route path="/real-india" element={<RealIndia theme={theme} />} />
+        <Route path="/election-2024" element={<Election2024 theme={theme} />} />
         <Route path="/what-else" element={<WhatElsePage theme={theme} />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />

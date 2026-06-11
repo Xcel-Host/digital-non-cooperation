@@ -27,6 +27,9 @@ export default function HomeEmpires({ theme }) {
           </div>
           <span className="absolute right-3 bottom-3 text-base transition-colors group-hover:text-red-500" style={{ color: isDark ? '#2a2a2a' : '#ddd' }}>→</span>
         </Link>
+        <Link to="/person/ambani" className="block text-center text-xs font-semibold py-1.5 rounded-lg mt-1.5" style={{ color: '#D84B4B', background: isDark ? '#150505' : '#fff0f0', border: '0.5px solid #2e0f0f' }}>
+          Who is Mukesh Ambani? →
+        </Link>
 
         {/* A2 */}
         <Link to="/explore/adani"
@@ -39,6 +42,9 @@ export default function HomeEmpires({ theme }) {
             Ports · Airports<br />Power · Cement<br />Media · Food
           </div>
           <span className="absolute right-3 bottom-3 text-base transition-colors" style={{ color: isDark ? '#2a2a2a' : '#ddd' }}>→</span>
+        </Link>
+        <Link to="/person/adani" className="block text-center text-xs font-semibold py-1.5 rounded-lg mt-1.5" style={{ color: '#b8860b', background: isDark ? '#0f0f00' : '#fffce0', border: '0.5px solid #252200' }}>
+          Who is Gautam Adani? →
         </Link>
       </div>
 
@@ -55,6 +61,43 @@ export default function HomeEmpires({ theme }) {
             This affects your daily life.
           </p>
         </div>
+      </div>
+
+      {/* Real India + Election quick links */}
+      <div className="grid grid-cols-1 gap-3 mt-3">
+        <Link to="/real-india" className="rounded-xl p-4 block"
+          style={{ background: isDark ? '#0f2418' : '#edfaf4', border: '0.5px solid #1d4030', textDecoration: 'none' }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-widest mb-1" style={{ color: '#6fcf97' }}>Real India</p>
+              <p className="text-sm font-bold mb-0.5" style={{ color: textColor }}>While they got richer — how is everyone else doing?</p>
+              <p className="text-xs" style={{ color: muted }}>Jobs · Hunger · Inequality · Every number sourced</p>
+            </div>
+            <span style={{ color: '#6fcf97', fontSize: 18 }}>→</span>
+          </div>
+        </Link>
+        <Link to="/election-2024" className="rounded-xl p-4 block"
+          style={{ background: isDark ? '#150505' : '#fff5f5', border: '0.5px solid #2e0f0f', textDecoration: 'none' }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-widest mb-1" style={{ color: '#D84B4B' }}>2024 Election</p>
+              <p className="text-sm font-bold mb-0.5" style={{ color: textColor }}>Six documented concerns — and the government's answers</p>
+              <p className="text-xs" style={{ color: muted }}>Turnout data · Bonds · Hate speech · EVM concerns</p>
+            </div>
+            <span style={{ color: '#D84B4B', fontSize: 18 }}>→</span>
+          </div>
+        </Link>
+        <Link to="/person/modi" className="rounded-xl p-4 block"
+          style={{ background: isDark ? '#111' : '#fafaf6', border: `0.5px solid ${border}`, textDecoration: 'none' }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-widest mb-1" style={{ color: muted }}>GOVT</p>
+              <p className="text-sm font-bold mb-0.5" style={{ color: textColor }}>Modi — 10 promises checked, rules set, connections mapped</p>
+              <p className="text-xs" style={{ color: muted }}>Dated, sourced, including the government's side</p>
+            </div>
+            <span style={{ color: muted, fontSize: 18 }}>→</span>
+          </div>
+        </Link>
       </div>
 
       {/* More empires coming */}

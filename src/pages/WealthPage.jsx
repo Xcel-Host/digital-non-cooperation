@@ -65,8 +65,8 @@ const policyFacts = [
     ],
   },
   {
-    title: 'Wilful defaults — Indian banks (2023)', value: '₹3.16 lakh crore',
-    detail: 'People who could pay back their bank loans but chose not to. The RBI counted ₹3.16 lakh crore of it — enough to run the village job scheme (MGNREGA) for over 3 years.',
+    title: 'Wilful defaults — all banks (Mar 2025)', value: '₹3.83 lakh crore',
+    detail: 'People who could pay back their bank loans but chose not to. As of March 2025, the total from all banks stands at ₹3.83 lakh crore (18,318 borrowers) per the Finance Minister\'s own Parliament answer — enough to run MGNREGA for over 4 years.',
     sources: [],
   },
 ]

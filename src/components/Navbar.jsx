@@ -24,6 +24,7 @@ export default function Navbar({ theme, toggleTheme, closeEmpires }) {
     { to: '/explore/reliance', label: 'A1 Ambani' },
     { to: '/explore/adani', label: 'A2 Adani' },
     { to: '/real-india', label: 'Real India' },
+    { to: '/election-2024', label: '2024 Election' },
     { to: '/alternatives', label: 'Alternatives' },
     { to: '/participate', label: 'Participate' },
     { to: '/about', label: 'About' },
